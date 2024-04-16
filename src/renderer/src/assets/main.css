@@ -1,0 +1,62 @@
+@font-face {
+    font-family: Chakra Petch; /* Name your font family */
+    src: url('Chakra_Petch/ChakraPetch-Light.ttf'),
+        url('Chakra_Petch/ChakraPetch-Bold.ttf'); /* Locate the .ttf file within your directory*/
+}
+
+body {
+    margin: 0;
+    font-family: Chakra Petch, sans-serif;
+}
+
+.dashboard-navbar {
+    display: flex;
+    justify-content: space-between;
+    background-image: linear-gradient(#ffdfbb, #ffcbe2);
+    position: sticky;
+    top: 0px;
+    max-width: 100%;
+    padding: 0px 20px;
+    box-shadow: 0px 5px 10px lightgray;
+}
+
+.dashboard-title {
+    font-weight:bold;
+}
+
+.dashboard-editor {
+    display: flex;
+    width: 160px;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 0;
+}
+
+.add-section-button {
+    line-height: 0;
+}
+
+.dashboard-editor span:hover {
+    cursor: pointer;
+}
+
+.grid-sections {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 15px;
+    margin: 20px;
+}
+
+.sections, .sections-hover {
+    border: medium dashed lightgray;
+    border-radius: 5px;
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sections-hover:hover {
+    background-color: rgb(240, 240, 240);
+    cursor: pointer;
+}
