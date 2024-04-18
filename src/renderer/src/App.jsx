@@ -1,18 +1,13 @@
 import React from 'react'
-import Navbar from './components/Navbar'
-import Sections from './components/Sections'
+import Dashboard from './components/Dashboard'
+import Settings from './components/Settings'
 
 function App() {
-    const [clickableBox, setClickableBox] = React.useState(false)
-
-    function toggleEditButton() {
-        setClickableBox(prevClickable => !prevClickable)
-    }
 
     return (
         <div>
-            <Navbar clickableBox={ clickableBox } handleToggleEdit={ toggleEditButton }/>
-            <Sections clickableBox={ clickableBox }/>
+            <Dashboard />
+            {/* <Settings /> */}
         </div>
         
     )

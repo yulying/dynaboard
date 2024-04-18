@@ -13,20 +13,24 @@ export default function Navbar(props) {
     }
 
     return (
-        <nav className="dashboard-navbar">
-            <h3 className="dashboard-title">My Dashboard</h3>
-            <div className="dashboard-editor">
-                <span className="add-section-button" onClick={ clickAddSection }>ADD</span>
-                { dashboard.addDropDown && <div className="add-section-dropdown-options">
-                    <p>Notepad</p>
-                    <p>Calendar</p>
-                    <p>Checklist</p>
-                </div> }
-                <span className="edit-dashboard-sections" onClick={ props.handleToggleEdit }>{
-                    props.clickableBox ? "DONE" : "EDIT" 
-                }</span>
-                <span className="dashboard-settings">SETTINGS</span>
-            </div>
-        </nav>
+        <div className='dashboard'>
+            <nav className="dashboard-navbar">
+                <h3 className="dashboard-title">My Dashboard</h3>
+                <div className="dashboard-editor">
+                    { !props.clickableBox && <span className="add-section-button" onClick={ clickAddSection }>ADD</span> }
+                    <span className="edit-dashboard-sections" onClick={ props.handleToggleEdit }>{
+                        props.clickableBox ? "DONE" : "EDIT" 
+                    }</span>
+                    { !props.clickableBox && <span className="dashboard-settings">SETTINGS</span> }
+                </div>
+            </nav>
+            {/* { dashboard.addDropDown && <div className='dropdown-arrow' id='add-dropdown-arrow'/> } */}
+            { dashboard.addDropDown && <div className="add-dropdown">
+                <div className='dropdown-arrow' id='add-dropdown-arrow'/>
+                <span className='add-dropdown-option'>Notepad</span>
+                <span className='add-dropdown-option'>Calendar</span>
+                <span className='add-dropdown-option'>Checklist</span>
+            </div> }
+        </div>
     )
 }
