@@ -3,16 +3,23 @@ import Navbar from './Navbar'
 import Sections from './Sections'
 
 export default function Dashboard() {
-    const [clickableBox, setClickableBox] = React.useState(false)
+    const [dashboardEditor, setDashboardEditor] = React.useState( {
+        clickableBox: false,
+        addElement: "notepad"
+    })
 
-    function toggleEditButton() {
-        setClickableBox(prevClickable => !prevClickable)
+    function toggleClickableBox() {
+        setDashboardEditor(prevDashboardEditor => ({
+            ...prevDashboardEditor,
+            clickableBox: !prevDashboardEditor.clickableBox
+        }))
     }
 
     return (
         <div>
-            <Navbar clickableBox={ clickableBox } handleToggleEdit={ toggleEditButton }/>
-            <Sections clickableBox={ clickableBox }/>
+            <div id='navbar-empty-space' />
+            <Navbar clickableBox={ dashboardEditor.clickableBox } toggleClickableBox={ toggleClickableBox }/>
+            <Sections element={ dashboardEditor.addElement } clickableBox={ dashboardEditor.clickableBox }/>
         </div>
         
     )

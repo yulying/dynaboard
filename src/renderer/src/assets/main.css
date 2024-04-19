@@ -9,53 +9,86 @@ body {
     font-family: Chakra Petch, sans-serif;
 }
 
-.dashboard {
-    position: sticky;
-    top: 0px;
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    border-radius: 34px;
 }
 
-.dashboard-navbar {
+/* Track */
+::-webkit-scrollbar-track {
+    background: #ebebeb;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #c2c2c2;
+    border-radius: 8px;
+    transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #a7a7a7;
+    border-radius: 16px;
+}
+
+#navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    overflow: initial;
+    z-index: 1;
+}
+
+#navbar-main-components {
     display: flex;
     justify-content: space-between;
-    background-image: linear-gradient(#ffdfbb, #ffcbe2);
-    max-width: 100%;
+    background-image: linear-gradient(#ffd19c, #ffcbe2);
     padding: 0px 30px;
     box-shadow: 0px 5px 10px lightgray;
 }
 
-.dashboard-title {
+#navbar-empty-space {
+    height: 70px;
+}
+
+#dashboard-title {
     font-weight: bold;
 }
 
-.dashboard-editor {
+#dashboard-editor {
     display: flex;
-    width: 170px;
+    width: 120px;
     justify-content: space-between;
     align-self: center;
     line-height: 0;
 }
 
-.add-section-button {
-    line-height: 0;
+#dashboard-editor span:hover {
+    cursor: pointer;
 }
 
-.dashboard-editor span:hover {
-    cursor: pointer;
+#add-button {
+    line-height: 0;
 }
 
 .grid-sections {
     display: grid;
-    overflow: hidden;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 10px;
-    margin: 20px;
+    grid-template-columns: auto auto;
+    gap: 15px;
+    padding: 20px;
 }
 
 .sections, .sections-hover {
-    border: medium dotted lightgray;
+    border: medium dashed lightgray;
     border-radius: 5px;
-    height: 30px;
-    width: 30px;
+    height: 300px;
+    max-height: 300px;
+    width: 400px;
+    max-width: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -75,16 +108,25 @@ body {
     margin-top: -10px;
 }
 
-#add-dropdown-arrow {
+.dropdown-hover-element {
     position: absolute;
-    left:20px;
+    width: 50px;
+    height: 50px;
+    left: 10px;
+    bottom: 60px;
 }
 
-.add-dropdown {
+#add-dropdown-arrow {
+    position: relative;
+    top: 35px;
+    left: 10px;
+}
+
+#add-dropdown {
     position: fixed;
     background-color: white;
     display: inline-grid;
-    right: 99px;
+    right: 50px;
     width: 110px;
     justify-content: center;
     padding: 5px;
@@ -99,4 +141,42 @@ body {
 .add-dropdown-option:hover {
     background-color: #dddddd;
     cursor: pointer;
+}
+
+textarea {
+    font-family: Chakra Petch, sans-serif;
+    font-size: 16px;
+    padding: 14px;
+    border: double 10px lightgray;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+.notepad-div {
+    padding-top: 8px;
+    border-radius: 5%;
+    background: linear-gradient(#e2e2e2 50%, #ffffff00 50%);;
+}
+
+label {
+    position: relative;
+    font-size: 18px;
+    left: 23px;
+}
+
+.notepad {
+    position: relative;
+    top: 3px;
+    resize: none;
+    height: 230px;
+    width: 360px;
+}
+
+#footer {
+    position: sticky;
+    bottom: 0;
+    max-width: 100%;
+    color: black;
 }

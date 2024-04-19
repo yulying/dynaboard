@@ -12,22 +12,27 @@ export default function Navbar(props) {
         }))
     }
 
+    function addNotepad() {
+        
+    }
+
     return (
-        <div className='dashboard'>
-            <nav className="dashboard-navbar">
-                <h3 className="dashboard-title">My Dashboard</h3>
-                <div className="dashboard-editor">
-                    { !props.clickableBox && <span className="add-section-button" onClick={ clickAddSection }>ADD</span> }
-                    <span className="edit-dashboard-sections" onClick={ props.handleToggleEdit }>{
+        <div id='navbar'>
+            <nav id="navbar-main-components">
+                <h3 id="dashboard-title">My Dashboard</h3>
+                <div id="dashboard-editor">
+                    { props.clickableBox && <span id="add-button" onClick={ clickAddSection }>ADD</span> }
+                    <span id="edit-button" onClick={ props.toggleClickableBox }>{
                         props.clickableBox ? "DONE" : "EDIT" 
                     }</span>
                     { !props.clickableBox && <span className="dashboard-settings">SETTINGS</span> }
                 </div>
             </nav>
-            {/* { dashboard.addDropDown && <div className='dropdown-arrow' id='add-dropdown-arrow'/> } */}
-            { dashboard.addDropDown && <div className="add-dropdown">
-                <div className='dropdown-arrow' id='add-dropdown-arrow'/>
-                <span className='add-dropdown-option'>Notepad</span>
+            { props.clickableBox && dashboard.addDropDown && <div id="add-dropdown" onMouseLeave={ clickAddSection }>
+                <div className='dropdown-hover-element'>
+                    <div className='dropdown-arrow' id='add-dropdown-arrow'/>
+                </div>
+                <span className='add-dropdown-option' onClick={addNotepad}>Notepad</span>
                 <span className='add-dropdown-option'>Calendar</span>
                 <span className='add-dropdown-option'>Checklist</span>
             </div> }
