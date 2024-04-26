@@ -35,24 +35,42 @@ body {
     border-radius: 16px;
 }
 
-#navbar {
+#navbar, #footer {
     position: fixed;
-    top: 0;
     width: 100%;
     overflow: initial;
     z-index: 1;
 }
 
-#navbar-main-components {
+#navbar {
+    top: 0;
+}
+
+#footer {
+    bottom: 0;
+}
+
+#main-navbar-components, #main-footer-components {
     display: flex;
     justify-content: space-between;
-    background-image: linear-gradient(#ffd19c, #ffcbe2);
     padding: 0px 30px;
+    background-color: lightblue;
+}
+
+#main-navbar-components {
     box-shadow: 0px 5px 10px lightgray;
+}
+
+#main-footer-components {
+    box-shadow: 0px -3px 10px lightgray;
 }
 
 #navbar-empty-space {
     height: 70px;
+}
+
+#footer-empty-space {
+    height: 20px;
 }
 
 #dashboard-title {
@@ -71,34 +89,10 @@ body {
     cursor: pointer;
 }
 
-#add-button {
+/* #add-button {
     line-height: 0;
-}
-
-.grid-sections {
-    display: grid;
-    grid-template-columns: auto auto;
-    gap: 15px;
-    padding: 20px;
-}
-
-.sections, .sections-hover {
-    border: medium dashed lightgray;
-    border-radius: 5px;
-    height: 300px;
-    max-height: 300px;
-    width: 400px;
-    max-width: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.sections-hover:hover {
-    background-color: rgb(240, 240, 240);
-    cursor: pointer;
-}
-
+} */
+/* 
 .dropdown-arrow {
     width: 0; 
     height: 0;
@@ -141,42 +135,4 @@ body {
 .add-dropdown-option:hover {
     background-color: #dddddd;
     cursor: pointer;
-}
-
-textarea {
-    font-family: Chakra Petch, sans-serif;
-    font-size: 16px;
-    padding: 14px;
-    border: double 10px lightgray;
-}
-
-textarea:focus {
-    outline: none;
-}
-
-.notepad-div {
-    padding-top: 8px;
-    border-radius: 5%;
-    background: linear-gradient(#e2e2e2 50%, #ffffff00 50%);;
-}
-
-label {
-    position: relative;
-    font-size: 18px;
-    left: 23px;
-}
-
-.notepad {
-    position: relative;
-    top: 3px;
-    resize: none;
-    height: 230px;
-    width: 360px;
-}
-
-#footer {
-    position: sticky;
-    bottom: 0;
-    max-width: 100%;
-    color: black;
-}
+} */

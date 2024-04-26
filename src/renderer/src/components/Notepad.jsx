@@ -1,5 +1,5 @@
 import React from "react";
-import { terminal } from 'virtual:terminal'
+import { terminal } from 'virtual:terminal';
 
 export default function Notepad() {
     const [notepadData, setNotepadData] = React.useState({

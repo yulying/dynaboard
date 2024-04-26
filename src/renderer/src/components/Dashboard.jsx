@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from './Navbar'
 import Sections from './Sections'
+import Footer from './Footer'
 
 export default function Dashboard() {
     const [dashboardEditor, setDashboardEditor] = React.useState( {
@@ -17,9 +18,9 @@ export default function Dashboard() {
 
     return (
         <div>
-            <div id='navbar-empty-space' />
             <Navbar clickableBox={ dashboardEditor.clickableBox } toggleClickableBox={ toggleClickableBox }/>
             <Sections element={ dashboardEditor.addElement } clickableBox={ dashboardEditor.clickableBox }/>
+            <Footer />
         </div>
         
     )

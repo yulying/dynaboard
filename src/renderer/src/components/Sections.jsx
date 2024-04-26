@@ -1,30 +1,70 @@
 import React from "react"
 import Notepad from "./Notepad";
+import { terminal } from 'virtual:terminal';
 
 export default function Sections(props) { 
-    // for future implementation
-    const GRID_BLOCKS = 100;
+    const [sections, setSections] = React.useState([])
 
-    function addNotepad(event) {
-            return <Notepad />
+    const [editor, setEditor] = React.useState({
+        sectionID: 0,
+        showOptions: false,
+        optionType: "" // Obsolete?
+    })
+
+    let sectionCounter = 1;
+    
+    // May change to state and create an admin type user later
+    const options = ["Notepad", "Calendar", "Checklist"]
+
+    function toggleShowOptions(event) {
+        setEditor(prevEditor => ({
+            ...prevEditor,
+            sectionID: event.target.id,
+            showOptions: !prevEditor.showOptions
+        }))
     }
 
-    return (
-        <div className="grid-sections">
-            <div className={ "sections" + ( props.clickableBox ? "-hover" : "" ) } id="section-1">
-                <Notepad />
-            </div>
-            <div className={ "sections" + ( props.clickableBox ? "-hover" : "" ) } id="section-2">
-                
-            </div>
-            <div className={ "sections" + ( props.clickableBox ? "-hover" : "" ) } id="section-3">3</div>
-            <div className={ "sections" + ( props.clickableBox ? "-hover" : "" ) } id="section-4">4</div>
-            <div className={ "sections" + ( props.clickableBox ? "-hover" : "" ) } id="section-5">5</div>
-            <div className={ "sections" + ( props.clickableBox ? "-hover" : "" ) } id="section-6">6</div>
-        </div>
+    // Create a NEW section
+    function addNewSection(sectionType) {
+        setEditor(prevEditor => ({
+            ...prevEditor,
+            showOptions: false
+        }))
 
-        // <div className="grid-sections">
-        // {[...Array(GRID_BLOCKS)].map(number => <div className={ "sections" + ( props.clickableBox ? "-hover" : "" ) }></div> )}
-        // </div>
+        setSections(prevSections => {
+            return [...prevSections, {
+                sectionID: editor.sectionID,
+                componentType: sectionType
+            }]
+        })
+
+        sectionCounter +=  1
+    }
+
+    // When editing an EXISTING section, change section
+    function changeSectionType(event) {
+
+    }
+
+    function getComponent(section) {
+        switch(section.componentType) {
+            case 'Notepad':
+                return <div className={ "sections" + ( props.clickableBox ? "-hover" : "" ) } id={section.id}><Notepad /></div>;
+        }
+    }
+
+    const sectionComponents = sections.map(section => getComponent(section))
+
+    return (
+        <div>
+            { props.clickableBox && editor.showOptions && <div id="options-menu" onMouseLeave={toggleShowOptions}>
+                {options.map(option => <div className="option" onClick={() => editor.sectionID === sectionCounter.toString() ? addNewSection(option) : terminal.log(false)}>{option}</div>)}    
+            </div>}
+            <div className="grid-sections">
+                { sectionComponents }
+                { props.clickableBox && <div className="add-new-section" id={sectionCounter} onClick={toggleShowOptions}>+</div>}
+            </div>
+        </div>
+        
     )
 }
