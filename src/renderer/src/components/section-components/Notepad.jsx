@@ -1,5 +1,4 @@
 import React from "react";
-import { terminal } from 'virtual:terminal';
 
 export default function Notepad() {
     const [notepadData, setNotepadData] = React.useState({
@@ -16,9 +15,9 @@ export default function Notepad() {
             }
         })
     }
+    
     return (
-        <div className="notepad-div">
-
+        <div className="label-div">
             <label for="notepad-element">{ notepadData.label }</label>
             <textarea
                 id="notepad-element"
