@@ -1,7 +1,7 @@
 .grid-sections {
     display: grid;
     grid-template-columns: auto auto;
-    gap: 15px;
+    gap: 20px;
     padding: 20px;
 }
 
@@ -53,17 +53,15 @@
     font-weight: bold;
 }
 
-textarea {
-    font-family: Chakra Petch, sans-serif;
-    font-size: 16px;
-    resize: none;
-    width: 350px;
-    padding: 0px;
-    border: none;
-}
-
 textarea:focus {
     outline: none;
+}
+
+label {
+    position: relative;
+    font-size: 18px;
+    font-weight: bold;
+    left: 23px;
 }
 
 .label-div {
@@ -73,12 +71,13 @@ textarea:focus {
     max-width: 400px;
 }
 
-label {
-    position: relative;
-    font-size: 18px;
-    left: 23px;
+.notepad {
+    font-family: Chakra Petch, sans-serif;
+    font-size: 16px;
+    resize: none;
+    width: 350px;
+    padding: 0px;
 }
-
 
 .notepad, .checklist {
     position: relative;
@@ -88,32 +87,38 @@ label {
     border: double 10px lightgray;
     background-color: white;
     padding: 15px;
-}
-
-.checklist {
     overflow-y: scroll;
 }
 
 .checkbox-item {
-    margin: 5px;
+    margin: 5px 0px;
     display: flex;
     align-items: flex-start;
     gap: 10px;
 }
 
-/* Not working */
-.checkbox-label {
-    overflow: auto;
-    height: auto;
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: lightblue;  
+}
+
+input.temporary-checkbox[type="checkbox"] {
+    pointer-events: none;
 }
 
 .react-calendar {
-    height: 311.5px;
+    height: 300px;
     width: 400px;
     max-width: 100%;
     background: white;
     border: double 10px lightgray;
     line-height: 2em;
+    overflow-y: scroll;
+}
+
+.react-calendar::-webkit-scrollbar {
+    width: 0px;
 }
 
 .react-calendar--doubleView {
@@ -207,7 +212,7 @@ label {
 
 .react-calendar__tile {
     max-width: 100%;
-    padding: 1.4px;
+    padding: 0.6px;
     background: none;
     text-align: center;
     line-height: 16px;

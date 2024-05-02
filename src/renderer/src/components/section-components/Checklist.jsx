@@ -1,5 +1,6 @@
 import React from "react";
-import { terminal } from 'virtual:terminal';
+import TextareaAutosize from 'react-textarea-autosize';
+import { useClickAway } from "@uidotdev/usehooks";
 
 export default function Checklist() {
     const [checklistData, setChecklistData] = React.useState({
@@ -73,9 +74,21 @@ export default function Checklist() {
     function clearEmpty() {
         setChecklistData ({
             ...checklistData,
-            items: checklistData.items.filter(item => item.text !== "")
+            items: checklistData.items.filter(item => item.temporary || item.text !== "")
         })
     }
+
+    const style = {
+        font: "inherit",
+        width: "305px",
+        resize: "none",
+        border: "none",
+        lineHeight: "1.3"
+    }
+
+    const ref = useClickAway(() => {
+        clearEmpty();
+    });
     
     return (
         <div className="label-div">
@@ -84,8 +97,15 @@ export default function Checklist() {
                 { checklistData.items.map(function(item) {
                     return (
                         <div className="checkbox-item">
-                            <input type="checkbox" id={ item.checkboxID } onClick={ toggleChecked } />
-                            <textarea classname={(item.temporary && "temporary-") + "checkbox-label"} id={ item.checkboxID } onChange={ handleChange } value={item.text} />
+                            <input type="checkbox" className= {(item.temporary && "temporary-") + "checkbox"} id={ item.checkboxID } onClick={ toggleChecked } />
+                            <TextareaAutosize
+                                className={(item.temporary && "temporary-") + "checkbox-label"}
+                                id={ item.checkboxID }
+                                minRows={1}
+                                style={style}
+                                onChange={ handleChange }
+                                ref={ref}
+                                value={item.text} />
                         </div>
                     )
                 })}
