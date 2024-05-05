@@ -2,7 +2,7 @@ import React from "react";
 import TextareaAutosize from 'react-textarea-autosize';
 import { useClickAway } from "@uidotdev/usehooks";
 
-export default function Checklist() {
+export default function Checklist(props) {
     const [checklistData, setChecklistData] = React.useState({
         label: "Checklist",
         items: [{
@@ -97,7 +97,7 @@ export default function Checklist() {
                 { checklistData.items.map(function(item) {
                     return (
                         <div className="checkbox-item">
-                            <input type="checkbox" className= {(item.temporary && "temporary-") + "checkbox"} id={ item.checkboxID } onClick={ toggleChecked } />
+                            <input type="checkbox" className= {(item.temporary && "temporary-") + "checkbox"} id={ item.checkboxID } onClick={ toggleChecked } disabled={ props.editable }/>
                             <TextareaAutosize
                                 className={(item.temporary && "temporary-") + "checkbox-label"}
                                 id={ item.checkboxID }
@@ -105,7 +105,8 @@ export default function Checklist() {
                                 style={style}
                                 onChange={ handleChange }
                                 ref={ref}
-                                value={item.text} />
+                                value={item.text}
+                                disabled={ props.editable } />
                         </div>
                     )
                 })}

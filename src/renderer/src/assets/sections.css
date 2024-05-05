@@ -1,3 +1,5 @@
+/* ========== GENERAL SECTIONS =========== */
+
 .grid-sections {
     display: grid;
     grid-template-columns: auto auto;
@@ -24,11 +26,38 @@
     font-weight: bold;
 }
 
-.sections-hover:hover, .add-new-section:hover, .calendar-hover {
+.add-new-section:hover, .calendar-hover {
     background-color: rgb(240, 240, 240);
     width: 400px;
     cursor: pointer;
 }
+
+.edit-component {
+    display: flex;
+    position: relative;
+    cursor: pointer;
+    align-items: center;
+    width: 130px;
+    left: 250px;
+    justify-content: space-evenly;
+    margin-bottom: 5px;
+}
+
+.add-section-padding {
+    margin-bottom: 30px;
+}
+
+.change-section {
+    font-weight: bold;
+    font-size: larger;
+}
+
+.delete-section {
+    position: relative;
+    top: 1px;
+}
+
+/* ========== OPTIONS ========== */
 
 #options-menu {
     position: fixed;
@@ -53,9 +82,7 @@
     font-weight: bold;
 }
 
-textarea:focus {
-    outline: none;
-}
+/* ========== SECTION LABELS ========== */
 
 label {
     position: relative;
@@ -69,6 +96,12 @@ label {
     border-radius: 5%;
     background: linear-gradient(#e2e2e2 50%, #ffffff00 50%);
     max-width: 400px;
+}
+
+/* ========== NOTEPADS & CHECKLISTS ========== */
+
+textarea:focus {
+    outline: none;
 }
 
 .notepad {
@@ -106,6 +139,8 @@ input[type="checkbox"] {
 input.temporary-checkbox[type="checkbox"] {
     pointer-events: none;
 }
+
+/* ========== REACT CALENDAR ========== */
 
 .react-calendar {
     height: 300px;

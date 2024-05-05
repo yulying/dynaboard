@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Notepad() {
+export default function Notepad(props) {
     const [notepadData, setNotepadData] = React.useState({
         label: "NOTEPAD",
         text: ""
@@ -26,6 +26,7 @@ export default function Notepad() {
                 value={ notepadData.text }
                 placeholder="Type here"
                 onChange={ handleChange }
+                disabled={ props.editable }
             />
         </div>
     )
