@@ -85,14 +85,6 @@ export const createSection = async (req, res, next) => {
                 await promisify(createNotepad)
                 await client.query('COMMIT')
                 break
-            case 'Checklist':
-                console.log('Posting Checklist')
-                const insertChecklist = 'INSERT INTO checklist (n_sec_id) VALUES ($1)'
-                const insertChecklistValues = [parseInt(req.params.id)]
-
-                await client.query(insertChecklist, insertChecklistValues)
-                await client.query('COMMIT')
-                break
         }
 
         res.status(200).send(`Successfully added new section`)
@@ -126,13 +118,6 @@ export const updateSection = async (req, res, next) => {
         switch (req.params.type) {
             case 'Notepad':
                 await promisify(createNotepad)
-                await client.query('COMMIT')
-                break
-            case 'Checklist':
-                const insertChecklist = 'INSERT INTO checklist (n_sec_id) VALUES ($1)'
-                const insertChecklistValues = [parseInt(req.params.id)]
-
-                await client.query(insertChecklist, insertChecklistValues)
                 await client.query('COMMIT')
                 break
         }
