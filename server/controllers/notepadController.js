@@ -10,45 +10,34 @@ const pool = new pg.Pool({
 
 // @desc    Get all notepads
 // @route   GET /notepad/all
-export const getAllNotepads = (req, res, next) => {
-    const query = 'SELECT * FROM notepad'
-    pool.query(query, (error, results) => {
-        if (error) {
-            return next(error)
-        }
+export const getAllNotepads = async (req, res, next) => {
+    const query = 'SELECT * FROM notepad ORDER BY n_sec_id'
 
-        res.status(200).json(results.rows)
-    })
+    const result = await pool.query(query)
+
+    res.status(200).json(result.rows)
 }
 
 // @desc    Get notepad by id
 // @route   GET /notepad/:id
-export const getNotepadById = (req, res, next) => {
+export const getNotepadById = async (req, res, next) => {
     const query = 'SELECT * FROM notepad WHERE n_sec_id = $1'
     const values = [parseInt(req.params.id)]
 
-    pool.query(query, values, (error, results) => {
-        if (error) {
-            return next(error)
-        }
+    const result = await pool.query(query, values)
 
-        res.status(200).json(results.rows)
-    })
+    res.status(200).json(result.rows)
 }
 
 // @desc    Create new notepad
 // POST     /notepad/:id
-export const createNotepad = (req, res, next) => {
+export const createNotepad = async (req, res, next) => {
     const query = 'INSERT INTO notepad (n_sec_id) VALUES ($1)'
     const values = [parseInt(req.params.id)]
 
-    pool.query(query, values, (error, results) => {
-        if (error) {
-            return next(error)
-        }
+    const result = await pool.query(query, values)
 
-        res.status(200).json(results.rows)
-    })
+    res.status(200).json(result.rows)
 }
 
 // @desc    Update notepad text
@@ -57,26 +46,20 @@ export const updateText = async (req, res, next) => {
     const query = 'UPDATE notepad SET v_text = $1 WHERE n_sec_id = $2'
     const values = [req.body.text, parseInt(req.params.id)]
 
-    pool.query(query, values, (error, results) => {
-        if (error) {
-            return next(error)
-        }
+    // console.log(req.body)
 
-        res.status(200).json(results.rows)
-    })
+    const result = await pool.query(query, values)
+
+    res.status(200).json(result.rows)
 }
 
 // @desc    Delete notepad
 // @route   DELETE /notepad/:id
-export const deleteNotepad = (req, res, next) => {
+export const deleteNotepad = async (req, res, next) => {
     const query = `DELETE FROM notepad WHERE n_sec_id = $1`
     const values = [parseInt(req.params.id)]
 
-    pool.query(query, values, (error, results) => {
-        if (error) {
-            return next(error)
-        }
+    const result = await pool.query(query, values)
 
-        res.status(200).json(results.rows)
-    })
+    res.status(200).json(result.rows)
 }

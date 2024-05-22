@@ -3,12 +3,15 @@ import {
     getAllChecklists,
     getChecklistById,
     getCheckboxById,
+    getLargestCheckboxId,
+    hasCheckboxId,
     createChecklist,
     createCheckbox,
     updateText,
     updateCheck,
-    deleteCheckbox,
-    deleteChecklist
+    deleteChecklist,
+    deleteCheckboxId,
+    deleteEmptyCheckbox
 } from '../controllers/checklistController.js'
 
 const router = express.Router()
@@ -17,6 +20,8 @@ const router = express.Router()
 router.get('/all', getAllChecklists)
 router.get('/:id', getChecklistById)
 router.get('/:id/checkbox/:checkbox_id', getCheckboxById)
+router.get('/:id/largest_checkbox_id', getLargestCheckboxId)
+router.get('/:id/checkbox/:checkbox_id/has_id', hasCheckboxId)
 
 // CREATE
 router.post('/:id', createChecklist)
@@ -28,6 +33,7 @@ router.put(':id/checkbox/:checkbox_id/check/:checked', updateCheck)
 
 // DELETE
 router.delete('/:id', deleteChecklist)
-router.delete('/:id/checkbox/:checkbox_id', deleteCheckbox)
+router.delete('/:id/checkbox/:checkbox_id', deleteCheckboxId)
+router.delete('/:id/delete_empty_checkbox', deleteEmptyCheckbox)
 
 export default router

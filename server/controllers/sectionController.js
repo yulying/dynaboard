@@ -12,89 +12,67 @@ const pool = new pg.Pool({
 
 // @desc    Get all sections
 // @route   GET /all
-export const getAll = (req, res, next) => {
-    const query = 'SELECT * FROM sections'
+export const getAll = async (req, res, next) => {
+    const query = 'SELECT * FROM sections ORDER BY n_sec_id'
 
-    pool.query(query, (error, results) => {
-        if (error) {
-            return next(error)
-        }
-        res.status(200).json(results.rows)
-    })
+    const result = await pool.query(query)
+
+    res.status(200).send(result.rows)
 }
 
 // @desc    Get all active distinct types
 // @route   GET /type
-export const getAllTypes = (req, res, next) => {
-    const query = 'SELECT DISTINCT v_sec_type FROM sections'
-    pool.query(query, (error, results) => {
-        if (error) {
-            return next(error)
-        }
+export const getAllTypes = async (req, res, next) => {
+    const query = 'SELECT DISTINCT v_sec_type FROM sections ORDER BY n_sec_id'
 
-        res.status(200).json(results.rows)
-    })
+    const result = await pool.query(query)
+
+    res.status(200).send(result.rows)
+}
+
+// @desc    Get the largest id number
+// @route   GET /largest_id
+export const getLargestSectionId = async (req, res, next) => {
+    const query = 'SELECT MAX(n_sec_id) FROM sections'
+
+    const result = await pool.query(query)
+
+    // console.log(result)
+
+    res.status(200).send(result.rows)
 }
 
 // @desc    Get section given an id
 // @route   GET /sections/id/:id
-export const getSectionById = (req, res, next) => {
+export const getSectionById = async (req, res, next) => {
     const query = 'SELECT * FROM sections WHERE n_sec_id = $1'
     const values = [parseInt(req.params.id)]
 
-    console.log(parseInt(req.params.id))
+    const result = await pool.query(query, values)
 
-    pool.query(query, values, (error, results) => {
-        if (error) {
-            return next(error)
-        }
-
-        res.status(200).json(results.rows)
-    })
+    res.status(200).send(result.rows)
 }
 
 // @desc    Get sections given section type
 // @route   GET /sections/type/:type
-export const getSectionByType = (req, res, next) => {
+export const getSectionByType = async (req, res, next) => {
     const query = 'SELECT * FROM sections WHERE v_sec_type = $1'
     const values = [req.params.type]
 
-    pool.query(query, values, (error, results) => {
-        if (error) {
-            return next(error)
-        }
+    const result = await pool.query(query, values)
 
-        res.status(200).json(results.rows)
-    })
+    res.status(200).send({ message: 'Successfully updated section' })
 }
 
 // @desc    Create new section
 // POST     /sections/:id/type/:type
 export const createSection = async (req, res, next) => {
-    const client = await pool.connect()
+    const query = 'INSERT INTO sections (n_sec_id, v_sec_type) VALUES($1, $2) RETURNING n_sec_id'
+    const values = [parseInt(req.params.id), req.params.type]
 
-    try {
-        await client.query('BEGIN')
+    const result = await pool.query(query, values)
 
-        const insertSection =
-            'INSERT INTO sections (n_sec_id, v_sec_type) VALUES($1, $2) RETURNING n_sec_id'
-        await client.query(insertSection, [parseInt(req.params.id), req.params.type])
-
-        switch (req.params.type) {
-            case 'Notepad':
-                await promisify(createNotepad)
-                await client.query('COMMIT')
-                break
-        }
-
-        res.status(200).send(`Successfully added new section`)
-    } catch (error) {
-        await client.query('ROLLBACK')
-
-        return next(error)
-    } finally {
-        client.release()
-    }
+    res.status(200).send(result.rows)
 }
 
 // @desc    Update section
@@ -105,24 +83,22 @@ export const updateSection = async (req, res, next) => {
     try {
         await client.query('BEGIN')
 
-        const getPrevSection = 'SELECT * FROM sections WHERE n_sec_id = $1'
-        const prevSection = await client.query(getPrevSection, [parseInt(req.params.id)])
+        const getPrevSectionQuery = 'SELECT * FROM sections WHERE n_sec_id = $1'
+        const prevSectionValues = [parseInt(req.params.id)]
+        const prevSection = await client.query(getPrevSectionQuery, prevSectionValues)
 
         // table name gotten from previous query. safe from user input??
-        const deletePrevSection = `DELETE FROM ${prevSection.rows[0].v_sec_type.toLowerCase()} WHERE n_sec_id = $1`
-        await client.query(deletePrevSection, [parseInt(req.params.id)])
+        const deleteFromCompQuery = `DELETE FROM ${prevSection.rows[0].v_sec_type.toLowerCase()} WHERE n_sec_id = $1`
+        const deleteFromCompValues = [parseInt(req.params.id)]
+        await client.query(deleteFromCompQuery, deleteFromCompValues)
 
-        const updateSection = 'UPDATE sections SET v_sec_type = $1 WHERE n_sec_id = $2'
-        await client.query(updateSection, [req.params.type, parseInt(req.params.id)])
+        const updateSectionQuery = 'UPDATE sections SET v_sec_type = $1 WHERE n_sec_id = $2'
+        const updateSectionValues = [req.params.type, parseInt(req.params.id)]
+        await client.query(updateSectionQuery, updateSectionValues)
 
-        switch (req.params.type) {
-            case 'Notepad':
-                await promisify(createNotepad)
-                await client.query('COMMIT')
-                break
-        }
+        await client.query('COMMIT')
 
-        res.status(200).send(`Successfully updated section`)
+        res.status(200).send({ message: 'Successfully updated section' })
     } catch (error) {
         await client.query('ROLLBACK')
 
@@ -141,17 +117,18 @@ export const deleteSection = async (req, res, next) => {
         await client.query('BEGIN')
 
         const getSection = 'SELECT * FROM sections WHERE n_sec_id = $1'
-        const section = await client.query(getSection, [parseInt(req.params.id)])
+        const values = [parseInt(req.params.id)]
+        const section = await client.query(getSection, values)
 
         const deleteSectionTable = `DELETE FROM ${section.rows[0].v_sec_type.toLowerCase()} WHERE n_sec_id = $1`
-        await client.query(deleteSectionTable, [parseInt(req.params.id)])
+        await client.query(deleteSectionTable, values)
 
         const deleteSection = `DELETE FROM sections WHERE n_sec_id = $1`
-        await client.query(deleteSection, [parseInt(req.params.id)])
+        await client.query(deleteSection, values)
 
         await client.query('COMMIT')
 
-        res.status(200).send(`Successfully updated section`)
+        res.status(200).send({ message: 'Successfully delete section' })
     } catch (error) {
         await client.query('ROLLBACK')
 

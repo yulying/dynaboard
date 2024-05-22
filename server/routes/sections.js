@@ -1,5 +1,7 @@
 import express from 'express'
+import Router from 'express-promise-router'
 import {
+    getLargestSectionId,
     getSectionById,
     getSectionByType,
     createSection,
@@ -7,9 +9,10 @@ import {
     deleteSection
 } from '../controllers/sectionController.js'
 
-const router = express.Router()
+const router = new Router()
 
 // READ
+router.get('/largest_id', getLargestSectionId)
 router.get('/id/:id', getSectionById)
 router.get('/type/:type', getSectionByType)
 
