@@ -1,34 +1,34 @@
-import React from 'react'
-import Notepad from './section-components/Notepad'
-import Calendar from 'react-calendar'
-import Checklist from './section-components/Checklist'
-import Image from './section-components/Image'
+import React from "react";
+import Notepad from "./section-components/Notepad";
+import Calendar from "react-calendar";
+import Checklist from "./section-components/Checklist";
+import Image from "./section-components/Image";
 
 export default function Sections(props) {
     // sectionID, componentType
-    const [sections, setSections] = React.useState([])
+    const [sections, setSections] = React.useState([]);
 
     const [editor, setEditor] = React.useState({
         sectionID: 0,
-        prevType: '',
+        prevType: "",
         showOptions: false,
-        change: false
-    })
+        change: false,
+    });
 
     // const [queryUrl, setQueryUrl] = React.useState('')
-    const [fetchBody, setFetchBody] = React.useState({})
+    const [fetchBody, setFetchBody] = React.useState({});
 
-    const [counter, setCounter] = React.useState(10)
+    const [counter, setCounter] = React.useState(10);
 
     // May change to state and create an admin type user later
-    const options = ['Notepad', 'Checklist', 'Calendar']
+    const options = ["Notepad", "Checklist", "Calendar"];
 
     // GET Request - Initial Query
     React.useEffect(() => {
         fetch(`http://localhost:${import.meta.env.VITE_PORT}/all`)
             .then((response) => response.json())
             .then((data) => {
-                let dataArr = []
+                let dataArr = [];
 
                 data.map(
                     (section) =>
@@ -36,32 +36,36 @@ export default function Sections(props) {
                             ...dataArr,
                             {
                                 sectionID: section.n_sec_id,
-                                componentType: section.v_sec_type.toLowerCase()
-                            }
-                        ])
-                )
+                                componentType: section.v_sec_type.toLowerCase(),
+                            },
+                        ]),
+                );
 
-                setSections(dataArr)
+                setSections(dataArr);
             })
-            .catch((error) => console.log(error))
-    }, [])
+            .catch((error) => console.log(error));
+    }, []);
 
     // GET Request - Initial Counter Query
     React.useEffect(() => {
-        fetch(`http://localhost:${import.meta.env.VITE_PORT}/sections/largest_id`)
+        fetch(
+            `http://localhost:${import.meta.env.VITE_PORT}/sections/largest_id`,
+        )
             .then((response) => response.json())
             .then((data) => {
-                setCounter(data[0].max + 1)
+                setCounter(data[0].max + 1);
             })
-            .catch((error) => console.log(error))
-    }, [])
+            .catch((error) => console.log(error));
+    }, []);
 
     // GET Request - Requests general GET requests
     async function getSection(queryUrl) {
-        return await fetch(`http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`)
+        return await fetch(
+            `http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`,
+        )
             .then((response) => response.json())
             .then((data) => {
-                let dataArr = []
+                let dataArr = [];
 
                 data.map(
                     (section) =>
@@ -69,62 +73,73 @@ export default function Sections(props) {
                             ...dataArr,
                             {
                                 sectionID: section.n_sec_id,
-                                componentType: section.v_sec_type.toLowerCase()
-                            }
-                        ])
-                )
+                                componentType: section.v_sec_type.toLowerCase(),
+                            },
+                        ]),
+                );
 
-                setSections(dataArr)
+                setSections(dataArr);
             })
-            .catch((error) => console.log(error))
+            .catch((error) => console.log(error));
     }
 
     // POST Request - Controller posts to db from query URL only
     async function createSection(queryUrl) {
-        return await fetch(`http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`, {
-            method: 'POST',
-            body: new URLSearchParams(fetchBody),
-            header: {
-                'Content-type': 'application/json; charset=UTF-8'
-            }
-        })
+        return await fetch(
+            `http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`,
+            {
+                method: "POST",
+                body: new URLSearchParams(fetchBody),
+                header: {
+                    "Content-type": "application/json; charset=UTF-8",
+                },
+            },
+        )
             .then((response) => response.json())
             .then((data) => console.log(data))
-            .catch((error) => console.log(error))
+            .catch((error) => console.log(error));
     }
 
     // UPDATE Request - Controller deletes from component db and changes section in main db
     async function updateSection(queryUrl) {
-        return await fetch(`http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`, {
-            method: 'PUT',
-            header: {
-                'Content-type': 'application/json; charset=UTF-8'
+        return await fetch(
+            `http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`,
+            {
+                method: "PUT",
+                header: {
+                    "Content-type": "application/json; charset=UTF-8",
+                },
+                body: new URLSearchParams(fetchBody),
             },
-            body: new URLSearchParams(fetchBody)
-        })
+        )
             .then((response) => response.json())
             .then((data) => console.log(data))
-            .catch((error) => console.log(error))
+            .catch((error) => console.log(error));
     }
 
     // DELETE Request - Controller deletes from component db and main db
     async function deleteSection(queryUrl) {
-        return await fetch(`http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`, {
-            method: 'DELETE'
-        }).catch((error) => console.log(error))
+        return await fetch(
+            `http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`,
+            {
+                method: "DELETE",
+            },
+        ).catch((error) => console.log(error));
     }
 
     function toggleShowOptions(event, change = false) {
-        const prevSection = sections.filter((section) => section.sectionID === event.target.id)
+        const prevSection = sections.filter(
+            (section) => section.sectionID === event.target.id,
+        );
 
         setEditor((prevEditor) => {
             return {
                 sectionID: event.target.id,
                 prevType: prevSection.componentType,
                 showOptions: !prevEditor.showOptions,
-                change: change
-            }
-        })
+                change: change,
+            };
+        });
     }
 
     // Creates ⟲ and DELETE options when editing existing components and provides functionality for updating/deleting sections
@@ -138,29 +153,35 @@ export default function Sections(props) {
                 >
                     ⟲
                 </span>
-                <span className="delete-section" id={section_id} onClick={deleteSectionRequest}>
+                <span
+                    className="delete-section"
+                    id={section_id}
+                    onClick={deleteSectionRequest}
+                >
                     DELETE
                 </span>
             </div>
-        )
+        );
     }
 
     // Creates query URL for createSection
     async function createSectionURL(id, sectionType, generalDB = false) {
         if (generalDB) {
-            return createSection(`/sections/${id}/type/${sectionType}`)
-        } else if (sectionType !== 'checklist') {
-            return createSection(`/${sectionType}/${id}`)
+            return createSection(`/sections/${id}/type/${sectionType}`);
+        } else if (sectionType !== "checklist") {
+            return createSection(`/${sectionType}/${id}`);
         }
     }
 
     // Creates a new section and updates component databases
     async function createSectionRequest(sectionType) {
         if (editor.change) {
-            await updateSection(`/sections/${editor.sectionID}/type/${sectionType}`)
+            await updateSection(
+                `/sections/${editor.sectionID}/type/${sectionType}`,
+            );
             // .then(deleteSection(`/${editor.prevType}/${editor.sectionID}`))
-            await createSectionURL(editor.sectionID, sectionType)
-            await getSection(`/all`)
+            await createSectionURL(editor.sectionID, sectionType);
+            await getSection(`/all`);
 
             // setSections(
             //     sections.map((section) => {
@@ -172,9 +193,9 @@ export default function Sections(props) {
             //     })
             // )
         } else {
-            await createSectionURL(counter, sectionType, true)
-            await createSectionURL(counter, sectionType)
-            await getSection(`/all`)
+            await createSectionURL(counter, sectionType, true);
+            await createSectionURL(counter, sectionType);
+            await getSection(`/all`);
 
             // setSections((prevSections) => {
             //     return [
@@ -186,14 +207,14 @@ export default function Sections(props) {
             //     ]
             // })
 
-            setCounter(counter + 1)
+            setCounter(counter + 1);
         }
 
         setEditor((prevEditor) => ({
             ...prevEditor,
             showOptions: false,
-            change: false
-        }))
+            change: false,
+        }));
     }
 
     // Deletes all components from component db with section id and deletes from main db
@@ -202,19 +223,23 @@ export default function Sections(props) {
         // console.log(section)
 
         // deleteSection(`/${section.componentType}/${event.target.id}`)
-        deleteSection(`/sections/${event.target.id}`).then(getSection(`/all`))
+        deleteSection(`/sections/${event.target.id}`).then(getSection(`/all`));
         // setSections(sections.filter((section) => section.sectionID !== event.target.id))
     }
 
     // Creates individual element components for render
     function getComponent(section) {
         switch (section.componentType) {
-            case 'notepad':
+            case "notepad":
                 return (
                     <div>
-                        {props.clickableBox && showEditOptions(section.sectionID)}
+                        {props.clickableBox &&
+                            showEditOptions(section.sectionID)}
                         <div
-                            className={'sections' + (props.clickableBox ? '-hover' : '')}
+                            className={
+                                "sections" +
+                                (props.clickableBox ? "-hover" : "")
+                            }
                             id={section.id}
                         >
                             <Notepad
@@ -226,13 +251,17 @@ export default function Sections(props) {
                             />
                         </div>
                     </div>
-                )
-            case 'checklist':
+                );
+            case "checklist":
                 return (
                     <div>
-                        {props.clickableBox && showEditOptions(section.sectionID)}
+                        {props.clickableBox &&
+                            showEditOptions(section.sectionID)}
                         <div
-                            className={'sections' + (props.clickableBox ? '-hover' : '')}
+                            className={
+                                "sections" +
+                                (props.clickableBox ? "-hover" : "")
+                            }
                             id={section.id}
                         >
                             <Checklist
@@ -246,24 +275,28 @@ export default function Sections(props) {
                             />
                         </div>
                     </div>
-                )
-            case 'calendar':
+                );
+            case "calendar":
                 return (
                     <div>
-                        {props.clickableBox && showEditOptions(section.sectionID)}
+                        {props.clickableBox &&
+                            showEditOptions(section.sectionID)}
                         <Calendar
-                            className={'calendar' + (props.clickableBox ? '-hover' : '')}
+                            className={
+                                "calendar" +
+                                (props.clickableBox ? "-hover" : "")
+                            }
                             id={section.id}
                         />
                     </div>
-                )
+                );
             // Image upload does not work properly in React
             // case 'Image':
             //     return  <div className={ "sections" + ( props.clickableBox ? "-hover" : "" ) } id={section.id}><Image /></div>;
         }
     }
 
-    const sectionComponents = sections.map((section) => getComponent(section))
+    const sectionComponents = sections.map((section) => getComponent(section));
 
     return (
         <div>
@@ -272,7 +305,9 @@ export default function Sections(props) {
                     {options.map((option) => (
                         <div
                             className="option"
-                            onClick={() => createSectionRequest(option.toLowerCase())}
+                            onClick={() =>
+                                createSectionRequest(option.toLowerCase())
+                            }
                         >
                             {option}
                         </div>
@@ -282,14 +317,20 @@ export default function Sections(props) {
             <div className="grid-sections">
                 {sectionComponents}
                 <div>
-                    {props.clickableBox && <div className="add-section-padding"></div>}
                     {props.clickableBox && (
-                        <div className="add-new-section" id={counter} onClick={toggleShowOptions}>
+                        <div className="add-section-padding"></div>
+                    )}
+                    {props.clickableBox && (
+                        <div
+                            className="add-new-section"
+                            id={counter}
+                            onClick={toggleShowOptions}
+                        >
                             +
                         </div>
                     )}
                 </div>
             </div>
         </div>
-    )
+    );
 }

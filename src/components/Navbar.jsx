@@ -1,33 +1,36 @@
-import React from 'react';
+import React from "react";
 
 export default function Navbar(props) {
-    const [dashboard, setDashboard] = React.useState( {
-        addDropDown: false
+    const [dashboard, setDashboard] = React.useState({
+        addDropDown: false,
     });
-    
+
     function clickAddSection() {
-        setDashboard(dashboard => ({
+        setDashboard((dashboard) => ({
             ...dashboard,
-            addDropDown: !dashboard.addDropDown
-        }))
+            addDropDown: !dashboard.addDropDown,
+        }));
     }
 
-    function addNotepad() {
-        
-    }
+    function addNotepad() {}
 
     return (
         <div>
-            <div id='navbar-empty-space' />
-            <div id='navbar'>
+            <div id="navbar-empty-space" />
+            <div id="navbar">
                 <nav id="main-navbar-components">
                     <h3 id="dashboard-title">My Dashboard</h3>
                     <div id="dashboard-editor">
                         {/* { props.clickableBox && <span id="add-button" onClick={ clickAddSection }>ADD</span> } */}
-                        <span id="edit-button" onClick={ props.toggleClickableBox }>{
-                            props.clickableBox ? "DONE" : "EDIT" 
-                        }</span>
-                        { !props.clickableBox && <span className="dashboard-settings">SETTINGS</span> }
+                        <span
+                            id="edit-button"
+                            onClick={props.toggleClickableBox}
+                        >
+                            {props.clickableBox ? "DONE" : "EDIT"}
+                        </span>
+                        {!props.clickableBox && (
+                            <span className="dashboard-settings">SETTINGS</span>
+                        )}
                     </div>
                 </nav>
                 {/* Remove the add button for a submenu when clicking on a box */}
@@ -41,5 +44,5 @@ export default function Navbar(props) {
                 </div> } */}
             </div>
         </div>
-    )
+    );
 }

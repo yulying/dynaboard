@@ -46,7 +46,7 @@ export const updateText = async (req, res, next) => {
     const query = 'UPDATE notepad SET v_text = $1 WHERE n_sec_id = $2'
     const values = [req.body.text, parseInt(req.params.id)]
 
-    // console.log(req.body)
+    console.log(req.body)
 
     const result = await pool.query(query, values)
 
