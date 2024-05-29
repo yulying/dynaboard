@@ -16,7 +16,7 @@ export default function Notepad(props) {
 
     React.useEffect(() => {
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/notepad/${props.sectionID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/notepad/${props.sectionID}`,
         )
             .then((response) => response.json())
             .then((data) => {

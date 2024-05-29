@@ -25,7 +25,7 @@ export default function Sections(props) {
 
     // GET Request - Initial Query
     React.useEffect(() => {
-        fetch(`http://localhost:${import.meta.env.VITE_PORT}/all`)
+        fetch(`http://localhost:${import.meta.env.VITE_PORT}/api/all`)
             .then((response) => response.json())
             .then((data) => {
                 let dataArr = [];
@@ -49,7 +49,7 @@ export default function Sections(props) {
     // GET Request - Initial Counter Query
     React.useEffect(() => {
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/sections/largest_id`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/sections/largest-id`,
         )
             .then((response) => response.json())
             .then((data) => {
@@ -61,7 +61,7 @@ export default function Sections(props) {
     // GET Request - Requests general GET requests
     async function getSection(queryUrl) {
         return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api${queryUrl}`,
         )
             .then((response) => response.json())
             .then((data) => {
@@ -86,7 +86,7 @@ export default function Sections(props) {
     // POST Request - Controller posts to db from query URL only
     async function createSection(queryUrl) {
         return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api${queryUrl}`,
             {
                 method: "POST",
                 body: new URLSearchParams(fetchBody),
@@ -102,8 +102,10 @@ export default function Sections(props) {
 
     // UPDATE Request - Controller deletes from component db and changes section in main db
     async function updateSection(queryUrl) {
+        console.log("Fetch Body");
+        console.log(fetchBody);
         return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api${queryUrl}`,
             {
                 method: "PUT",
                 header: {
@@ -120,7 +122,7 @@ export default function Sections(props) {
     // DELETE Request - Controller deletes from component db and main db
     async function deleteSection(queryUrl) {
         return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}${queryUrl}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api${queryUrl}`,
             {
                 method: "DELETE",
             },
@@ -271,6 +273,7 @@ export default function Sections(props) {
                                 saveCheckbox={updateSection}
                                 deleteCheckbox={deleteSection}
                                 setFetchBody={setFetchBody}
+                                fetchBody={fetchBody}
                                 setStatusBar={props.setStatusBar}
                             />
                         </div>

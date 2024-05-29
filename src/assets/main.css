@@ -1,7 +1,7 @@
 @font-face {
     font-family: Chakra Petch; /* Name your font family */
-    src: url('Chakra_Petch/ChakraPetch-Light.ttf'),
-        url('Chakra_Petch/ChakraPetch-Bold.ttf'); /* Locate the .ttf file within your directory*/
+    src: url("Chakra_Petch/ChakraPetch-Light.ttf"),
+        url("Chakra_Petch/ChakraPetch-Bold.ttf"); /* Locate the .ttf file within your directory*/
 }
 
 * {
@@ -11,7 +11,9 @@
 
 body {
     margin: 0;
-    font-family: Chakra Petch, sans-serif;
+    font-family:
+        Chakra Petch,
+        sans-serif;
 }
 
 ::-webkit-scrollbar {
@@ -40,7 +42,8 @@ body {
     border-radius: 16px;
 }
 
-#navbar, #footer {
+#navbar,
+#footer {
     position: fixed;
     width: 100%;
     overflow: initial;
@@ -55,11 +58,12 @@ body {
     bottom: 0;
 }
 
-#main-navbar-components, #main-footer-components {
+#main-navbar-components,
+#main-footer-components {
     display: flex;
     justify-content: space-between;
     padding: 0px 30px;
-    background-color: lightblue;
+    background: linear-gradient(lightblue, lightpink);
 }
 
 #main-navbar-components {

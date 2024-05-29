@@ -26,7 +26,8 @@
     font-weight: bold;
 }
 
-.add-new-section:hover, .calendar-hover {
+.add-new-section:hover,
+.calendar-hover {
     background-color: rgb(240, 240, 240);
     width: 400px;
     cursor: pointer;
@@ -105,14 +106,17 @@ textarea:focus {
 }
 
 .notepad {
-    font-family: Chakra Petch, sans-serif;
+    font-family:
+        Chakra Petch,
+        sans-serif;
     font-size: 16px;
     resize: none;
     width: 350px;
     padding: 0px;
 }
 
-.notepad, .checklist {
+.notepad,
+.checklist {
     position: relative;
     top: 3px;
     height: 265px;
@@ -133,7 +137,7 @@ textarea:focus {
 input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    accent-color: lightblue;  
+    accent-color: lightblue;
 }
 
 input.temporary-checkbox[type="checkbox"] {
