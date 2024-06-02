@@ -101,9 +101,9 @@ export default function Sections(props) {
     }
 
     // UPDATE Request - Controller deletes from component db and changes section in main db
-    async function updateSection(queryUrl) {
-        console.log("Fetch Body");
-        console.log(fetchBody);
+    async function updateSection(queryUrl, fetchBodyVar = {}) {
+        // console.log("Fetch Body");
+        // console.log(fetchBodyVar);
         return await fetch(
             `http://localhost:${import.meta.env.VITE_PORT}/api${queryUrl}`,
             {
@@ -111,7 +111,7 @@ export default function Sections(props) {
                 header: {
                     "Content-type": "application/json; charset=UTF-8",
                 },
-                body: new URLSearchParams(fetchBody),
+                body: new URLSearchParams(fetchBodyVar),
             },
         )
             .then((response) => response.json())
@@ -180,6 +180,7 @@ export default function Sections(props) {
         if (editor.change) {
             await updateSection(
                 `/sections/${editor.sectionID}/type/${sectionType}`,
+                fetchBody,
             );
             // .then(deleteSection(`/${editor.prevType}/${editor.sectionID}`))
             await createSectionURL(editor.sectionID, sectionType);
@@ -234,7 +235,7 @@ export default function Sections(props) {
         switch (section.componentType) {
             case "notepad":
                 return (
-                    <div>
+                    <div key={section.sectionID}>
                         {props.clickableBox &&
                             showEditOptions(section.sectionID)}
                         <div
@@ -256,7 +257,7 @@ export default function Sections(props) {
                 );
             case "checklist":
                 return (
-                    <div>
+                    <div key={section.sectionID}>
                         {props.clickableBox &&
                             showEditOptions(section.sectionID)}
                         <div
@@ -281,7 +282,7 @@ export default function Sections(props) {
                 );
             case "calendar":
                 return (
-                    <div>
+                    <div key={section.sectionID}>
                         {props.clickableBox &&
                             showEditOptions(section.sectionID)}
                         <Calendar
