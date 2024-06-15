@@ -108,7 +108,7 @@ const formQuestions = async (auth, id) => {
 // GET      /form//:form_id/contents
 export const getAllFormContents = (req, res) => {
     authorize()
-        .then((auth) => formContents(auth, req.params.form_id))
+        .then((auth) => formContents(auth, req.params.file_id))
         .then((result) => {
             res.status(200).send(result.data);
         })
@@ -119,7 +119,7 @@ export const getAllFormContents = (req, res) => {
 // GET      /form//:form_id/responses
 export const getAllFormResponses = (req, res) => {
     authorize()
-        .then((auth) => formResponses(auth, req.params.form_id))
+        .then((auth) => formResponses(auth, req.params.file_id))
         .then((result) => {
             res.status(200).send(result.data);
         })
@@ -130,7 +130,7 @@ export const getAllFormResponses = (req, res) => {
 // GET      /form/:form_id/questions
 export const getAllFormQuestions = (req, res) => {
     authorize()
-        .then((auth) => formQuestions(auth, req.params.form_id))
+        .then((auth) => formQuestions(auth, req.params.file_id))
         .then((result) => {
             res.status(200).send(
                 result.data.items
@@ -150,8 +150,8 @@ export const getFormQuestionResponses = (req, res) => {
     authorize()
         .then((auth) => {
             return Promise.all([
-                formContents(auth, req.params.form_id),
-                formResponses(auth, req.params.form_id),
+                formContents(auth, req.params.file_id),
+                formResponses(auth, req.params.file_id),
             ]);
         })
         .then((result) => {
@@ -220,23 +220,34 @@ export const getDataWithSectionId = async (req, res) => {
 // @route   GET /form/api/google_id/:google_id
 export const getDataWithGoogleId = async (req, res) => {
     const query = "SELECT * FROM google WHERE v_google_id = $1";
-    const values = [req.params.google_id];
+    const values = [req.params.file_id];
 
     const result = await pool.query(query, values);
 
     res.status(200).send(result.rows);
 };
 
-// @desc    Create a new checkbox given a checklist id and checkbox id
-// @route   POST /form/api/:id/google_id/:google_id/type/:google_type
-export const createData = async (req, res) => {
+// @desc    Create a new database entry
+// @route   POST /form/api/:id/
+export const createWithData = async (req, res) => {
     const query =
         "INSERT INTO google (n_sec_id, v_google_id, v_type) VALUES ($1, $2, $3)";
     const values = [
         parseInt(req.params.id),
-        req.params.google_id,
+        req.params.file_id,
         req.params.google_type,
     ];
+
+    const result = await pool.query(query, values);
+
+    res.status(200).send(result.rows);
+};
+
+// @desc    Create a new database entry with prefilled data
+// @route   POST /form/api/:id/google_id/:google_id/type/:google_type
+export const createNewData = async (req, res) => {
+    const query = "INSERT INTO google (n_sec_id) VALUES ($1)";
+    const values = [parseInt(req.params.id)];
 
     const result = await pool.query(query, values);
 
@@ -254,11 +265,32 @@ export const updateDataDisplay = async (req, res) => {
     res.status(200).send(result.rows);
 };
 
+// @desc    Change what question is being tracked
+// @route   UPDATE /form/api/:id/google_id/:google_id/question/:question_id
+export const updateDataQuestion = async (req, res) => {
+    const query =
+        "UPDATE google SET v_question_id = $1, v_title = $2 WHERE n_sec_id = $3";
+    const values = [
+        req.params.question_id,
+        req.params.title,
+        parseInt(req.params.id),
+    ];
+
+    const result = await pool.query(query, values);
+
+    res.status(200).send(result.rows);
+};
+
 // @desc    Change google link
-// @route   UPDATE /form/api/:id/google_id/:google_id
-export const updateGoogleId = async (req, res) => {
-    const query = "UPDATE google SET v_google_id = $1 WHERE n_sec_id = $2";
-    const values = [req.params.google_id, parseInt(req.params.id)];
+// @route   UPDATE /form/api/:id/google_id/:google_id/type/:google_type
+export const updateGoogleFile = async (req, res) => {
+    const query =
+        "UPDATE google SET v_google_id = $1, v_type = $2 WHERE n_sec_id = $3";
+    const values = [
+        req.params.file_id,
+        req.params.google_type,
+        parseInt(req.params.id),
+    ];
 
     const result = await pool.query(query, values);
 

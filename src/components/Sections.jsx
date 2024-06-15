@@ -3,9 +3,9 @@ import Notepad from "./section-components/Notepad";
 import Calendar from "react-calendar";
 import Checklist from "./section-components/Checklist";
 import Image from "./section-components/Image";
+import GoogleFiles from "./section-components/GoogleFiles";
 
 export default function Sections(props) {
-    // sectionID, componentType
     const [sections, setSections] = React.useState([]);
 
     const [editor, setEditor] = React.useState({
@@ -15,13 +15,12 @@ export default function Sections(props) {
         change: false,
     });
 
-    // const [queryUrl, setQueryUrl] = React.useState('')
     const [fetchBody, setFetchBody] = React.useState({});
 
     const [counter, setCounter] = React.useState(10);
 
     // May change to state and create an admin type user later
-    const options = ["Notepad", "Checklist", "Calendar"];
+    const options = ["Notepad", "Checklist", "Calendar", "Google Files"];
 
     // GET Request - Initial Query
     React.useEffect(() => {
@@ -49,7 +48,7 @@ export default function Sections(props) {
     // GET Request - Initial Counter Query
     React.useEffect(() => {
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/sections/largest-id`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/sections/largest_id`,
         )
             .then((response) => response.json())
             .then((data) => {
@@ -102,8 +101,6 @@ export default function Sections(props) {
 
     // UPDATE Request - Controller deletes from component db and changes section in main db
     async function updateSection(queryUrl, fetchBodyVar = {}) {
-        // console.log("Fetch Body");
-        // console.log(fetchBodyVar);
         return await fetch(
             `http://localhost:${import.meta.env.VITE_PORT}/api${queryUrl}`,
             {
@@ -177,38 +174,24 @@ export default function Sections(props) {
 
     // Creates a new section and updates component databases
     async function createSectionRequest(sectionType) {
+        let type = sectionType;
+
+        if (sectionType === "google files") {
+            type = "google";
+        }
+
         if (editor.change) {
             await updateSection(
-                `/sections/${editor.sectionID}/type/${sectionType}`,
+                `/sections/${editor.sectionID}/type/${type}`,
                 fetchBody,
             );
             // .then(deleteSection(`/${editor.prevType}/${editor.sectionID}`))
-            await createSectionURL(editor.sectionID, sectionType);
+            await createSectionURL(editor.sectionID, type);
             await getSection(`/all`);
-
-            // setSections(
-            //     sections.map((section) => {
-            //         if (section.sectionID === editor.sectionID) {
-            //             return { ...section, componentType: sectionType }
-            //         } else {
-            //             return section
-            //         }
-            //     })
-            // )
         } else {
-            await createSectionURL(counter, sectionType, true);
-            await createSectionURL(counter, sectionType);
+            await createSectionURL(counter, type, true); // Creates a new entry in general db and section db
+            await createSectionURL(counter, type);
             await getSection(`/all`);
-
-            // setSections((prevSections) => {
-            //     return [
-            //         ...prevSections,
-            //         {
-            //             sectionID: editor.sectionID,
-            //             componentType: sectionType
-            //         }
-            //     ]
-            // })
 
             setCounter(counter + 1);
         }
@@ -222,12 +205,7 @@ export default function Sections(props) {
 
     // Deletes all components from component db with section id and deletes from main db
     function deleteSectionRequest(event) {
-        // const section = sections.filter((section) => section.sectionID === event.target.id)
-        // console.log(section)
-
-        // deleteSection(`/${section.componentType}/${event.target.id}`)
         deleteSection(`/sections/${event.target.id}`).then(getSection(`/all`));
-        // setSections(sections.filter((section) => section.sectionID !== event.target.id))
     }
 
     // Creates individual element components for render
@@ -297,6 +275,27 @@ export default function Sections(props) {
             // Image upload does not work properly in React
             // case 'Image':
             //     return  <div className={ "sections" + ( props.clickableBox ? "-hover" : "" ) } id={section.id}><Image /></div>;
+            case "google":
+                return (
+                    <div key={section.sectionID}>
+                        {props.clickableBox &&
+                            showEditOptions(section.sectionID)}
+                        <div
+                            className={
+                                "sections" +
+                                (props.clickableBox ? "-hover" : "")
+                            }
+                            id={section.id}
+                        >
+                            <GoogleFiles
+                                editable={props.clickableBox}
+                                sectionID={section.sectionID}
+                                saveData={updateSection}
+                                setStatusBar={props.setStatusBar}
+                            />
+                        </div>
+                    </div>
+                );
         }
     }
 

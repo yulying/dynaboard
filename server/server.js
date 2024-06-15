@@ -33,7 +33,7 @@ app.use("/api/sections", sections);
 app.use("/api/notepad", notepad);
 app.use("/api/checklist", checklist);
 
-app.use("/form", googleapis);
+app.use("/api/google", googleapis);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

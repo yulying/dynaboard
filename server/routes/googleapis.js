@@ -6,33 +6,37 @@ import {
     getFormQuestionResponses,
     getDataWithSectionId,
     getDataWithGoogleId,
-    createData,
+    createNewData,
+    createWithData,
     updateDataDisplay,
-    updateGoogleId,
+    updateDataQuestion,
+    updateGoogleFile,
     deleteData,
 } from "../controllers/googleApiController.js";
 
 const router = new Router();
 
-router.get("/:form_id/contents", getAllFormContents);
-router.get("/:form_id/responses", getAllFormResponses);
-router.get("/:form_id/questions", getAllFormQuestions);
+router.get("/:file_id/contents", getAllFormContents);
+router.get("/:file_id/responses", getAllFormResponses);
+router.get("/:file_id/questions", getAllFormQuestions);
 router.get(
-    "/:form_id/question_responses/:question_id/respondent/:respondent_type",
+    "/:file_id/question_responses/:question_id/respondent/:respondent_type",
     getFormQuestionResponses,
 );
 
-router.get("/api/:id", getDataWithSectionId);
-router.get("/api/google_id/:google_id", getDataWithGoogleId);
+router.get("/section/:id", getDataWithSectionId);
+router.get("/:file_id", getDataWithGoogleId);
 
-router.post("/api/:id/google_id/:google_id/type/:google_type", createData);
+router.post("/:id", createNewData);
+router.post("/:id/file/:file_id/type/:google_type", createWithData);
 
+router.put("/:id/file/:file_id/display/:display_type", updateDataDisplay);
 router.put(
-    "/api/:id/google_id/:google_id/display/:display_type",
-    updateDataDisplay,
+    "/:id/file/:file_id/question/:question_id/title/:title",
+    updateDataQuestion,
 );
-router.put("/api/:id/google_id/:google_id", updateGoogleId);
+router.put("/:id/file/:file_id/type/:google_type", updateGoogleFile);
 
-router.delete("/api/:id", deleteData);
+router.delete("/section/:id", deleteData);
 
 export default router;

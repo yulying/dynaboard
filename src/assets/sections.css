@@ -1,4 +1,12 @@
+::placeholder {
+    color: white;
+}
+
 /* ========== GENERAL SECTIONS =========== */
+
+.sections {
+    position: relative;
+}
 
 .grid-sections {
     display: grid;
@@ -8,7 +16,7 @@
 }
 
 .add-new-section {
-    border: medium dashed lightgray;
+    border: medium dashed rgb(0, 0, 0);
     border-radius: 5px;
     height: 300px;
     max-height: 300px;
@@ -20,7 +28,7 @@
 }
 
 .add-new-section {
-    border-color: rgb(220, 220, 220);
+    border-color: rgb(35, 35, 35);
     font-size: 75px;
     color: lightgray;
     font-weight: bold;
@@ -28,7 +36,7 @@
 
 .add-new-section:hover,
 .calendar-hover {
-    background-color: rgb(240, 240, 240);
+    background-color: rgb(40, 40, 40);
     width: 400px;
     cursor: pointer;
 }
@@ -42,6 +50,7 @@
     left: 250px;
     justify-content: space-evenly;
     margin-bottom: 5px;
+    color: white;
 }
 
 .add-section-padding {
@@ -65,20 +74,21 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: white;
+    color: white;
+    background-color: rgb(33, 33, 33);
     height: 100%;
-    width: 110px;
+    width: 140px;
     top: 40px;
     right: 0;
     padding: 50px 10px;
-    box-shadow: 0px 8px 16px 0px lightgray;
+    box-shadow: 0px 8px 16px 0px rgb(0, 0, 0);
     z-index: 1;
 }
 
 .option:hover {
-    background-color: #dddddd;
+    background-color: #313131;
     cursor: pointer;
-    width: 110px;
+    width: 120px;
     text-align: center;
     font-weight: bold;
 }
@@ -116,13 +126,15 @@ textarea:focus {
 }
 
 .notepad,
-.checklist {
+.checklist,
+.google-data-div {
     position: relative;
     top: 3px;
     height: 265px;
     width: 400px;
-    border: double 10px lightgray;
-    background-color: white;
+    color: white;
+    border: double 10px rgb(0, 0, 0);
+    background-color: rgb(95, 95, 95);
     padding: 15px;
     overflow-y: scroll;
 }
@@ -137,7 +149,7 @@ textarea:focus {
 input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    accent-color: lightblue;
+    accent-color: rgb(78, 78, 78);
 }
 
 input.temporary-checkbox[type="checkbox"] {
@@ -150,8 +162,8 @@ input.temporary-checkbox[type="checkbox"] {
     height: 300px;
     width: 400px;
     max-width: 100%;
-    background: white;
-    border: double 10px lightgray;
+    background: rgb(95, 95, 95);
+    border: double 10px rgb(0, 0, 0);
     line-height: 2em;
     overflow-y: scroll;
 }
@@ -305,4 +317,74 @@ input.temporary-checkbox[type="checkbox"] {
 
 .react-calendar--selectRange .react-calendar__tile--hover {
     background-color: #e6e6e6;
+}
+
+/* ========== GOOGLE DATA DISPLAYS ========== */
+
+.data-display-options-label,
+.data-options-label {
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    width: 300px;
+}
+
+.data-display-options,
+.data-label-options {
+    padding-top: 20px;
+}
+
+#google-data-div {
+    padding: 0;
+}
+
+#google-file-section-editor {
+    position: absolute;
+    padding: 10px;
+    background-color: #00000090;
+    width: 370px;
+}
+
+#google-file-url-div {
+    padding: 20px;
+}
+
+.google-files-input {
+    width: 300px;
+}
+
+#use-file-button,
+#save-file-options-button {
+    display: flex;
+    position: relative;
+    left: 135px;
+}
+
+#save-file-options-button {
+    margin: 20px;
+}
+
+.data-display-options-label,
+.data-options-label {
+    padding-top: 3px;
+}
+
+.data-display-options-radio,
+.data-options-radio {
+    margin-right: 10px;
+}
+
+.data-display-prompt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+.data-chart-div {
+    padding: 0;
+    margin: 0;
 }

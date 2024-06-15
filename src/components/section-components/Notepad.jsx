@@ -3,7 +3,7 @@ import { useDebouncedCallback } from "use-debounce";
 
 export default function Notepad(props) {
     const [notepadData, setNotepadData] = React.useState({
-        label: "NOTEPAD",
+        label: "Notepad",
         text: "",
     });
 

@@ -24,6 +24,8 @@ export default function Checkbox(props) {
         resize: "none",
         border: "none",
         lineHeight: "1.2",
+        color: "white",
+        backgroundColor: "transparent",
     };
 
     const saveChanges = useDebouncedCallback(async () => {
