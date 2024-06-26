@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import Checkbox from "./Checkbox";
 
 export default function Checklist(props) {
+    const [label, setLabel] = React.useState("Checklist");
     const [checklistData, setChecklistData] = React.useState({
-        label: "Checklist",
         checkboxes: [
             {
                 checkboxID: 1,
@@ -11,6 +11,11 @@ export default function Checklist(props) {
             },
         ],
     });
+
+    const [userInputed, setUserInputed] = React.useState(false);
+
+    const clickRef = useRef(null);
+    const [labelToInput, setLabelToInput] = React.useState(false);
 
     const [eraseID, setEraseID] = React.useState(-1);
 
@@ -25,7 +30,6 @@ export default function Checklist(props) {
             .then((data) => {
                 if (data.length > 0) {
                     setChecklistData({
-                        ...checklistData,
                         checkboxes: [
                             ...data.map((checkbox) => ({
                                 checkboxID: checkbox.n_checkbox_id,
@@ -47,32 +51,34 @@ export default function Checklist(props) {
             })
             .catch((error) => console.log(error));
 
+        fetch(
+            `http://localhost:${import.meta.env.VITE_PORT}/api/sections/id/${props.sectionID}`,
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                if (data[0].v_sec_label) {
+                    setLabel(data[0].v_sec_label);
+                }
+            })
+            .catch((error) => console.log(error));
+
+        setUserInputed(true);
         props.setStatusBar("Data restored.");
     }, []);
 
     React.useEffect(() => {
         if (eraseID !== -1) {
-            console.log(eraseID);
             eraseCheckbox();
         }
     }, [eraseID]);
 
     // Create checkbox query
     async function createCheckbox() {
-        console.log("Creating new checkbox in Checklist");
         const maxID = Math.max.apply(
             null,
             checklistData.checkboxes.map((checkbox) => {
                 return checkbox.checkboxID;
             }),
-        );
-
-        await props.createCheckbox(
-            `/checklist/${props.sectionID}/checkbox/${maxID}`,
-        );
-
-        await props.saveCheckbox(
-            `/checklist/${props.sectionID}/checkbox/${maxID}/check/false`,
         );
 
         setChecklistData({
@@ -91,6 +97,14 @@ export default function Checklist(props) {
                 },
             ],
         });
+
+        await props.createCheckbox(
+            `/checklist/${props.sectionID}/checkbox/${maxID}`,
+        );
+
+        await props.saveCheckbox(
+            `/checklist/${props.sectionID}/checkbox/${maxID}/check/false`,
+        );
     }
 
     async function eraseCheckbox() {
@@ -108,11 +122,59 @@ export default function Checklist(props) {
         );
     }
 
-    // console.log(checklistData.checkboxes);
+    React.useEffect(() => {
+        const handler = function (event) {
+            handleClickOutside(event);
+        };
+
+        function handleClickOutside(event) {
+            if (clickRef.current && !clickRef.current.contains(event.target)) {
+                setLabelToInput(false);
+            }
+        }
+
+        // Bind the event listener
+        if (labelToInput) {
+            document.addEventListener("mousedown", handler);
+        }
+
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handler);
+        };
+    });
+
+    React.useEffect(() => {
+        if (userInputed && labelToInput === true) {
+            props.saveLabel(props.sectionID, label);
+        }
+    }, [label]);
 
     return (
         <div className="label-div">
-            <label htmlFor="checklist-element">{checklistData.label}</label>
+            {!labelToInput && (
+                <label htmlFor="checklist-element">
+                    {label}
+                    {props.editable && (
+                        <span
+                            className="label-editor"
+                            onClick={() => setLabelToInput(true)}
+                        >
+                            {" "}
+                            🖉
+                        </span>
+                    )}
+                </label>
+            )}
+            {labelToInput && (
+                <input
+                    className="label-textbox"
+                    ref={clickRef}
+                    value={label}
+                    onChange={(event) => setLabel(event.target.value)}
+                />
+            )}
+
             <div className="checklist">
                 {checklistData.checkboxes.map(function (item) {
                     return (

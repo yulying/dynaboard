@@ -6,6 +6,7 @@ import {
     getSectionByType,
     createSection,
     updateSection,
+    updateSectionLabel,
     deleteSection,
 } from "../controllers/sectionController.js";
 
@@ -21,6 +22,7 @@ router.post("/:id/type/:type", createSection);
 
 // UPDATE
 router.put("/:id/type/:type", updateSection);
+router.put("/:id/label/:label", updateSectionLabel);
 
 // DELETE
 router.delete("/:id", deleteSection);

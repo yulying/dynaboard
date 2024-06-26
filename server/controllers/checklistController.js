@@ -21,7 +21,8 @@ export const getAllChecklists = async (req, res, next) => {
 // @desc    Get checklist given a checklist id
 // @route   GET /checklist/:id/checkbox
 export const getChecklistById = async (req, res, next) => {
-    const query = "SELECT * FROM checklist WHERE n_sec_id = $1";
+    const query =
+        "SELECT * FROM checklist WHERE n_sec_id = $1 ORDER BY n_checkbox_id";
     const values = [parseInt(req.params.id)];
 
     console.log(values);

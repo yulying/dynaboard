@@ -72,14 +72,18 @@ export default function Checkbox(props) {
 
     React.useEffect(() => {
         const handler = function (event) {
-            handleClickOutside(event, checkboxData);
+            handleClickOutside(event);
         };
 
         /**
          * Alert if clicked on outside of element
          */
-        function handleClickOutside(event, checkboxData) {
-            if (clickRef.current && !clickRef.current.contains(event.target)) {
+        function handleClickOutside(event) {
+            if (
+                userInputed &&
+                clickRef.current &&
+                !clickRef.current.contains(event.target)
+            ) {
                 clearEmpty();
             }
 
@@ -100,7 +104,7 @@ export default function Checkbox(props) {
             text: event.target.value,
         });
         if (props.temporary) {
-            console.log("Creating new checkbox...");
+            // console.log("Creating new checkbox...");
 
             await props.createCheckbox();
         }
@@ -120,10 +124,6 @@ export default function Checkbox(props) {
 
     // Save text query
     async function updateTextQuery() {
-        console.log("Updating text");
-        console.log("Fetch Body");
-        console.log(fetchBody);
-
         await props.saveCheckbox(
             `/checklist/${props.sectionID}/checkbox/${props.checkboxID}}`,
             fetchBody,
@@ -164,7 +164,7 @@ export default function Checkbox(props) {
                 onClick={toggle}
                 ref={clickRef}
                 value={checkboxData.text}
-                disabled={props.editable}
+                readOnly={props.editable}
             />
         </div>
     );

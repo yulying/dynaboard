@@ -5,6 +5,10 @@ import { promises as fs } from "fs";
 import { fileURLToPath } from "url";
 import pg from "pg";
 
+// Imports the Google Cloud client library
+import { PubSub } from "@google-cloud/pubsub";
+import { Storage } from "@google-cloud/storage";
+
 const pool = new pg.Pool({
     user: process.env.POSTGRES_DB_USER,
     host: process.env.POSTGRES_DB_HOST,
@@ -105,7 +109,7 @@ const formQuestions = async (auth, id) => {
 };
 
 // @desc    Get all form contents and metadata
-// GET      /form//:form_id/contents
+// GET      /form/:form_id/contents
 export const getAllFormContents = (req, res) => {
     authorize()
         .then((auth) => formContents(auth, req.params.file_id))
@@ -116,7 +120,7 @@ export const getAllFormContents = (req, res) => {
 };
 
 // @desc    Get all form responses
-// GET      /form//:form_id/responses
+// GET      /form/:form_id/responses
 export const getAllFormResponses = (req, res) => {
     authorize()
         .then((auth) => formResponses(auth, req.params.file_id))
@@ -132,14 +136,18 @@ export const getAllFormQuestions = (req, res) => {
     authorize()
         .then((auth) => formQuestions(auth, req.params.file_id))
         .then((result) => {
-            res.status(200).send(
-                result.data.items
-                    .filter((item) => Boolean(item.questionItem))
-                    .map((item) => ({
-                        title: item.title,
-                        questionId: item.questionItem.question.questionId,
-                    })),
-            );
+            const filtered = result.data.items
+                .filter((item) => Boolean(item.questionItem))
+                .map((item) => ({
+                    title: item.title,
+                    questionId: item.questionItem.question.questionId,
+                }));
+
+            req.io.on("connection", (socket) => {
+                socket.emit("questions", filtered);
+            });
+
+            res.status(200).send(filtered);
         })
         .catch(console.error);
 };

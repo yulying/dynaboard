@@ -6,13 +6,14 @@
 
 .sections {
     position: relative;
+    padding-top: 30px;
 }
 
 .grid-sections {
     display: grid;
-    grid-template-columns: auto auto;
-    gap: 20px;
-    padding: 20px;
+    gap: 8px 40px;
+    padding: 10px 50px 20px;
+    justify-items: center;
 }
 
 .add-new-section {
@@ -67,6 +68,30 @@
     top: 1px;
 }
 
+@media only screen and (min-width: 500px) {
+    .grid-sections {
+        grid-template-columns: repeat(1, auto);
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .grid-sections {
+        grid-template-columns: repeat(2, auto);
+    }
+}
+
+@media only screen and (min-width: 1500px) {
+    .grid-sections {
+        grid-template-columns: repeat(3, auto);
+    }
+}
+
+@media only screen and (min-width: 2000px) {
+    .grid-sections {
+        grid-template-columns: repeat(4, auto);
+    }
+}
+
 /* ========== OPTIONS ========== */
 
 #options-menu {
@@ -95,11 +120,15 @@
 
 /* ========== SECTION LABELS ========== */
 
-label {
+label,
+.label-textbox {
     position: relative;
     font-size: 18px;
-    font-weight: bold;
     left: 23px;
+}
+
+label {
+    font-weight: bold;
 }
 
 .label-div {
@@ -107,6 +136,19 @@ label {
     border-radius: 5%;
     background: linear-gradient(#e2e2e2 50%, #ffffff00 50%);
     max-width: 400px;
+}
+
+.label-editor:hover {
+    cursor: pointer;
+}
+
+.label-textbox {
+    /* background-color: transparent; */
+    border: none;
+    font-family:
+        Chakra Petch,
+        sans-serif;
+    width: 200px;
 }
 
 /* ========== NOTEPADS & CHECKLISTS ========== */
@@ -150,6 +192,8 @@ input[type="checkbox"] {
     width: 18px;
     height: 18px;
     accent-color: rgb(78, 78, 78);
+    margin: 4px 8px;
+    vertical-align: top;
 }
 
 input.temporary-checkbox[type="checkbox"] {
@@ -321,18 +365,9 @@ input.temporary-checkbox[type="checkbox"] {
 
 /* ========== GOOGLE DATA DISPLAYS ========== */
 
-.data-display-options-label,
-.data-options-label {
-    font-size: 15px;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    width: 300px;
-}
-
 .data-display-options,
 .data-label-options {
-    padding-top: 20px;
+    padding-top: 10px;
 }
 
 #google-data-div {
@@ -340,39 +375,37 @@ input.temporary-checkbox[type="checkbox"] {
 }
 
 #google-file-section-editor {
+    overflow: hidden;
     position: absolute;
     padding: 10px;
-    background-color: #00000090;
-    width: 370px;
+    background-color: #000000bf;
+    width: 100%;
+    height: 100%;
+    text-align: center;
 }
 
 #google-file-url-div {
     padding: 20px;
 }
 
-.google-files-input {
+.google-files-input,
+.display-selector,
+.data-point-selector {
+    font-family:
+        Chakra Petch,
+        sans-serif;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+    background-color: #3f3f3f;
+    border: 1px solid rgb(103, 103, 103);
+    border-radius: 3px;
+}
+
+.google-files-input,
+.data-point-selector {
     width: 300px;
-}
-
-#use-file-button,
-#save-file-options-button {
-    display: flex;
-    position: relative;
-    left: 135px;
-}
-
-#save-file-options-button {
-    margin: 20px;
-}
-
-.data-display-options-label,
-.data-options-label {
-    padding-top: 3px;
-}
-
-.data-display-options-radio,
-.data-options-radio {
-    margin-right: 10px;
+    max-width: 300px;
 }
 
 .data-display-prompt {
@@ -387,4 +420,53 @@ input.temporary-checkbox[type="checkbox"] {
 .data-chart-div {
     padding: 0;
     margin: 0;
+}
+
+.google-file-url-div,
+.editor-labels {
+    padding: 0;
+    margin: 0;
+}
+
+.data-counters {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.data-counters-title,
+.data-counters-data {
+    margin: 0;
+}
+
+.data-counters-title {
+    font-weight: 400;
+}
+
+.data-counters-data {
+    font-size: 120px;
+}
+
+.use-file-button,
+.save-file-options-button {
+    display: flex;
+    position: relative;
+    color: white;
+    background-color: #373737;
+    font-family:
+        Chakra Petch,
+        sans-serif;
+    font-size: 14px;
+    border: none;
+    margin: 10px auto;
+    padding: 2px 10px;
+    border-radius: 3px;
+}
+
+.use-file-button:hover,
+.save-file-options-button:hover {
+    cursor: pointer;
 }

@@ -76,7 +76,7 @@ export const createSection = async (req, res, next) => {
     res.status(200).send(result.rows);
 };
 
-// @desc    Update section
+// @desc    Updates section in section db and deletes from previous components' db
 // @route   UPDATE /sections/:id/type/:type
 export const updateSection = async (req, res, next) => {
     const client = await pool.connect();
@@ -114,7 +114,18 @@ export const updateSection = async (req, res, next) => {
     }
 };
 
-// @desc    Delete section
+// @desc    Updates section label
+// UPDATE   PUT /sections/:id/label/:label
+export const updateSectionLabel = async (req, res, next) => {
+    const query = "UPDATE sections SET v_sec_label = $1 WHERE n_sec_id = $2";
+    const values = [req.params.label, parseInt(req.params.id)];
+
+    const result = await pool.query(query, values);
+
+    res.status(200).send(result.rows);
+};
+
+// @desc    Delete section from component and section db
 // @route   DELETE /sections/:id
 export const deleteSection = async (req, res, next) => {
     const client = await pool.connect();

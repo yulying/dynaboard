@@ -78,6 +78,7 @@ export default function Sections(props) {
                 );
 
                 setSections(dataArr);
+                console.log(dataArr);
             })
             .catch((error) => console.log(error));
     }
@@ -203,9 +204,15 @@ export default function Sections(props) {
         }));
     }
 
+    // Updates section label; Mainly passed into components as props
+    async function updateSectionLabel(sectionID, label) {
+        await updateSection(`/sections/${sectionID}/label/${label}`);
+    }
+
     // Deletes all components from component db with section id and deletes from main db
-    function deleteSectionRequest(event) {
-        deleteSection(`/sections/${event.target.id}`).then(getSection(`/all`));
+    async function deleteSectionRequest(event) {
+        await deleteSection(`/sections/${event.target.id}`);
+        await getSection(`/all`);
     }
 
     // Creates individual element components for render
@@ -226,6 +233,7 @@ export default function Sections(props) {
                             <Notepad
                                 editable={props.clickableBox}
                                 sectionID={section.sectionID}
+                                saveLabel={updateSectionLabel}
                                 saveText={updateSection}
                                 setFetchBody={setFetchBody}
                                 setStatusBar={props.setStatusBar}
@@ -249,6 +257,7 @@ export default function Sections(props) {
                                 editable={props.clickableBox}
                                 sectionID={section.sectionID}
                                 createCheckbox={createSection}
+                                saveLabel={updateSectionLabel}
                                 saveCheckbox={updateSection}
                                 deleteCheckbox={deleteSection}
                                 setFetchBody={setFetchBody}
@@ -290,6 +299,7 @@ export default function Sections(props) {
                             <GoogleFiles
                                 editable={props.clickableBox}
                                 sectionID={section.sectionID}
+                                saveLabel={updateSectionLabel}
                                 saveData={updateSection}
                                 setStatusBar={props.setStatusBar}
                             />
@@ -299,7 +309,7 @@ export default function Sections(props) {
         }
     }
 
-    const sectionComponents = sections.map((section) => getComponent(section));
+    // const sectionComponents = sections.map((section) => getComponent(section));
 
     return (
         <div>
@@ -307,6 +317,7 @@ export default function Sections(props) {
                 <div id="options-menu" onMouseLeave={toggleShowOptions}>
                     {options.map((option) => (
                         <div
+                            key={option.toLowerCase()}
                             className="option"
                             onClick={() =>
                                 createSectionRequest(option.toLowerCase())
@@ -318,7 +329,7 @@ export default function Sections(props) {
                 </div>
             )}
             <div className="grid-sections">
-                {sectionComponents}
+                {sections.map((section) => getComponent(section))}
                 <div>
                     {props.clickableBox && (
                         <div className="add-section-padding"></div>

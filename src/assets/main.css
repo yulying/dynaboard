@@ -15,7 +15,7 @@ body {
         Chakra Petch,
         sans-serif;
     height: 100vh;
-    background-color: rgb(49, 49, 49);
+    background-color: rgb(44, 39, 45);
 }
 
 ::-webkit-scrollbar {
@@ -65,8 +65,8 @@ body {
 #main-footer-components {
     display: flex;
     justify-content: space-between;
-    padding: 0px 30px;
-    background: linear-gradient(rgb(147, 44, 85), rgb(49, 5, 30));
+    padding: 0px 80px;
+    background: linear-gradient(rgb(109, 11, 151), rgb(13, 0, 21));
 }
 
 #main-navbar-components {
@@ -80,27 +80,44 @@ body {
 }
 
 #navbar-empty-space {
-    height: 70px;
+    height: 90px;
 }
 
 #footer-empty-space {
-    height: 20px;
+    height: 30px;
 }
 
 #dashboard-title {
     font-weight: bold;
+    font-size: x-large;
+    margin: 20px 0px;
 }
 
 #dashboard-editor {
     display: flex;
-    width: 120px;
+    width: 140px;
     justify-content: space-between;
     align-self: center;
     line-height: 0;
+    font-size: large;
+    text-align: center;
 }
 
 #dashboard-editor span:hover {
     cursor: pointer;
+}
+
+@media only screen and (max-width: 464px) {
+    #dashboard-editor {
+        height: 24px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #main-navbar-components,
+    #main-footer-components {
+        padding: 0px 40px;
+    }
 }
 
 /* #add-button {
