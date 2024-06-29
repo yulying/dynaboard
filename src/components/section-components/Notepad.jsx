@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
+import { useParams } from "react-router-dom";
+
 export default function Notepad(props) {
     const [label, setLabel] = React.useState("Notepad");
     const [notepadText, setNotepadText] = React.useState("");
@@ -21,7 +23,7 @@ export default function Notepad(props) {
         props.setStatusBar("Retrieving data...");
 
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/notepad/${props.sectionID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/notepad/${props.sectionID}`,
         )
             .then((response) => response.json())
             .then((data) => {
@@ -32,7 +34,7 @@ export default function Notepad(props) {
             .catch((error) => console.log(error));
 
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/sections/id/${props.sectionID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/sections/id/${props.sectionID}`,
         )
             .then((response) => response.json())
             .then((data) => {

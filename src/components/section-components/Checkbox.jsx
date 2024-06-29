@@ -2,6 +2,8 @@ import React, { useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { useDebouncedCallback } from "use-debounce";
 
+import { useParams } from "react-router-dom";
+
 export default function Checkbox(props) {
     const [checkboxData, setCheckboxData] = React.useState({
         text: "",
@@ -38,7 +40,7 @@ export default function Checkbox(props) {
         props.setStatusBar("Retrieving data...");
 
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/checklist/${props.sectionID}/checkbox/${props.checkboxID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/checklist/${props.sectionID}/checkbox/${props.checkboxID}`,
         )
             .then((response) => response.json())
             .then((data) => {

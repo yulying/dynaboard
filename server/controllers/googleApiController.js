@@ -216,8 +216,8 @@ export const getFormQuestionResponses = (req, res) => {
 // @desc    Get data with section id
 // @route   GET /form/api/:id
 export const getDataWithSectionId = async (req, res) => {
-    const query = "SELECT * FROM google WHERE n_sec_id = $1";
-    const values = [parseInt(req.params.id)];
+    const query = "SELECT * FROM google WHERE n_sec_id = $1 and user_id = $2";
+    const values = [parseInt(req.params.id), req.params.user_id];
 
     const result = await pool.query(query, values);
 
@@ -227,8 +227,9 @@ export const getDataWithSectionId = async (req, res) => {
 // @desc    Get data with google id
 // @route   GET /form/api/google_id/:google_id
 export const getDataWithGoogleId = async (req, res) => {
-    const query = "SELECT * FROM google WHERE v_google_id = $1";
-    const values = [req.params.file_id];
+    const query =
+        "SELECT * FROM google WHERE v_google_id = $1 and user_id = $2";
+    const values = [req.params.file_id, req.params.user_id];
 
     const result = await pool.query(query, values);
 
@@ -239,11 +240,12 @@ export const getDataWithGoogleId = async (req, res) => {
 // @route   POST /form/api/:id/
 export const createWithData = async (req, res) => {
     const query =
-        "INSERT INTO google (n_sec_id, v_google_id, v_type) VALUES ($1, $2, $3)";
+        "INSERT INTO google (n_sec_id, v_google_id, v_type, user_id) VALUES ($1, $2, $3, $4)";
     const values = [
         parseInt(req.params.id),
         req.params.file_id,
         req.params.google_type,
+        req.params.user_id,
     ];
 
     const result = await pool.query(query, values);
@@ -254,8 +256,8 @@ export const createWithData = async (req, res) => {
 // @desc    Create a new database entry with prefilled data
 // @route   POST /form/api/:id/google_id/:google_id/type/:google_type
 export const createNewData = async (req, res) => {
-    const query = "INSERT INTO google (n_sec_id) VALUES ($1)";
-    const values = [parseInt(req.params.id)];
+    const query = "INSERT INTO google (n_sec_id, user_id) VALUES ($1, $2)";
+    const values = [parseInt(req.params.id), req.params.user_id];
 
     const result = await pool.query(query, values);
 
@@ -265,8 +267,13 @@ export const createNewData = async (req, res) => {
 // @desc    Change how data is displayed
 // @route   UPDATE /form/api/:id/google_id/:google_id/display/:display_type
 export const updateDataDisplay = async (req, res) => {
-    const query = "UPDATE google SET v_display_type = $1 WHERE n_sec_id = $2";
-    const values = [req.params.display_type, parseInt(req.params.id)];
+    const query =
+        "UPDATE google SET v_display_type = $1 WHERE n_sec_id = $2 and user_id = $3";
+    const values = [
+        req.params.display_type,
+        parseInt(req.params.id),
+        req.params.user_id,
+    ];
 
     const result = await pool.query(query, values);
 
@@ -277,11 +284,12 @@ export const updateDataDisplay = async (req, res) => {
 // @route   UPDATE /form/api/:id/google_id/:google_id/question/:question_id
 export const updateDataQuestion = async (req, res) => {
     const query =
-        "UPDATE google SET v_question_id = $1, v_title = $2 WHERE n_sec_id = $3";
+        "UPDATE google SET v_question_id = $1, v_title = $2 WHERE n_sec_id = $3 and user_id = $4";
     const values = [
         req.params.question_id,
         req.params.title,
         parseInt(req.params.id),
+        req.params.user_id,
     ];
 
     const result = await pool.query(query, values);
@@ -293,11 +301,12 @@ export const updateDataQuestion = async (req, res) => {
 // @route   UPDATE /form/api/:id/google_id/:google_id/type/:google_type
 export const updateGoogleFile = async (req, res) => {
     const query =
-        "UPDATE google SET v_google_id = $1, v_type = $2 WHERE n_sec_id = $3";
+        "UPDATE google SET v_google_id = $1, v_type = $2 WHERE n_sec_id = $3 and user_id = $4";
     const values = [
         req.params.file_id,
         req.params.google_type,
         parseInt(req.params.id),
+        req.params.user_id,
     ];
 
     const result = await pool.query(query, values);
@@ -308,8 +317,8 @@ export const updateGoogleFile = async (req, res) => {
 // @desc    Delete section data
 // @route   DELETE /form/api/:id
 export const deleteData = async (req, res) => {
-    const query = "DELETE FROM google WHERE n_sec_id = $1";
-    const values = [parseInt(req.params.id)];
+    const query = "DELETE FROM google WHERE n_sec_id = $1 and user_id = $2";
+    const values = [parseInt(req.params.id), req.params.user_id];
 
     const result = await pool.query(query, values);
 

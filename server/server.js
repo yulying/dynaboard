@@ -2,7 +2,9 @@ import express from "express";
 import cors from "cors";
 import { Server } from "socket.io";
 import http from "http";
+import { verifyToken } from "./middleware/authJwt.js";
 import { getAll, getAllTypes } from "./controllers/sectionController.js";
+import auth from "./routes/auth.js";
 import sections from "./routes/sections.js";
 import notepad from "./routes/notepad.js";
 import checklist from "./routes/checklist.js";
@@ -18,11 +20,17 @@ const corsOptions = {
 
 const app = express();
 
-app.use(cors(corsOptions));
+app.use(
+    cors({
+        origin: true,
+    }),
+);
 
 const server = http.createServer(app);
 const io = new Server(server, {
-    cors: { origin: `http://localhost:${DASHBOARD_PORT}` },
+    cors: {
+        origin: true,
+    },
 });
 
 // Body parser middleware
@@ -45,15 +53,15 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use("/api/all", getAll);
-app.use("/api/type", getAllTypes);
+app.use("/api/auth", auth);
 
-// Routes
-app.use("/api/sections", sections);
-app.use("/api/notepad", notepad);
-app.use("/api/checklist", checklist);
+app.get("/api/:user_id/all", [verifyToken], getAll);
+app.get("/api/:user_id/type", [verifyToken], getAllTypes);
 
-app.use("/api/google", googleapis);
+app.use("/api/:user_id/sections", sections);
+app.use("/api/:user_id/notepad", notepad);
+app.use("/api/:user_id/checklist", checklist);
+app.use("/api/:user_id/google", googleapis);
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

@@ -1,25 +1,26 @@
-import express from 'express'
+import express from "express";
+import { verifyToken } from "../middleware/authJwt.js";
 import {
     getAllNotepads,
     getNotepadById,
     createNotepad,
     updateText,
-    deleteNotepad
-} from '../controllers/notepadController.js'
+    deleteNotepad,
+} from "../controllers/notepadController.js";
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true });
 
 // READ
-router.get('/all', getAllNotepads)
-router.get('/:id', getNotepadById)
+router.get("/all", [verifyToken], getAllNotepads);
+router.get("/:id", [verifyToken], getNotepadById);
 
 // CREATE
-router.post('/:id', createNotepad)
+router.post("/:id", [verifyToken], createNotepad);
 
 // UPDATE
-router.put('/:id', updateText)
+router.put("/:id", [verifyToken], updateText);
 
 // DELETE
-router.delete('/:id', deleteNotepad)
+router.delete("/:id", [verifyToken], deleteNotepad);
 
-export default router
+export default router;

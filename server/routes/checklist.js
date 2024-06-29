@@ -1,4 +1,5 @@
 import express from "express";
+import { verifyToken } from "../middleware/authJwt.js";
 import {
     getAllChecklists,
     getChecklistById,
@@ -14,26 +15,30 @@ import {
     deleteEmptyCheckbox,
 } from "../controllers/checklistController.js";
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 // READ
-router.get("/all", getAllChecklists);
-router.get("/:id", getChecklistById);
-router.get("/:id/checkbox/:checkbox_id", getCheckboxById);
-router.get("/:id/largest_checkbox_id", getLargestCheckboxId);
-router.get("/:id/checkbox/:checkbox_id/has_id", hasCheckboxId);
+router.get("/all", [verifyToken], getAllChecklists);
+router.get("/:id", [verifyToken], getChecklistById);
+router.get("/:id/checkbox/:checkbox_id", [verifyToken], getCheckboxById);
+// router.get("/:id/largest_checkbox_id", getLargestCheckboxId);
+router.get("/:id/checkbox/:checkbox_id/has_id", [verifyToken], hasCheckboxId);
 
 // CREATE
-router.post("/:id", createChecklist);
-router.post("/:id/checkbox/:checkbox_id", createCheckbox);
+router.post("/:id", [verifyToken], createChecklist);
+router.post("/:id/checkbox/:checkbox_id", [verifyToken], createCheckbox);
 
 // UPDATE
-router.put("/:id/checkbox/:checkbox_id", updateText);
-router.put("/:id/checkbox/:checkbox_id/check/:checked", updateCheck);
+router.put("/:id/checkbox/:checkbox_id", [verifyToken], updateText);
+router.put(
+    "/:id/checkbox/:checkbox_id/check/:checked",
+    [verifyToken],
+    updateCheck,
+);
 
 // DELETE
-router.delete("/:id", deleteChecklist);
-router.delete("/:id/checkbox/:checkbox_id", deleteCheckboxId);
-router.delete("/:id/delete_empty_checkbox", deleteEmptyCheckbox);
+router.delete("/:id", [verifyToken], deleteChecklist);
+router.delete("/:id/checkbox/:checkbox_id", [verifyToken], deleteCheckboxId);
+router.delete("/:id/delete_empty_checkbox", [verifyToken], deleteEmptyCheckbox);
 
 export default router;

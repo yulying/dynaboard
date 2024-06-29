@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { useParams } from "react-router-dom";
 import Checkbox from "./Checkbox";
 
 export default function Checklist(props) {
@@ -24,7 +25,7 @@ export default function Checklist(props) {
         props.setStatusBar("Retrieving data...");
 
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/checklist/${props.sectionID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/checklist/${props.sectionID}`,
         )
             .then((response) => response.json())
             .then((data) => {
@@ -52,7 +53,7 @@ export default function Checklist(props) {
             .catch((error) => console.log(error));
 
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/sections/id/${props.sectionID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/sections/id/${props.sectionID}`,
         )
             .then((response) => response.json())
             .then((data) => {

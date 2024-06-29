@@ -11,9 +11,10 @@ const pool = new pg.Pool({
 // @desc    Get all checklists
 // @route   GET /checklist/all
 export const getAllChecklists = async (req, res, next) => {
-    const query = "SELECT * FROM checklist ORDER BY n_sec_id";
+    const query = "SELECT * FROM checklist WHERE user_id = $1ORDER BY n_sec_id";
+    const values = [req.params.user_id];
 
-    const result = await pool.query(query);
+    const result = await pool.query(query, values);
 
     res.status(200).send(result.rows);
 };
@@ -22,8 +23,8 @@ export const getAllChecklists = async (req, res, next) => {
 // @route   GET /checklist/:id/checkbox
 export const getChecklistById = async (req, res, next) => {
     const query =
-        "SELECT * FROM checklist WHERE n_sec_id = $1 ORDER BY n_checkbox_id";
-    const values = [parseInt(req.params.id)];
+        "SELECT * FROM checklist WHERE n_sec_id = $1 and user_id = $2 ORDER BY n_checkbox_id";
+    const values = [parseInt(req.params.id), req.params.user_id];
 
     console.log(values);
 
@@ -36,8 +37,12 @@ export const getChecklistById = async (req, res, next) => {
 // @route   GET /checklist/:id/checkbox/:checkbox_id
 export const getCheckboxById = async (req, res, next) => {
     const query =
-        "SELECT * FROM checklist WHERE n_sec_id = $1 and n_checkbox_id = $2"; // Add order by after populating with some checkboxes
-    const values = [parseInt(req.params.id), parseInt(req.params.checkbox_id)];
+        "SELECT * FROM checklist WHERE n_sec_id = $1 and n_checkbox_id = $2 and user_id = $3"; // Add order by after populating with some checkboxes
+    const values = [
+        parseInt(req.params.id),
+        parseInt(req.params.checkbox_id),
+        req.params.user_id,
+    ];
 
     console.log(values);
 
@@ -62,9 +67,13 @@ export const getLargestCheckboxId = async (req, res, next) => {
 // @route   GET /checklist/:id/checkbox/has_id/:checkbox_id
 export const hasCheckboxId = async (req, res, next) => {
     const query =
-        "SELECT coalesce((SELECT true FROM checklist WHERE n_sec_id = $1 and n_checkbox_id = $2), false) AS has_checkbox_id";
+        "SELECT coalesce((SELECT true FROM checklist WHERE n_sec_id = $1 and n_checkbox_id = $2 and user_id = $3), false) AS has_checkbox_id";
 
-    const values = [parseInt(req.params.id), parseInt(req.params.checkbox_id)];
+    const values = [
+        parseInt(req.params.id),
+        parseInt(req.params.checkbox_id),
+        req.params.user_id,
+    ];
 
     const result = await pool.query(query, values);
 
@@ -74,8 +83,8 @@ export const hasCheckboxId = async (req, res, next) => {
 // @desc    Create a new checklist given a checklist id
 // POST     /checklist/:id
 export const createChecklist = async (req, res, next) => {
-    const query = "INSERT INTO checklist (n_sec_id) VALUES ($1)";
-    const values = [parseInt(req.params.id)];
+    const query = "INSERT INTO checklist (n_sec_id, user_id) VALUES ($1, $2)";
+    const values = [parseInt(req.params.id), req.params.user_id];
 
     const result = await pool.query(query, values);
 
@@ -86,8 +95,12 @@ export const createChecklist = async (req, res, next) => {
 // POST     POST /checklist/:id/checkbox/:checkbox_id
 export const createCheckbox = async (req, res, next) => {
     const query =
-        "INSERT INTO checklist (n_sec_id, n_checkbox_id) VALUES ($1, $2)";
-    const values = [parseInt(req.params.id), parseInt(req.params.checkbox_id)];
+        "INSERT INTO checklist (n_sec_id, n_checkbox_id, user_id) VALUES ($1, $2, $3)";
+    const values = [
+        parseInt(req.params.id),
+        parseInt(req.params.checkbox_id),
+        req.params.user_id,
+    ];
 
     const result = await pool.query(query, values);
 
@@ -98,11 +111,12 @@ export const createCheckbox = async (req, res, next) => {
 // @route   UPDATE /checklist/:id/checkbox/:checkbox_id
 export const updateText = async (req, res, next) => {
     const query =
-        "UPDATE checklist SET v_text = $1 WHERE n_sec_id = $2 and n_checkbox_id = $3";
+        "UPDATE checklist SET v_text = $1 WHERE n_sec_id = $2 and n_checkbox_id = $3 and user_id = $4";
     const values = [
         req.body.text,
         parseInt(req.params.id),
         parseInt(req.params.checkbox_id),
+        req.params.user_id,
     ];
 
     const result = await pool.query(query, values);
@@ -115,11 +129,12 @@ export const updateText = async (req, res, next) => {
 export const updateCheck = async (req, res, next) => {
     console.log(req.params.checked);
     const query =
-        "UPDATE checklist SET is_checked = $1 WHERE n_sec_id = $2 and n_checkbox_id = $3";
+        "UPDATE checklist SET is_checked = $1 WHERE n_sec_id = $2 and n_checkbox_id = $3 and user_id = $4";
     const values = [
         req.params.checked === "true",
         parseInt(req.params.id),
         parseInt(req.params.checkbox_id),
+        req.params.user_id,
     ];
 
     const result = await pool.query(query, values);
@@ -130,8 +145,8 @@ export const updateCheck = async (req, res, next) => {
 // @desc    Delete a checklist given a checklist id
 // @route   DELETE /checklist/:id
 export const deleteChecklist = async (req, res, next) => {
-    const query = `DELETE FROM checklist WHERE n_sec_id = $1`;
-    const values = [parseInt(req.params.id)];
+    const query = `DELETE FROM checklist WHERE n_sec_id = $1 and user_id = $2`;
+    const values = [parseInt(req.params.id), req.params.user_id];
 
     const result = await pool.query(query, values);
 
@@ -141,8 +156,12 @@ export const deleteChecklist = async (req, res, next) => {
 // @desc    Delete a checkbox given a checklist id and checkbox id
 // @route   DELETE /checklist/:id/checkbox/:checkbox_id
 export const deleteCheckboxId = async (req, res, next) => {
-    const query = `DELETE FROM checklist WHERE n_sec_id = $1 and n_checkbox_id = $2`;
-    const values = [parseInt(req.params.id), parseInt(req.params.checkbox_id)];
+    const query = `DELETE FROM checklist WHERE n_sec_id = $1 and n_checkbox_id = $2 and user_id = $3`;
+    const values = [
+        parseInt(req.params.id),
+        parseInt(req.params.checkbox_id),
+        req.params.user_id,
+    ];
 
     const result = await pool.query(query, values);
 
@@ -152,8 +171,8 @@ export const deleteCheckboxId = async (req, res, next) => {
 // @desc    Delete all empty checkboxes given a checklist id
 // @route   DELETE /checklist/:id/delete_empty_checkbox
 export const deleteEmptyCheckbox = async (req, res, next) => {
-    const query = `DELETE FROM checklist WHERE n_sec_id = $1 AND (v_text = '' OR v_text is NULL)`;
-    const values = [parseInt(req.params.id)];
+    const query = `DELETE FROM checklist WHERE n_sec_id = $1 and user_id = $2 and (v_text = '' OR v_text is NULL)`;
+    const values = [parseInt(req.params.id), req.params.user_id];
 
     const result = await pool.query(query, values);
 

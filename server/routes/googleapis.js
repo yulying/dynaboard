@@ -1,6 +1,6 @@
 import Router from "express-promise-router";
+import { verifyToken } from "../middleware/authJwt.js";
 import {
-    createWatch,
     getAllFormContents,
     getAllFormResponses,
     getAllFormQuestions,
@@ -15,31 +15,43 @@ import {
     deleteData,
 } from "../controllers/googleAPIController.js";
 
-const router = new Router();
+const router = new Router({ mergeParams: true });
 
-router.get("/:file_id/contents", getAllFormContents);
-router.get("/:file_id/responses", getAllFormResponses);
-router.get("/:file_id/questions", getAllFormQuestions);
+router.get("/:file_id/contents", [verifyToken], getAllFormContents);
+router.get("/:file_id/responses", [verifyToken], getAllFormResponses);
+router.get("/:file_id/questions", [verifyToken], getAllFormQuestions);
 router.get(
     "/:file_id/question_responses/:question_id/respondent/:respondent_type",
+    [verifyToken],
     getFormQuestionResponses,
 );
 
-router.get("/section/:id", getDataWithSectionId);
-router.get("/:file_id", getDataWithGoogleId);
+router.get("/section/:id", [verifyToken], getDataWithSectionId);
+router.get("/:file_id", [verifyToken], getDataWithGoogleId);
 
-router.post("/:id", createNewData);
-router.post("/:id/file/:file_id/type/:google_type", createWithData);
+router.post("/:id", [verifyToken], createNewData);
+router.post(
+    "/:id/file/:file_id/type/:google_type",
+    [verifyToken],
+    createWithData,
+);
 
-// router.post("/create_watch/:file_id", createWatch);
-
-router.put("/:id/file/:file_id/display/:display_type", updateDataDisplay);
+router.put(
+    "/:id/file/:file_id/display/:display_type",
+    [verifyToken],
+    updateDataDisplay,
+);
 router.put(
     "/:id/file/:file_id/question/:question_id/title/:title",
+    [verifyToken],
     updateDataQuestion,
 );
-router.put("/:id/file/:file_id/type/:google_type", updateGoogleFile);
+router.put(
+    "/:id/file/:file_id/type/:google_type",
+    [verifyToken],
+    updateGoogleFile,
+);
 
-router.delete("/section/:id", deleteData);
+router.delete("/section/:id", [verifyToken], deleteData);
 
 export default router;

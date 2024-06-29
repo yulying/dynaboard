@@ -1,47 +1,46 @@
 import React from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 export default function Navbar(props) {
-    const [dashboard, setDashboard] = React.useState({
-        addDropDown: false,
-    });
-
-    function clickAddSection() {
-        setDashboard((dashboard) => ({
-            ...dashboard,
-            addDropDown: !dashboard.addDropDown,
-        }));
-    }
-
-    function addNotepad() {}
+    const navigate = useNavigate();
 
     return (
         <div>
             <div id="navbar-empty-space" />
             <div id="navbar">
                 <nav id="main-navbar-components">
-                    <h3 id="dashboard-title">My Dashboard</h3>
-                    <div id="dashboard-editor">
-                        {/* { props.clickableBox && <span id="add-button" onClick={ clickAddSection }>ADD</span> } */}
+                    <h3 id="dashboard-title">
+                        {props.frontPage ? "Dynamic Dashboard" : "My Dashboard"}
+                    </h3>
+                    {props.frontPage && (
                         <span
-                            id="edit-button"
-                            onClick={props.toggleClickableBox}
+                            id="navbar-login-button"
+                            onClick={() => navigate("/login")}
                         >
-                            {props.clickableBox ? "DONE" : "EDIT"}
+                            LOGIN
                         </span>
-                        {!props.clickableBox && (
-                            <span className="dashboard-settings">SETTINGS</span>
-                        )}
-                    </div>
+                    )}
+                    {!props.frontPage && (
+                        <div id="dashboard-editor">
+                            <span
+                                id="edit-button"
+                                onClick={props.toggleClickableBox}
+                            >
+                                {props.clickableBox ? "DONE" : "EDIT"}
+                            </span>
+                            {!props.clickableBox && (
+                                <span
+                                    className="dashboard-settings"
+                                    onClick={() =>
+                                        navigate("/dashboard/settings")
+                                    }
+                                >
+                                    SETTINGS
+                                </span>
+                            )}
+                        </div>
+                    )}
                 </nav>
-                {/* Remove the add button for a submenu when clicking on a box */}
-                {/* { props.clickableBox && dashboard.addDropDown && <div id="add-dropdown" onMouseLeave={ clickAddSection }>
-                    <div className='dropdown-hover-element'>
-                        <div className='dropdown-arrow' id='add-dropdown-arrow'/>
-                    </div>
-                    <span className='add-dropdown-option' onClick={addNotepad}>Notepad</span>
-                    <span className='add-dropdown-option'>Calendar</span>
-                    <span className='add-dropdown-option'>Checklist</span>
-                </div> } */}
             </div>
         </div>
     );
