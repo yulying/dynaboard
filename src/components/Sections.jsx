@@ -1,11 +1,13 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import authHeader from "../utils/authHeader";
+import EventBus from "../utils/EventBus";
+
 import Notepad from "./section-components/Notepad";
 import Calendar from "react-calendar";
 import Checklist from "./section-components/Checklist";
 import Image from "./section-components/Image";
 import GoogleFiles from "./section-components/GoogleFiles";
-
-import { useParams } from "react-router-dom";
 
 export default function Sections(props) {
     const [sections, setSections] = React.useState([]);
@@ -24,10 +26,15 @@ export default function Sections(props) {
     // May change to state and create an admin type user later
     const options = ["Notepad", "Checklist", "Calendar", "Google Files"];
 
+    const { userId } = useParams();
+
     // GET Request - Initial Query
     React.useEffect(() => {
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/all`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/all`,
+            {
+                headers: authHeader(),
+            },
         )
             .then((response) => response.json())
             .then((data) => {
@@ -46,13 +53,22 @@ export default function Sections(props) {
 
                 setSections(dataArr);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            });
     }, []);
 
     // GET Request - Initial Counter Query
     React.useEffect(() => {
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/sections/largest_id`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/sections/largest_id`,
+            {
+                headers: authHeader(),
+            },
         )
             .then((response) => response.json())
             .then((data) => {
@@ -60,13 +76,22 @@ export default function Sections(props) {
                     setCounter(data[0].max + 1);
                 }
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            });
     }, []);
 
     // GET Request - Requests general GET requests
     async function getSection(queryUrl) {
         return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}${queryUrl}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}${queryUrl}`,
+            {
+                headers: authHeader(),
+            },
         )
             .then((response) => response.json())
             .then((data) => {
@@ -86,33 +111,47 @@ export default function Sections(props) {
                 setSections(dataArr);
                 console.log(dataArr);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            });
     }
 
     // POST Request - Controller posts to db from query URL only
     async function createSection(queryUrl) {
         return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}${queryUrl}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}${queryUrl}`,
             {
                 method: "POST",
                 body: new URLSearchParams(fetchBody),
                 headers: {
+                    Authorization: authHeader().Authorization,
                     "Content-type": "application/json; charset=UTF-8",
                 },
             },
         )
             .then((response) => response.json())
             .then((data) => console.log(data))
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            });
     }
 
     // UPDATE Request - Controller deletes from component db and changes section in main db
     async function updateSection(queryUrl, fetchBodyVar = {}) {
         return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}${queryUrl}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}${queryUrl}`,
             {
                 method: "PUT",
                 headers: {
+                    Authorization: authHeader().Authorization,
                     "Content-type": "application/json; charset=UTF-8",
                 },
                 body: new URLSearchParams(fetchBodyVar),
@@ -120,17 +159,30 @@ export default function Sections(props) {
         )
             .then((response) => response.json())
             .then((data) => console.log(data))
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            });
     }
 
     // DELETE Request - Controller deletes from component db and main db
     async function deleteSection(queryUrl) {
         return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}${queryUrl}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}${queryUrl}`,
             {
                 method: "DELETE",
+                headers: authHeader(),
             },
-        ).catch((error) => console.log(error));
+        ).catch((error) => {
+            if (error.response && error.response.status === 401) {
+                EventBus.dispatch("logout");
+            } else {
+                console.log(error);
+            }
+        });
     }
 
     function toggleShowOptions(event, change = false) {

@@ -1,39 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import authService from "../utils/authService";
+
 import Navbar from "./Navbar";
 import Sections from "./Sections";
 import Footer from "./Footer";
 
 export default function Dashboard() {
-  const [dashboardEditor, setDashboardEditor] = React.useState({
-    clickableBox: false,
-    addElement: "notepad",
-  });
+    const [clickableBox, setClickableBox] = useState(false);
+    const [redirect, setRedirect] = useState("");
+    const [status, setStatus] = useState("No recent changes made.");
 
-  const [status, setStatus] = React.useState("No recent changes made.");
+    const { userId } = useParams();
+    const navigate = useNavigate();
 
-  function toggleClickableBox() {
-    setDashboardEditor((prevDashboardEditor) => ({
-      ...prevDashboardEditor,
-      clickableBox: !prevDashboardEditor.clickableBox,
-    }));
-  }
+    useEffect(() => {
+        const currentUser = authService.getCurrentUser();
+        if (!currentUser || currentUser.userId !== userId) navigate("/");
+    }, []);
 
-  function setStatusBar(newStatus) {
-    setStatus(newStatus);
-  }
+    // function toggleClickableBox() {
+    //     setClickableBox((prevClickableBox) => !prevClickableBox);
+    // }
 
-  return (
-    <div>
-      <Navbar
-        clickableBox={dashboardEditor.clickableBox}
-        toggleClickableBox={toggleClickableBox}
-      />
-      <Sections
-        element={dashboardEditor.addElement}
-        clickableBox={dashboardEditor.clickableBox}
-        setStatusBar={setStatusBar}
-      />
-      <Footer status={status} />
-    </div>
-  );
+    // function setStatusBar(newStatus) {
+    //     setStatus(newStatus);
+    // }
+
+    return (
+        <div>
+            <Navbar
+                clickableBox={clickableBox}
+                toggleClickableBox={() =>
+                    setClickableBox((prevClickableBox) => !prevClickableBox)
+                }
+            />
+            <Sections
+                clickableBox={clickableBox}
+                setStatusBar={(newStatus) => setStatus(newStatus)}
+            />
+            <Footer status={status} />
+        </div>
+    );
 }

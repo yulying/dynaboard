@@ -1,6 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Navbar from "./Navbar";
-import { AuthContext } from "../utils/AuthContext";
+import authService from "../utils/authService";
+import EventBus from "../utils/EventBus";
+
+import { isEmail } from "validator";
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
@@ -13,64 +18,30 @@ export default function LoginPage() {
 
     const [userInput, setUserInput] = useState(false);
 
-    const { setToken } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        const data = await authService.login(username, password);
 
-        await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/dashboard/login`,
-            {
-                method: "POST",
-                headers: new Headers({
-                    "Content-type": "application/json; charset=UTF-8",
-                }),
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                }),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.result === "fail") {
-                    alert("Invalid username and/or password.");
-                    setToken(null);
-                    localStorage.removeItem("token");
-                    return;
-                }
+        console.log(data);
 
-                setToken(response.data.token);
-                localStorage.setItem("token", response.data.token);
-                navigate("/dashboard");
-            })
-            .catch((error) => {
-                console.error("Authentication failed:", error);
-                setToken(null);
-                localStorage.removeItem("token");
-                if (error.response && error.response.data) {
-                    setErrorMessage(error.response.data); // Set the error message if present in the error response
-                } else {
-                    setErrorMessage(
-                        "An unexpected error occurred. Please try again.",
-                    );
-                }
-            });
+        navigate(`/dashboard/` + data.userId);
     };
 
     const handleCreateAccount = async (e) => {
         e.preventDefault();
 
-        if (newEmail.length < 10) {
+        if (!isEmail(newEmail)) {
             alert("Please input a valid email.");
             return;
         }
-        if (newUsername.length < 6) {
-            alert("Username must be at least 6 characters.");
+        if (newUsername.length < 6 || newUsername.length > 30) {
+            alert("Username must be 6-30 characters.");
             return;
         }
-        if (newPassword.length < 8) {
-            alert("Passwords must be at least 8 characters.");
+        if (newPassword.length < 8 || newPassword.length > 30) {
+            alert("Password must be 8-30 characters.");
             return;
         }
         if (newPassword !== repeatPassword) {
@@ -78,33 +49,13 @@ export default function LoginPage() {
             return;
         }
 
-        await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/dashboard/signup`,
-            {
-                method: "POST",
-                headers: new Headers({
-                    "Content-type": "application/json; charset=UTF-8",
-                }),
-                body: JSON.stringify({
-                    username: newUsername,
-                    email: newEmail,
-                    password: newPassword,
-                }),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.result === "fail") {
-                    alert("Username invalid or already taken.");
-                } else {
-                    setNewEmail("");
-                    setNewUsername("");
-                    setNewPassword("");
-                    setRepeatPassword("");
-                    alert("Account successfully created! Please log in.");
-                }
-            })
-            .catch((error) => console.log(error));
+        await authService.register(newUsername, newEmail, newPassword);
+
+        setNewEmail("");
+        setNewUsername("");
+        setNewPassword("");
+        setRepeatPassword("");
+        alert("Account successfully created! Please log in.");
     };
 
     return (

@@ -1,7 +1,9 @@
 import React, { useRef } from "react";
-import { useDebouncedCallback } from "use-debounce";
-
+import authHeader from "../../utils/authHeader";
 import { useParams } from "react-router-dom";
+import EventBus from "../../utils/EventBus";
+
+import { useDebouncedCallback } from "use-debounce";
 
 export default function Notepad(props) {
     const [label, setLabel] = React.useState("Notepad");
@@ -14,6 +16,8 @@ export default function Notepad(props) {
     const clickRef = useRef(null);
     const [labelToInput, setLabelToInput] = React.useState(false);
 
+    const { userId } = useParams();
+
     const saveChanges = useDebouncedCallback(async () => {
         props.setStatusBar("Saving changes...");
         setFetchBody({ text: notepadText });
@@ -23,7 +27,10 @@ export default function Notepad(props) {
         props.setStatusBar("Retrieving data...");
 
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/notepad/${props.sectionID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/notepad/${props.sectionID}`,
+            {
+                headers: authHeader(),
+            },
         )
             .then((response) => response.json())
             .then((data) => {
@@ -31,10 +38,19 @@ export default function Notepad(props) {
                     setNotepadText(data[0].v_text);
                 }
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            });
 
         fetch(
             `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/sections/id/${props.sectionID}`,
+            {
+                headers: authHeader(),
+            },
         )
             .then((response) => response.json())
             .then((data) => {
@@ -42,7 +58,13 @@ export default function Notepad(props) {
                     setLabel(data[0].v_sec_label);
                 }
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            });
 
         setUserInputed(true);
         props.setStatusBar("Data restored.");

@@ -132,6 +132,19 @@ export const loginUserCredentials = async (req, res) => {
     });
 };
 
+export const logoutUser = async (req, res) => {
+    const { userId } = req.body;
+
+    const destroyTokenQuery = "DELETE FROM login WHERE user_id = $1";
+    const destroyTokenValues = [userId];
+
+    await pool.query(destroyTokenQuery, destroyTokenValues);
+
+    res.status(200).send({
+        logout: true,
+    });
+};
+
 export const refreshToken = async (req, res) => {
     const { requestToken } = req.body;
 
@@ -157,8 +170,6 @@ export const refreshToken = async (req, res) => {
         if (verifyExpiration(tokenUser.rows[0].expiry_date)) {
             const destroyTokenQuery = "DELETE FROM login WHERE user_id = $1";
             const destroyTokenValues = [tokenUser.rows[0].user_id];
-
-            console.log(tokenUser.rows[0].user_id);
 
             await pool.query(destroyTokenQuery, destroyTokenValues);
 

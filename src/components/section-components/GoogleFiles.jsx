@@ -1,5 +1,8 @@
 import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
+import authHeader from "../../utils/authHeader";
+import EventBus from "../../utils/EventBus";
+
 import Chart from "chart.js/auto";
 import { Bar, Bubble, Doughnut, Line, Pie, Radar } from "react-chartjs-2";
 import autocolors from "chartjs-plugin-autocolors";
@@ -34,6 +37,8 @@ export default function GoogleFiles(props) {
     const [labelToInput, setLabelToInput] = React.useState(false);
 
     const [loading, setLoading] = React.useState(false);
+
+    const { userId } = useParams();
 
     const dataDisplayOptions = [
         "Bar Chart",
@@ -175,7 +180,10 @@ export default function GoogleFiles(props) {
         props.setStatusBar("Retrieving data...");
 
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/google/section/${props.sectionID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/google/section/${props.sectionID}`,
+            {
+                headers: authHeader(),
+            },
         )
             .then((response) => response.json())
             .then((data) => {
@@ -192,10 +200,19 @@ export default function GoogleFiles(props) {
                     }));
                 }
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            });
 
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/sections/id/${props.sectionID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/sections/id/${props.sectionID}`,
+            {
+                headers: authHeader(),
+            },
         )
             .then((response) => response.json())
             .then((data) => {
@@ -203,7 +220,13 @@ export default function GoogleFiles(props) {
                     setLabel(data[0].v_sec_label);
                 }
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            });
 
         setUserInputed(true);
         props.setStatusBar("Data restored.");
@@ -265,7 +288,10 @@ export default function GoogleFiles(props) {
     async function getGoogleData(queryUrl, dataType) {
         setLoading(true);
         return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/google${queryUrl}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/google${queryUrl}`,
+            {
+                headers: authHeader(),
+            },
         )
             .then((response) => response.json())
             .then((data) => {
@@ -275,7 +301,13 @@ export default function GoogleFiles(props) {
                     setResponsesData(data);
                 }
             })
-            .catch((error) => console.log(error))
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            })
             .finally(setLoading(false));
     }
 

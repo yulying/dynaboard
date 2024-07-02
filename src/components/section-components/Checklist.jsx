@@ -1,5 +1,8 @@
 import React, { useRef } from "react";
 import { useParams } from "react-router-dom";
+import authHeader from "../../utils/authHeader";
+import EventBus from "../../utils/EventBus";
+
 import Checkbox from "./Checkbox";
 
 export default function Checklist(props) {
@@ -20,12 +23,17 @@ export default function Checklist(props) {
 
     const [eraseID, setEraseID] = React.useState(-1);
 
+    const { userId } = useParams();
+
     // Fetches initial data after initial render
     React.useEffect(() => {
         props.setStatusBar("Retrieving data...");
 
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/checklist/${props.sectionID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/checklist/${props.sectionID}`,
+            {
+                headers: authHeader(),
+            },
         )
             .then((response) => response.json())
             .then((data) => {
@@ -53,7 +61,7 @@ export default function Checklist(props) {
             .catch((error) => console.log(error));
 
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/sections/id/${props.sectionID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/sections/id/${props.sectionID}`,
         )
             .then((response) => response.json())
             .then((data) => {
@@ -61,7 +69,13 @@ export default function Checklist(props) {
                     setLabel(data[0].v_sec_label);
                 }
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            });
 
         setUserInputed(true);
         props.setStatusBar("Data restored.");

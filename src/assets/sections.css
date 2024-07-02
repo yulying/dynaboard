@@ -17,7 +17,7 @@
 }
 
 .add-new-section {
-    border: medium dashed rgb(0, 0, 0);
+    border: medium dashed rgb(109, 109, 109);
     border-radius: 5px;
     height: 300px;
     max-height: 300px;
@@ -26,18 +26,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.add-new-section {
-    border-color: rgb(35, 35, 35);
-    font-size: 75px;
+    font-size: 80px;
     color: lightgray;
     font-weight: bold;
 }
 
 .add-new-section:hover,
 .calendar-hover {
-    background-color: rgb(40, 40, 40);
+    background-color: rgb(57, 52, 60);
     width: 400px;
     cursor: pointer;
 }
@@ -70,25 +66,25 @@
 
 @media only screen and (min-width: 500px) {
     .grid-sections {
-        grid-template-columns: repeat(1, auto);
+        grid-template-columns: repeat(1, 100vw);
     }
 }
 
 @media only screen and (min-width: 1000px) {
     .grid-sections {
-        grid-template-columns: repeat(2, auto);
+        grid-template-columns: repeat(2, 50vw);
     }
 }
 
 @media only screen and (min-width: 1500px) {
     .grid-sections {
-        grid-template-columns: repeat(3, auto);
+        grid-template-columns: repeat(3, 33vw);
     }
 }
 
 @media only screen and (min-width: 2000px) {
     .grid-sections {
-        grid-template-columns: repeat(4, auto);
+        grid-template-columns: repeat(4, 25vw);
     }
 }
 

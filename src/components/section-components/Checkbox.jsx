@@ -1,8 +1,10 @@
 import React, { useRef } from "react";
+import { useParams } from "react-router-dom";
+import authHeader from "../../utils/authHeader";
+import EventBus from "../../utils/EventBus";
+
 import TextareaAutosize from "react-textarea-autosize";
 import { useDebouncedCallback } from "use-debounce";
-
-import { useParams } from "react-router-dom";
 
 export default function Checkbox(props) {
     const [checkboxData, setCheckboxData] = React.useState({
@@ -17,6 +19,8 @@ export default function Checkbox(props) {
     const clickRef = useRef(null);
 
     const [isClicked, setIsClicked] = React.useState(false);
+
+    const { userId } = useParams();
 
     const toggle = () => setIsClicked(!isClicked);
 
@@ -40,7 +44,10 @@ export default function Checkbox(props) {
         props.setStatusBar("Retrieving data...");
 
         fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/checklist/${props.sectionID}/checkbox/${props.checkboxID}`,
+            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/checklist/${props.sectionID}/checkbox/${props.checkboxID}`,
+            {
+                headers: authHeader(),
+            },
         )
             .then((response) => response.json())
             .then((data) => {
@@ -52,7 +59,13 @@ export default function Checkbox(props) {
                     });
                 }
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    EventBus.dispatch("logout");
+                } else {
+                    console.log(error);
+                }
+            });
 
         setUserInputed(true);
         props.setStatusBar("Data restored.");
