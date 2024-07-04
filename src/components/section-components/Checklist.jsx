@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import api from "../../utils/api";
 import { useParams } from "react-router-dom";
 import authHeader from "../../utils/authHeader";
 import EventBus from "../../utils/EventBus";
@@ -29,18 +30,12 @@ export default function Checklist(props) {
     React.useEffect(() => {
         props.setStatusBar("Retrieving data...");
 
-        fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/checklist/${props.sectionID}`,
-            {
-                headers: authHeader(),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.length > 0) {
+        api.get(`/${userId}/checklist/${props.sectionID}`)
+            .then((response) => {
+                if (response.data.length > 0) {
                     setChecklistData({
                         checkboxes: [
-                            ...data.map((checkbox) => ({
+                            ...response.data.map((checkbox) => ({
                                 checkboxID: checkbox.n_checkbox_id,
                                 temporary: false,
                             })),
@@ -48,7 +43,7 @@ export default function Checklist(props) {
                                 checkboxID:
                                     Math.max.apply(
                                         null,
-                                        data.map((checkbox) => {
+                                        response.data.map((checkbox) => {
                                             return checkbox.n_checkbox_id;
                                         }),
                                     ) + 1,
@@ -60,13 +55,10 @@ export default function Checklist(props) {
             })
             .catch((error) => console.log(error));
 
-        fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/sections/id/${props.sectionID}`,
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data[0].v_sec_label) {
-                    setLabel(data[0].v_sec_label);
+        api.get(`/${userId}/sections/id/${props.sectionID}`)
+            .then((response) => {
+                if (response.data[0].v_sec_label) {
+                    setLabel(response.data[0].v_sec_label);
                 }
             })
             .catch((error) => {

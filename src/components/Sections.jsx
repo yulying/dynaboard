@@ -1,7 +1,9 @@
 import React from "react";
+import api from "../utils/api";
 import { useParams } from "react-router-dom";
 import authHeader from "../utils/authHeader";
 import EventBus from "../utils/EventBus";
+import TokenService from "../utils/tokenService";
 
 import Notepad from "./section-components/Notepad";
 import Calendar from "react-calendar";
@@ -30,17 +32,11 @@ export default function Sections(props) {
 
     // GET Request - Initial Query
     React.useEffect(() => {
-        fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/all`,
-            {
-                headers: authHeader(),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => {
+        api.get(`/${userId}/all`)
+            .then((response) => {
                 let dataArr = [];
 
-                data.map(
+                response.data.map(
                     (section) =>
                         (dataArr = [
                             ...dataArr,
@@ -64,16 +60,10 @@ export default function Sections(props) {
 
     // GET Request - Initial Counter Query
     React.useEffect(() => {
-        fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/sections/largest_id`,
-            {
-                headers: authHeader(),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data[0].max) {
-                    setCounter(data[0].max + 1);
+        api.get(`/${userId}/sections/largest_id`)
+            .then((response) => {
+                if (response.data[0].max) {
+                    setCounter(response.data[0].max + 1);
                 }
             })
             .catch((error) => {
@@ -87,17 +77,12 @@ export default function Sections(props) {
 
     // GET Request - Requests general GET requests
     async function getSection(queryUrl) {
-        return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}${queryUrl}`,
-            {
-                headers: authHeader(),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => {
+        return await api
+            .get(`/${userId}${queryUrl}`)
+            .then((response) => {
                 let dataArr = [];
 
-                data.map(
+                response.data.map(
                     (section) =>
                         (dataArr = [
                             ...dataArr,
@@ -122,20 +107,11 @@ export default function Sections(props) {
 
     // POST Request - Controller posts to db from query URL only
     async function createSection(queryUrl) {
-        return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}${queryUrl}`,
-            {
-                method: "POST",
-                body: new URLSearchParams(fetchBody),
-                headers: {
-                    Authorization: authHeader().Authorization,
-                    "Content-type": "application/json; charset=UTF-8",
-                },
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => console.log(data))
+        return await api
+            .post(`/${userId}${queryUrl}`, fetchBody)
+            .then((response) => console.log(response.data))
             .catch((error) => {
+                console.log(error);
                 if (error.response && error.response.status === 401) {
                     EventBus.dispatch("logout");
                 } else {
@@ -146,19 +122,9 @@ export default function Sections(props) {
 
     // UPDATE Request - Controller deletes from component db and changes section in main db
     async function updateSection(queryUrl, fetchBodyVar = {}) {
-        return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}${queryUrl}`,
-            {
-                method: "PUT",
-                headers: {
-                    Authorization: authHeader().Authorization,
-                    "Content-type": "application/json; charset=UTF-8",
-                },
-                body: new URLSearchParams(fetchBodyVar),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => console.log(data))
+        return await api
+            .put(`/${userId}${queryUrl}`, fetchBodyVar)
+            .then((response) => console.log(response.data))
             .catch((error) => {
                 if (error.response && error.response.status === 401) {
                     EventBus.dispatch("logout");
@@ -170,13 +136,7 @@ export default function Sections(props) {
 
     // DELETE Request - Controller deletes from component db and main db
     async function deleteSection(queryUrl) {
-        return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}${queryUrl}`,
-            {
-                method: "DELETE",
-                headers: authHeader(),
-            },
-        ).catch((error) => {
+        return await api.delete(`/${userId}${queryUrl}`).catch((error) => {
             if (error.response && error.response.status === 401) {
                 EventBus.dispatch("logout");
             } else {

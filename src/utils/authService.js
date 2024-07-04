@@ -32,8 +32,6 @@ class AuthService {
                     localStorage.setItem("user", JSON.stringify(data));
                 }
 
-                console.log(data);
-
                 return data;
             });
 
@@ -41,14 +39,19 @@ class AuthService {
     }
 
     async logout(userId) {
-        localStorage.removeItem("user");
-
         await fetch(API_URL + "logout", {
             method: "DELETE",
+            headers: new Headers({
+                Authorization: JSON.parse(localStorage.getItem("user"))
+                    .accessToken,
+                "Content-type": "application/json; charset=UTF-8",
+            }),
             body: JSON.stringify({
                 userId: userId,
             }),
         });
+
+        localStorage.removeItem("user");
     }
 
     getCurrentUser() {

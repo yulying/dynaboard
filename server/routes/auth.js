@@ -5,13 +5,15 @@ import {
     logoutUser,
     refreshToken,
 } from "../controllers/loginController.js";
+import { testToken } from "../middleware/authJwt.js";
 
 const router = express.Router({ mergeParams: true });
 
+router.get("/:user_id/token", testToken);
 router.post("/signup", saveUserCredentials);
 router.post("/login", loginUserCredentials);
 router.delete("/logout", logoutUser);
 
-router.post("/refresh_token", refreshToken);
+router.post("/refresh", refreshToken);
 
 export default router;

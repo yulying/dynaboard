@@ -146,16 +146,16 @@ export const logoutUser = async (req, res) => {
 };
 
 export const refreshToken = async (req, res) => {
-    const { requestToken } = req.body;
+    const { refreshToken } = req.body;
 
-    if (requestToken === null) {
+    if (refreshToken === null || refreshToken === undefined) {
         return res.status(403).json({ message: "Refresh token is required!" });
     }
 
     try {
         const getTokenUserQuery =
             "SELECT user_id, refresh_token, extract(epoch from expiry_date) as expiry_date FROM login WHERE refresh_token = $1";
-        const getTokenUserValues = [requestToken];
+        const getTokenUserValues = [refreshToken];
 
         const tokenUser = await pool.query(
             getTokenUserQuery,
@@ -163,6 +163,7 @@ export const refreshToken = async (req, res) => {
         );
 
         if (!tokenUser.rows[0]) {
+            console.log("Invalid token");
             res.status(403).json({ message: "Invalid refresh token" });
             return;
         }

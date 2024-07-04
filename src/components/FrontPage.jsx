@@ -35,12 +35,13 @@ export default function FrontPage() {
                     </h3>
                     {/* <br /> */}
                     <h3 className="informational-text">
-                        Dynamic Dashboard is a free-to-use solution that allows
-                        you to personally cater your dashboard using only the
-                        information you want. Customize your dashboard with many
-                        different options of keeping track of your information
-                        to choose from, import data from external sources, and
-                        most importantly, keep it all in one place.
+                        DynaBoard (short for Dynamic Dashboard) is a free-to-use
+                        solution that allows you to personally cater your
+                        dashboard using only the information you want. Customize
+                        your dashboard with many different options of keeping
+                        track of your information to choose from, import data
+                        from external sources, and most importantly, keep it all
+                        in one place.
                     </h3>
                 </div>
             </div>

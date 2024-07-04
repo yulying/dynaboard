@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import authService from "../utils/authService";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import Navbar from "./Navbar";
 
 export default function Settings() {
     const [redirect, setRedirect] = useState("");
@@ -11,6 +12,8 @@ export default function Settings() {
     const handleLogout = (e) => {
         e.preventDefault();
         authService.logout(userId);
+        alert("You've been logged out. Redirecting...");
+        navigate("/");
     };
 
     useEffect(() => {
@@ -20,23 +23,17 @@ export default function Settings() {
 
     return (
         <div>
-            <nav className="dashboard-navbar">
-                <h3 className="dashboard-title">My Dashboard</h3>
-                <div className="dashboard-editor">
-                    <span
-                        className="dashboard-settings"
-                        onClick={() => navigate(`/dashboard/` + userId)}
-                    >
-                        BACK TO DASHBOARD
-                    </span>
-                </div>
-            </nav>
-            <ul>
-                <li>Change Layout</li>
-                <li>Change color scheme</li>
-                <li>Delete Account</li>
-            </ul>
-            <button onClick={handleLogout}>Logout</button>
+            <Navbar settings />
+            <div id="settings-div">
+                <ul id="settings-ul">
+                    <li>Change Layout</li>
+                    <li>Change color scheme</li>
+                    <li>Delete Account</li>
+                </ul>
+                <button id="logout-button" onClick={handleLogout}>
+                    Logout
+                </button>
+            </div>
         </div>
     );
 }

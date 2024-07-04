@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import api from "../../utils/api";
 import authHeader from "../../utils/authHeader";
 import { useParams } from "react-router-dom";
 import EventBus from "../../utils/EventBus";
@@ -26,16 +27,10 @@ export default function Notepad(props) {
     React.useEffect(() => {
         props.setStatusBar("Retrieving data...");
 
-        fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/notepad/${props.sectionID}`,
-            {
-                headers: authHeader(),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data[0].v_text) {
-                    setNotepadText(data[0].v_text);
+        api.get(`/${userId}/notepad/${props.sectionID}`)
+            .then((response) => {
+                if (response.data[0].v_text) {
+                    setNotepadText(response.data[0].v_text);
                 }
             })
             .catch((error) => {
@@ -46,16 +41,10 @@ export default function Notepad(props) {
                 }
             });
 
-        fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${useParams(userId)}/sections/id/${props.sectionID}`,
-            {
-                headers: authHeader(),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data[0].v_sec_label) {
-                    setLabel(data[0].v_sec_label);
+        api.get(`/${userId}/sections/id/${props.sectionID}`)
+            .then((response) => {
+                if (response.data[0].v_sec_label) {
+                    setLabel(response.data[0].v_sec_label);
                 }
             })
             .catch((error) => {

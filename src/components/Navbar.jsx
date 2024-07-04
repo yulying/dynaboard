@@ -15,38 +15,40 @@ export default function Navbar(props) {
                             className="dashboard-title"
                             onClick={() => navigate("/")}
                         >
-                            Dynamic Dashboard
+                            DynaBoard
                         </h3>
                     )}
 
                     {!props.frontPage && (
                         <h3
                             className="dashboard-title"
-                            onClick={() => navigate(`/dashboard` + userId)}
+                            onClick={() => navigate(`/dashboard/` + userId)}
                         >
                             My Dashboard
                         </h3>
                     )}
 
-                    {props.frontPage && !props.notFound && (
-                        <span
-                            id="navbar-login-button"
-                            onClick={() => navigate("/login")}
-                        >
-                            LOGIN
-                        </span>
+                    {props.frontPage && !props.notFound && !props.settings && (
+                        <div className="dashboard-editor">
+                            <button
+                                id="navbar-login-button"
+                                onClick={() => navigate("/login")}
+                            >
+                                LOGIN
+                            </button>
+                        </div>
                     )}
-                    {!props.frontPage && !props.notFound && (
-                        <div id="dashboard-editor">
-                            <span
+                    {!props.frontPage && !props.notFound && !props.settings && (
+                        <div className="dashboard-editor">
+                            <button
                                 id="edit-button"
                                 onClick={props.toggleClickableBox}
                             >
                                 {props.clickableBox ? "DONE" : "EDIT"}
-                            </span>
+                            </button>
                             {!props.clickableBox && (
-                                <span
-                                    className="dashboard-settings"
+                                <button
+                                    id="dashboard-settings-button"
                                     onClick={() =>
                                         navigate(
                                             `/dashboard/` +
@@ -56,8 +58,18 @@ export default function Navbar(props) {
                                     }
                                 >
                                     SETTINGS
-                                </span>
+                                </button>
                             )}
+                        </div>
+                    )}
+                    {!props.frontPage && !props.notFound && props.settings && (
+                        <div className="dashboard-editor">
+                            <button
+                                id="back-to-dashboard-button"
+                                onClick={() => navigate(`/dashboard/` + userId)}
+                            >
+                                BACK TO DASHBOARD
+                            </button>
                         </div>
                     )}
                 </nav>

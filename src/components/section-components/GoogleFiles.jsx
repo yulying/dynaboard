@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import api from "../../utils/api";
 import { useParams } from "react-router-dom";
 import authHeader from "../../utils/authHeader";
 import EventBus from "../../utils/EventBus";
@@ -179,23 +180,17 @@ export default function GoogleFiles(props) {
     React.useEffect(() => {
         props.setStatusBar("Retrieving data...");
 
-        fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/google/section/${props.sectionID}`,
-            {
-                headers: authHeader(),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.length > 0) {
+        api.get(`/${userId}/google/section/${props.sectionID}`)
+            .then((response) => {
+                if (response.data.length > 0) {
                     setFile((prevFile) => ({
                         ...prevFile,
-                        fileURL: data[0].v_google_id,
-                        fileType: data[0].v_type,
-                        fileId: data[0].v_google_id,
-                        displayType: data[0].v_display_type,
-                        dataQuestionId: data[0].v_question_id,
-                        dataTitle: data[0].v_title,
+                        fileURL: response.data[0].v_google_id,
+                        fileType: response.data[0].v_type,
+                        fileId: response.data[0].v_google_id,
+                        displayType: response.data[0].v_display_type,
+                        dataQuestionId: response.data[0].v_question_id,
+                        dataTitle: response.data[0].v_title,
                         afterInitialRender: true,
                     }));
                 }
@@ -208,16 +203,10 @@ export default function GoogleFiles(props) {
                 }
             });
 
-        fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/sections/id/${props.sectionID}`,
-            {
-                headers: authHeader(),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data[0].v_sec_label) {
-                    setLabel(data[0].v_sec_label);
+        api.get(`/${userId}/sections/id/${props.sectionID}`)
+            .then((response) => {
+                if (response.data[0].v_sec_label) {
+                    setLabel(response.data[0].v_sec_label);
                 }
             })
             .catch((error) => {
@@ -287,18 +276,14 @@ export default function GoogleFiles(props) {
     // GET Request - Requests general GET requests
     async function getGoogleData(queryUrl, dataType) {
         setLoading(true);
-        return await fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/google${queryUrl}`,
-            {
-                headers: authHeader(),
-            },
-        )
-            .then((response) => response.json())
-            .then((data) => {
+
+        return api
+            .get(`/${userId}/google${queryUrl}`)
+            .then((response) => {
                 if (dataType === 0) {
-                    setQuestionsData(data);
+                    setQuestionsData(response.data);
                 } else if (dataType === 1) {
-                    setResponsesData(data);
+                    setResponsesData(response.data);
                 }
             })
             .catch((error) => {

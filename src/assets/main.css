@@ -18,6 +18,12 @@ body {
     background-color: rgb(40, 37, 42);
 }
 
+button {
+    font-family:
+        Chakra Petch,
+        sans-serif;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -216,9 +222,6 @@ body {
 
 #login-button,
 #sign-up-button {
-    font-family:
-        Chakra Petch,
-        sans-serif;
     font-size: 18px;
     font-weight: 500;
     width: 90px;
@@ -254,38 +257,6 @@ body {
     font-weight: 900;
 }
 
-@media screen and (max-width: 1000px) {
-    #credentials-container {
-        flex-direction: column;
-    }
-
-    #login-container {
-        height: 500px;
-    }
-
-    #new-account-container {
-        height: 640px;
-    }
-
-    #login-form,
-    #create-account-form {
-        top: 0%;
-    }
-
-    .vl {
-        position: relative;
-        border-left: none;
-        border-bottom: 1px solid rgb(255, 255, 255);
-        height: 0px;
-        width: 70vw;
-        transform: translate(-50%, 0%);
-    }
-
-    #or {
-        top: 590px;
-    }
-}
-
 #navbar,
 #footer {
     position: fixed;
@@ -307,7 +278,7 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 10px 80px;
-    background: linear-gradient(rgb(109, 11, 151), rgb(13, 0, 21));
+    background: linear-gradient(rgb(162, 108, 184), rgb(13, 0, 21));
 }
 
 #main-navbar-components {
@@ -338,35 +309,69 @@ body {
     cursor: pointer;
 }
 
-#dashboard-editor,
-#navbar-login-button {
+.dashboard-editor {
     display: flex;
-    width: 140px;
-    justify-content: space-between;
+    width: 160px;
+    justify-content: space-around;
     align-self: center;
-    line-height: 0;
-    font-size: large;
-    text-align: center;
 }
 
-#navbar-login-button {
-    width: 100px;
+#navbar-login-button,
+#edit-button,
+#dashboard-settings-button,
+#back-to-dashboard-button,
+#logout-button {
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 0px;
 }
 
-#dashboard-editor span:hover,
-#navbar-login-button:hover {
+#navbar-login-button:hover,
+#edit-button:hover,
+#dashboard-settings-button:hover,
+#back-to-dashboard-button:hover,
+#logout-button:hover {
+    font-weight: 900;
     cursor: pointer;
 }
 
+#settings-div {
+    color: white;
+    padding: 50px 100px;
+}
+
+#logout-button {
+    border: 1px solid white;
+    border-radius: 4px;
+    padding: 8px 20px;
+    margin: 20px;
+    background-color: rgba(0, 0, 0, 0.427);
+}
+
+.memo-emote {
+    margin: 10px;
+    font-size: 60px;
+}
+
+#dashboard-return:hover {
+    cursor: pointer;
+}
+
+#not-found {
+    display: flex;
+    justify-content: center;
+    color: white;
+    padding: 100px;
+}
+
 @media only screen and (max-width: 500px) {
-    #dashboard-editor {
-        height: 24px;
+    .dashboard-editor {
+        height: 40px;
         flex-direction: column;
         text-align: center;
-    }
-
-    #navbar-login-button {
-        width: 60px;
     }
 
     #main-navbar-components,
@@ -380,16 +385,36 @@ body {
     }
 }
 
-.memo-emote {
-    margin: 10px;
-    font-size: 60px;
-}
+@media screen and (max-width: 1000px) {
+    #credentials-container {
+        flex-direction: column;
+    }
 
-#not-found {
-    display: flex;
-    justify-content: center;
-    color: white;
-    padding: 100px;
+    #login-container {
+        height: 500px;
+    }
+
+    #new-account-container {
+        height: 640px;
+    }
+
+    #login-form,
+    #create-account-form {
+        top: 0%;
+    }
+
+    .vl {
+        position: relative;
+        border-left: none;
+        border-bottom: 1px solid rgb(255, 255, 255);
+        height: 0px;
+        width: 70vw;
+        transform: translate(-50%, 0%);
+    }
+
+    #or {
+        top: 590px;
+    }
 }
 
 /* #add-button {

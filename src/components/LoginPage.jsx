@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import api from "../utils/api";
 import Navbar from "./Navbar";
 import authService from "../utils/authService";
+import tokenService from "../utils/tokenService";
 import EventBus from "../utils/EventBus";
 
 import { isEmail } from "validator";
@@ -20,11 +21,25 @@ export default function LoginPage() {
 
     const navigate = useNavigate();
 
+    const currentUser = authService.getCurrentUser();
+
+    useEffect(() => {
+        try {
+            api.get(`auth/${tokenService.getUser().userId}/token`)
+                .then((response) => {
+                    navigate(`/dashboard/` + currentUser.userId);
+                })
+                .catch((error) => {
+                    console.log("Access token expired.");
+                });
+        } catch (error) {
+            console.log("No current user found.");
+        }
+    }, []);
+
     const handleLogin = async (e) => {
         e.preventDefault();
         const data = await authService.login(username, password);
-
-        console.log(data);
 
         navigate(`/dashboard/` + data.userId);
     };

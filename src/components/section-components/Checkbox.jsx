@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import api from "../../utils/api";
 import { useParams } from "react-router-dom";
 import authHeader from "../../utils/authHeader";
 import EventBus from "../../utils/EventBus";
@@ -43,19 +44,15 @@ export default function Checkbox(props) {
     React.useEffect(() => {
         props.setStatusBar("Retrieving data...");
 
-        fetch(
-            `http://localhost:${import.meta.env.VITE_PORT}/api/${userId}/checklist/${props.sectionID}/checkbox/${props.checkboxID}`,
-            {
-                headers: authHeader(),
-            },
+        api.get(
+            `/${userId}/checklist/${props.sectionID}/checkbox/${props.checkboxID}`,
         )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.length > 0) {
+            .then((response) => {
+                if (response.data.length > 0) {
                     setCheckboxData({
                         ...checkboxData,
-                        text: data[0].v_text,
-                        checked: data[0].is_checked,
+                        text: response.data[0].v_text,
+                        checked: response.data[0].is_checked,
                     });
                 }
             })
