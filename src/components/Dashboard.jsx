@@ -8,7 +8,6 @@ import Footer from "./Footer";
 
 export default function Dashboard() {
     const [clickableBox, setClickableBox] = useState(false);
-    const [redirect, setRedirect] = useState("");
     const [status, setStatus] = useState("No recent changes made.");
 
     const { userId } = useParams();
@@ -18,14 +17,6 @@ export default function Dashboard() {
         const currentUser = authService.getCurrentUser();
         if (!currentUser || currentUser.userId !== userId) navigate("/");
     }, []);
-
-    // function toggleClickableBox() {
-    //     setClickableBox((prevClickableBox) => !prevClickableBox);
-    // }
-
-    // function setStatusBar(newStatus) {
-    //     setStatus(newStatus);
-    // }
 
     return (
         <div>

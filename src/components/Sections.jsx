@@ -1,7 +1,8 @@
 import React from "react";
 import api from "../utils/api";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import authHeader from "../utils/authHeader";
+import authService from "../utils/authService";
 import EventBus from "../utils/EventBus";
 import TokenService from "../utils/tokenService";
 
@@ -29,6 +30,7 @@ export default function Sections(props) {
     const options = ["Notepad", "Checklist", "Calendar", "Google Files"];
 
     const { userId } = useParams();
+    const navigate = useNavigate();
 
     // GET Request - Initial Query
     React.useEffect(() => {
@@ -52,6 +54,13 @@ export default function Sections(props) {
             .catch((error) => {
                 if (error.response && error.response.status === 401) {
                     EventBus.dispatch("logout");
+                } else if (error.response && error.response.status === 403) {
+                    if (authService.getCurrentUser()) {
+                        authService.logout(userId);
+                        EventBus.dispatch("logout");
+                        alert("Session expired. Please log in again.");
+                        navigate("/login");
+                    }
                 } else {
                     console.log(error);
                 }
@@ -67,11 +76,7 @@ export default function Sections(props) {
                 }
             })
             .catch((error) => {
-                if (error.response && error.response.status === 401) {
-                    EventBus.dispatch("logout");
-                } else {
-                    console.log(error);
-                }
+                console.log(error);
             });
     }, []);
 
@@ -99,6 +104,10 @@ export default function Sections(props) {
             .catch((error) => {
                 if (error.response && error.response.status === 401) {
                     EventBus.dispatch("logout");
+                } else if (error.response && error.response.status === 403) {
+                    EventBus.dispatch("logout");
+                    alert("Session expired. Please log in again.");
+                    navigate("/login");
                 } else {
                     console.log(error);
                 }
@@ -114,6 +123,10 @@ export default function Sections(props) {
                 console.log(error);
                 if (error.response && error.response.status === 401) {
                     EventBus.dispatch("logout");
+                } else if (error.response && error.response.status === 403) {
+                    EventBus.dispatch("logout");
+                    alert("Session expired. Please log in again.");
+                    navigate("/login");
                 } else {
                     console.log(error);
                 }
@@ -128,6 +141,10 @@ export default function Sections(props) {
             .catch((error) => {
                 if (error.response && error.response.status === 401) {
                     EventBus.dispatch("logout");
+                } else if (error.response && error.response.status === 403) {
+                    EventBus.dispatch("logout");
+                    alert("Session expired. Please log in again.");
+                    navigate("/login");
                 } else {
                     console.log(error);
                 }
@@ -139,6 +156,10 @@ export default function Sections(props) {
         return await api.delete(`/${userId}${queryUrl}`).catch((error) => {
             if (error.response && error.response.status === 401) {
                 EventBus.dispatch("logout");
+            } else if (error.response && error.response.status === 403) {
+                EventBus.dispatch("logout");
+                alert("Session expired. Please log in again.");
+                navigate("/login");
             } else {
                 console.log(error);
             }
