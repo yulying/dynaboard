@@ -1,4 +1,4 @@
-const API_URL = `http://localhost:${import.meta.env.VITE_PORT}/api/auth/`;
+const API_URL = `https://localhost:${import.meta.env.VITE_PORT}/api/auth/`;
 
 class AuthService {
     async register(username, email, password) {
@@ -33,8 +33,12 @@ class AuthService {
                 }
 
                 return data;
+            })
+            .catch((error) => {
+                return error;
             });
 
+        console.log(data);
         return data;
     }
 

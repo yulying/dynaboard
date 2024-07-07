@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import api from "../../utils/api";
-import authHeader from "../../utils/authHeader";
 import { useParams } from "react-router-dom";
 import EventBus from "../../utils/EventBus";
 
@@ -29,7 +28,7 @@ export default function Notepad(props) {
 
         api.get(`/${userId}/notepad/${props.sectionID}`)
             .then((response) => {
-                if (response.data[0].v_text) {
+                if (response.data[0]) {
                     setNotepadText(response.data[0].v_text);
                 }
             })

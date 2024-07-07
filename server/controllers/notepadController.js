@@ -23,7 +23,7 @@ export const getAllNotepads = async (req, res, next) => {
 // @route   GET /notepad/:id
 export const getNotepadById = async (req, res, next) => {
     const query = "SELECT * FROM notepad WHERE n_sec_id = $1 and user_id = $2";
-    const values = [parseInt(req.params.id), req.param.user_id];
+    const values = [parseInt(req.params.id), req.params.user_id];
 
     const result = await pool.query(query, values);
 

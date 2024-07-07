@@ -36,12 +36,9 @@ export const getAllTypes = async (req, res, next) => {
 // @route   GET /largest_id
 export const getLargestSectionId = async (req, res, next) => {
     const query = "SELECT MAX(n_sec_id) FROM sections WHERE user_id = $1";
-    console.log(req.params.user_id);
     const values = [req.params.user_id];
 
     const result = await pool.query(query, values);
-
-    // console.log(result)
 
     res.status(200).send(result.rows);
 };

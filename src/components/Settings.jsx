@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import authService from "../utils/authService";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 
 export default function Settings() {
-    const [redirect, setRedirect] = useState("");
-
     const { userId } = useParams();
     const navigate = useNavigate();
 

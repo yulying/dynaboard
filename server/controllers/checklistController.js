@@ -26,8 +26,6 @@ export const getChecklistById = async (req, res, next) => {
         "SELECT * FROM checklist WHERE n_sec_id = $1 and user_id = $2 ORDER BY n_checkbox_id";
     const values = [parseInt(req.params.id), req.params.user_id];
 
-    console.log(values);
-
     const result = await pool.query(query, values);
 
     res.status(200).send(result.rows);
@@ -43,8 +41,6 @@ export const getCheckboxById = async (req, res, next) => {
         parseInt(req.params.checkbox_id),
         req.params.user_id,
     ];
-
-    console.log(values);
 
     const result = await pool.query(query, values);
 
@@ -127,7 +123,6 @@ export const updateText = async (req, res, next) => {
 // @desc    Update a checkbox given a checklist id, checkbox id and boolean
 // @route   UPDATE /checklist/:id/checkbox/:checkbox_id/check/:checked
 export const updateCheck = async (req, res, next) => {
-    console.log(req.params.checked);
     const query =
         "UPDATE checklist SET is_checked = $1 WHERE n_sec_id = $2 and n_checkbox_id = $3 and user_id = $4";
     const values = [

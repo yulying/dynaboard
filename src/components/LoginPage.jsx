@@ -4,7 +4,6 @@ import api from "../utils/api";
 import Navbar from "./Navbar";
 import authService from "../utils/authService";
 import tokenService from "../utils/tokenService";
-import EventBus from "../utils/EventBus";
 
 import { isEmail } from "validator";
 
@@ -41,7 +40,11 @@ export default function LoginPage() {
         e.preventDefault();
         const data = await authService.login(username, password);
 
-        navigate(`/dashboard/` + data.userId);
+        if (data.accessToken) {
+            navigate(`/dashboard/` + data.userId);
+        } else {
+            alert("Incorrect username and/or password.");
+        }
     };
 
     const handleCreateAccount = async (e) => {

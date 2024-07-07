@@ -1,15 +1,12 @@
 import React from "react";
 import api from "../utils/api";
 import { useParams, useNavigate } from "react-router-dom";
-import authHeader from "../utils/authHeader";
 import authService from "../utils/authService";
 import EventBus from "../utils/EventBus";
-import TokenService from "../utils/tokenService";
 
 import Notepad from "./section-components/Notepad";
 import Calendar from "react-calendar";
 import Checklist from "./section-components/Checklist";
-import Image from "./section-components/Image";
 import GoogleFiles from "./section-components/GoogleFiles";
 
 export default function Sections(props) {
@@ -118,7 +115,6 @@ export default function Sections(props) {
     async function createSection(queryUrl) {
         return await api
             .post(`/${userId}${queryUrl}`, fetchBody)
-            .then((response) => console.log(response.data))
             .catch((error) => {
                 console.log(error);
                 if (error.response && error.response.status === 401) {
@@ -137,7 +133,6 @@ export default function Sections(props) {
     async function updateSection(queryUrl, fetchBodyVar = {}) {
         return await api
             .put(`/${userId}${queryUrl}`, fetchBodyVar)
-            .then((response) => console.log(response.data))
             .catch((error) => {
                 if (error.response && error.response.status === 401) {
                     EventBus.dispatch("logout");
@@ -185,6 +180,27 @@ export default function Sections(props) {
     function showEditOptions(section_id) {
         return (
             <div className="edit-component">
+                <span
+                    className="change-section"
+                    id={section_id}
+                    onClick={(event) => toggleShowOptions(event, true)}
+                >
+                    ⟲
+                </span>
+                <span
+                    className="delete-section"
+                    id={section_id}
+                    onClick={deleteSectionRequest}
+                >
+                    DELETE
+                </span>
+            </div>
+        );
+    }
+
+    function showNoLabelEditOptions(section_id) {
+        return (
+            <div className="no-label-edit-component">
                 <span
                     className="change-section"
                     id={section_id}
@@ -310,19 +326,24 @@ export default function Sections(props) {
                 return (
                     <div key={section.sectionID}>
                         {props.clickableBox &&
-                            showEditOptions(section.sectionID)}
-                        <Calendar
+                            showNoLabelEditOptions(section.sectionID)}
+                        <div
                             className={
-                                "calendar" +
+                                "sections" +
                                 (props.clickableBox ? "-hover" : "")
                             }
                             id={section.id}
-                        />
+                        >
+                            <Calendar
+                                className={
+                                    "calendar" +
+                                    (props.clickableBox ? "-hover" : "")
+                                }
+                                id={section.id}
+                            />
+                        </div>
                     </div>
                 );
-            // Image upload does not work properly in React
-            // case 'Image':
-            //     return  <div className={ "sections" + ( props.clickableBox ? "-hover" : "" ) } id={section.id}><Image /></div>;
             case "google":
                 return (
                     <div key={section.sectionID}>

@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import api from "../../utils/api";
 import { useParams } from "react-router-dom";
-import authHeader from "../../utils/authHeader";
 import EventBus from "../../utils/EventBus";
 
 import TextareaAutosize from "react-textarea-autosize";

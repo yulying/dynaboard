@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AuthProvider } from "./utils/AuthContext";
 import EventBus from "./utils/EventBus";
 
@@ -12,7 +11,7 @@ import NotFound from "./components/NotFound";
 import { Routes, Route } from "react-router-dom";
 import { io } from "socket.io-client";
 
-export const socket = io(`http://localhost:${import.meta.env.VITE_PORT}`);
+export const socket = io(`https://localhost:${import.meta.env.VITE_PORT}`);
 
 class App extends Component {
     componentDidMount() {

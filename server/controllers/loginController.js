@@ -38,11 +38,8 @@ export const saveUserCredentials = async (req, res) => {
 
     const userExists = await pool.query(findUserQuery, findUserValues);
 
-    console.log(userExists.rows[0].exists);
-
     if (userExists.rows[0].exists) {
         res.status(400).send({
-            result: "fail",
             message: "Username already exists.",
         });
         return;
@@ -56,7 +53,6 @@ export const saveUserCredentials = async (req, res) => {
 
     if (emailExists.rows[0].exists) {
         res.status(400).send({
-            result: "fail",
             message: "Email already in use.",
         });
         return;
@@ -92,7 +88,6 @@ export const loginUserCredentials = async (req, res) => {
 
     if (result.rowCount == 0) {
         res.status(401).send({
-            result: "fail",
             accessToken: null,
             message: "No matching username and/or password found.",
         });
@@ -106,7 +101,6 @@ export const loginUserCredentials = async (req, res) => {
 
     if (!isValid) {
         res.status(401).send({
-            result: "fail",
             accessToken: null,
             message: "No matching username and/or password found.",
         });

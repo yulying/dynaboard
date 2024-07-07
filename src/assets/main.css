@@ -15,7 +15,7 @@ body {
         Chakra Petch,
         sans-serif;
     height: 100vh;
-    background-color: rgb(40, 37, 42);
+    background-color: rgb(20, 20, 20);
 }
 
 button {
@@ -69,7 +69,7 @@ button {
     flex-direction: column;
     font-size: 18px;
     padding: 20vh 20vw;
-    background-color: rgb(59, 47, 67);
+    background-color: rgb(30, 30, 30);
 }
 
 #main-statement {
@@ -111,7 +111,6 @@ button {
     width: 70vw;
     align-items: center;
     text-align: center;
-    /* margin: 15vh auto 15vh; */
 }
 
 .informational-text {
@@ -141,7 +140,7 @@ button {
 
 #suggestions-feedback-form:hover,
 #github-link:hover {
-    color: rgb(234, 181, 255);
+    color: rgb(180, 180, 180);
 }
 
 #credentials-container {
@@ -207,11 +206,13 @@ button {
     color: white;
     background-color: rgb(69, 69, 69);
     border: 1px solid rgb(125, 125, 125);
+    height: 30px;
     width: 250px;
     font-size: 16px;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     padding: 3px 8px;
     text-decoration: none;
+    text-align: center;
 }
 
 #invalid-repeat-pass {
@@ -278,12 +279,12 @@ button {
     display: flex;
     justify-content: space-between;
     padding: 10px 80px;
-    background: linear-gradient(rgb(162, 108, 184), rgb(13, 0, 21));
+    background: rgb(50, 50, 50);
 }
 
 #main-navbar-components {
     color: white;
-    box-shadow: 0px 5px 10px rgb(0, 0, 0);
+    box-shadow: 0px 10px 20px rgb(0, 0, 0);
 }
 
 #main-footer-components {
@@ -383,6 +384,14 @@ button {
         position: relative;
         top: -10px;
     }
+
+    #navbar-empty-space {
+        height: 60px;
+    }
+
+    #footer-empty-space {
+        height: 0px;
+    }
 }
 
 @media screen and (max-width: 1000px) {
@@ -416,51 +425,3 @@ button {
         top: 590px;
     }
 }
-
-/* #add-button {
-    line-height: 0;
-} */
-/* 
-.dropdown-arrow {
-    width: 0; 
-    height: 0;
-    border-right: 30px solid transparent;
-    border-top: 30px solid white;
-    rotate: 45deg;
-    margin-top: -10px;
-}
-
-.dropdown-hover-element {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    left: 10px;
-    bottom: 60px;
-}
-
-#add-dropdown-arrow {
-    position: relative;
-    top: 35px;
-    left: 10px;
-}
-
-#add-dropdown {
-    position: fixed;
-    background-color: white;
-    display: inline-grid;
-    right: 50px;
-    width: 110px;
-    justify-content: center;
-    padding: 5px;
-    box-shadow: 0px 8px 16px 0px lightgray;
-}
-
-.add-dropdown-option {
-    width: 110px;
-    text-align: center;
-}
-
-.add-dropdown-option:hover {
-    background-color: #dddddd;
-    cursor: pointer;
-} */

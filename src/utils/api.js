@@ -2,7 +2,7 @@ import axios from "axios";
 import TokenService from "./tokenService";
 
 const instance = axios.create({
-    baseURL: `http://localhost:${import.meta.env.VITE_PORT}/api/`,
+    baseURL: `https://localhost:${import.meta.env.VITE_PORT}/api/`,
     headers: {
         "Content-type": "application/json; charset=UTF-8",
     },

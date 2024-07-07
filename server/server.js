@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import { Server } from "socket.io";
 import http from "http";
+import https from "https";
+import fs from "fs";
 import { verifyToken } from "./middleware/authJwt.js";
 import { getAll, getAllTypes } from "./controllers/sectionController.js";
 import auth from "./routes/auth.js";
@@ -12,10 +14,15 @@ import googleapis from "./routes/googleapis.js";
 import logger from "./middleware/logger.js";
 
 const PORT = process.env.PORT;
-const DASHBOARD_PORT = 5173;
+// const DASHBOARD_PORT = 5173;
 
-const corsOptions = {
-    origin: `http://localhost:${DASHBOARD_PORT}`,
+// const corsOptions = {
+//     origin: `http://localhost:${DASHBOARD_PORT}`,
+// };
+
+const options = {
+    key: fs.readFileSync(".cert/server.key"),
+    cert: fs.readFileSync(".cert/server.cert"),
 };
 
 const app = express();
@@ -26,7 +33,7 @@ app.use(
     }),
 );
 
-const server = http.createServer(app);
+const server = https.createServer(options, app);
 const io = new Server(server, {
     cors: {
         origin: true,
@@ -38,7 +45,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Logger middleware
-app.use(logger);
+// app.use(logger);
 
 io.sockets.on("connection", function (socket) {
     console.log("Client connected.");
