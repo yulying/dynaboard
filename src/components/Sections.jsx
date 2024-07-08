@@ -40,8 +40,9 @@ export default function Sections(props) {
                         (dataArr = [
                             ...dataArr,
                             {
-                                sectionID: section.n_sec_id,
-                                componentType: section.v_sec_type.toLowerCase(),
+                                sectionID: section.section_id,
+                                componentType:
+                                    section.section_type.toLowerCase(),
                             },
                         ]),
                 );
@@ -89,8 +90,9 @@ export default function Sections(props) {
                         (dataArr = [
                             ...dataArr,
                             {
-                                sectionID: section.n_sec_id,
-                                componentType: section.v_sec_type.toLowerCase(),
+                                sectionID: section.section_id,
+                                componentType:
+                                    section.section_type.toLowerCase(),
                             },
                         ]),
                 );

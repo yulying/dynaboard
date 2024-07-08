@@ -28,8 +28,8 @@ export default function Notepad(props) {
 
         api.get(`/${userId}/notepad/${props.sectionID}`)
             .then((response) => {
-                if (response.data[0]) {
-                    setNotepadText(response.data[0].v_text);
+                if (response.data[0].text) {
+                    setNotepadText(response.data[0].text);
                 }
             })
             .catch((error) => {
@@ -42,8 +42,8 @@ export default function Notepad(props) {
 
         api.get(`/${userId}/sections/id/${props.sectionID}`)
             .then((response) => {
-                if (response.data[0].v_sec_label) {
-                    setLabel(response.data[0].v_sec_label);
+                if (response.data[0].section_label) {
+                    setLabel(response.data[0].section_label);
                 }
             })
             .catch((error) => {

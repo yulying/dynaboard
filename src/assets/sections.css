@@ -73,7 +73,7 @@
     top: 1px;
 }
 
-@media only screen and (min-width: 500px) {
+@media only screen and (max-width: 1000px) {
     .grid-sections {
         grid-template-columns: repeat(1, 100vw);
     }

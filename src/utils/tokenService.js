@@ -1,5 +1,3 @@
-const API_URL = `http://localhost:${import.meta.env.VITE_PORT}/api/auth/`;
-
 class TokenService {
     getLocalRefreshToken() {
         const user = JSON.parse(localStorage.getItem("user"));

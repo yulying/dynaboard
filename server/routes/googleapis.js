@@ -26,32 +26,32 @@ router.get(
     getFormQuestionResponses,
 );
 
-router.get("/section/:id", [verifyToken], getDataWithSectionId);
+router.get("/section/:section_id", [verifyToken], getDataWithSectionId);
 router.get("/:file_id", [verifyToken], getDataWithGoogleId);
 
-router.post("/:id", [verifyToken], createNewData);
+router.post("/:section_id", [verifyToken], createNewData);
 router.post(
-    "/:id/file/:file_id/type/:google_type",
+    "/:section_id/file/:file_id/type/:file_type",
     [verifyToken],
     createWithData,
 );
 
 router.put(
-    "/:id/file/:file_id/display/:display_type",
+    "/:section_id/file/:file_id/display/:display_type",
     [verifyToken],
     updateDataDisplay,
 );
 router.put(
-    "/:id/file/:file_id/question/:question_id/title/:title",
+    "/:section_id/file/:file_id/question/:question_id/title/:title",
     [verifyToken],
     updateDataQuestion,
 );
 router.put(
-    "/:id/file/:file_id/type/:google_type",
+    "/:section_id/file/:file_id/type/:file_type",
     [verifyToken],
     updateGoogleFile,
 );
 
-router.delete("/section/:id", [verifyToken], deleteData);
+router.delete("/section/:section_id", [verifyToken], deleteData);
 
 export default router;

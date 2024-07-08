@@ -19,26 +19,45 @@ const router = express.Router({ mergeParams: true });
 
 // READ
 router.get("/all", [verifyToken], getAllChecklists);
-router.get("/:id", [verifyToken], getChecklistById);
-router.get("/:id/checkbox/:checkbox_id", [verifyToken], getCheckboxById);
-// router.get("/:id/largest_checkbox_id", getLargestCheckboxId);
-router.get("/:id/checkbox/:checkbox_id/has_id", [verifyToken], hasCheckboxId);
+router.get("/:section_id", [verifyToken], getChecklistById);
+router.get(
+    "/:section_id/checkbox/:checkbox_id",
+    [verifyToken],
+    getCheckboxById,
+);
+router.get(
+    "/:section_id/checkbox/:checkbox_id/has_id",
+    [verifyToken],
+    hasCheckboxId,
+);
 
 // CREATE
-router.post("/:id", [verifyToken], createChecklist);
-router.post("/:id/checkbox/:checkbox_id", [verifyToken], createCheckbox);
+router.post("/:section_id", [verifyToken], createChecklist);
+router.post(
+    "/:section_id/checkbox/:checkbox_id",
+    [verifyToken],
+    createCheckbox,
+);
 
 // UPDATE
-router.put("/:id/checkbox/:checkbox_id", [verifyToken], updateText);
+router.put("/:section_id/checkbox/:checkbox_id", [verifyToken], updateText);
 router.put(
-    "/:id/checkbox/:checkbox_id/check/:checked",
+    "/:section_id/checkbox/:checkbox_id/check/:checked",
     [verifyToken],
     updateCheck,
 );
 
 // DELETE
-router.delete("/:id", [verifyToken], deleteChecklist);
-router.delete("/:id/checkbox/:checkbox_id", [verifyToken], deleteCheckboxId);
-router.delete("/:id/delete_empty_checkbox", [verifyToken], deleteEmptyCheckbox);
+router.delete("/:section_id", [verifyToken], deleteChecklist);
+router.delete(
+    "/:section_id/checkbox/:checkbox_id",
+    [verifyToken],
+    deleteCheckboxId,
+);
+router.delete(
+    "/:section_id/delete_empty_checkbox",
+    [verifyToken],
+    deleteEmptyCheckbox,
+);
 
 export default router;

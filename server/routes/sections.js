@@ -15,17 +15,21 @@ const router = new Router({ mergeParams: true });
 
 // READ
 router.get("/largest_id", [verifyToken], getLargestSectionId);
-router.get("/id/:id", [verifyToken], getSectionById);
-router.get("/type/:type", [verifyToken], getSectionByType);
+router.get("/id/:section_id", [verifyToken], getSectionById);
+router.get("/type/:section_type", [verifyToken], getSectionByType);
 
 // CREATE
-router.post("/:id/type/:type", [verifyToken], createSection);
+router.post("/:section_id/type/:section_type", [verifyToken], createSection);
 
 // UPDATE
-router.put("/:id/type/:type", [verifyToken], updateSection);
-router.put("/:id/label/:label", [verifyToken], updateSectionLabel);
+router.put("/:section_id/type/:section_type", [verifyToken], updateSection);
+router.put(
+    "/:section_id/label/:section_label",
+    [verifyToken],
+    updateSectionLabel,
+);
 
 // DELETE
-router.delete("/:id", [verifyToken], deleteSection);
+router.delete("/:section_id", [verifyToken], deleteSection);
 
 export default router;

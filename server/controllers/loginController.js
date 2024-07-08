@@ -32,6 +32,8 @@ export const saveUserCredentials = async (req, res) => {
     const { username, email, password } = req.body;
     const hash = await bcrypt.hash(password, 10);
 
+    console.log(username);
+
     const findUserQuery =
         "SELECT (EXISTS (SELECT username FROM users WHERE username = $1))::int";
     const findUserValues = [username];

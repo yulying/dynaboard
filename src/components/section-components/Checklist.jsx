@@ -35,7 +35,7 @@ export default function Checklist(props) {
                     setChecklistData({
                         checkboxes: [
                             ...response.data.map((checkbox) => ({
-                                checkboxID: checkbox.n_checkbox_id,
+                                checkboxID: checkbox.checkbox_id,
                                 temporary: false,
                             })),
                             {
@@ -43,7 +43,7 @@ export default function Checklist(props) {
                                     Math.max.apply(
                                         null,
                                         response.data.map((checkbox) => {
-                                            return checkbox.n_checkbox_id;
+                                            return checkbox.checkbox_id;
                                         }),
                                     ) + 1,
                                 temporary: true,
@@ -56,8 +56,8 @@ export default function Checklist(props) {
 
         api.get(`/${userId}/sections/id/${props.sectionID}`)
             .then((response) => {
-                if (response.data[0].v_sec_label) {
-                    setLabel(response.data[0].v_sec_label);
+                if (response.data[0].section_label) {
+                    setLabel(response.data[0].section_label);
                 }
             })
             .catch((error) => {

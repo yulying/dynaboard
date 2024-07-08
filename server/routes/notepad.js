@@ -12,15 +12,15 @@ const router = express.Router({ mergeParams: true });
 
 // READ
 router.get("/all", [verifyToken], getAllNotepads);
-router.get("/:id", [verifyToken], getNotepadById);
+router.get("/:section_id", [verifyToken], getNotepadById);
 
 // CREATE
-router.post("/:id", [verifyToken], createNotepad);
+router.post("/:section_id", [verifyToken], createNotepad);
 
 // UPDATE
-router.put("/:id", [verifyToken], updateText);
+router.put("/:section_id", [verifyToken], updateText);
 
 // DELETE
-router.delete("/:id", [verifyToken], deleteNotepad);
+router.delete("/:section_id", [verifyToken], deleteNotepad);
 
 export default router;

@@ -108,8 +108,6 @@ const formQuestions = async (auth, id) => {
     return res;
 };
 
-// @desc    Get all form contents and metadata
-// GET      /form/:form_id/contents
 export const getAllFormContents = (req, res) => {
     authorize()
         .then((auth) => formContents(auth, req.params.file_id))
@@ -119,8 +117,6 @@ export const getAllFormContents = (req, res) => {
         .catch(console.error);
 };
 
-// @desc    Get all form responses
-// GET      /form/:form_id/responses
 export const getAllFormResponses = (req, res) => {
     authorize()
         .then((auth) => formResponses(auth, req.params.file_id))
@@ -130,8 +126,6 @@ export const getAllFormResponses = (req, res) => {
         .catch(console.error);
 };
 
-// @desc    Get all title and questionIds of a question
-// GET      /form/:form_id/questions
 export const getAllFormQuestions = (req, res) => {
     authorize()
         .then((auth) => formQuestions(auth, req.params.file_id))
@@ -152,8 +146,6 @@ export const getAllFormQuestions = (req, res) => {
         .catch(console.error);
 };
 
-// @desc    Get all respondents' responses for a question
-// GET      /form/:form_id/question_responses/:question_id/respondent/:respondent_type
 export const getFormQuestionResponses = (req, res) => {
     authorize()
         .then((auth) => {
@@ -213,22 +205,17 @@ export const getFormQuestionResponses = (req, res) => {
         .catch(console.error);
 };
 
-// @desc    Get data with section id
-// @route   GET /form/api/:id
 export const getDataWithSectionId = async (req, res) => {
-    const query = "SELECT * FROM google WHERE n_sec_id = $1 and user_id = $2";
-    const values = [parseInt(req.params.id), req.params.user_id];
+    const query = "SELECT * FROM google WHERE section_id = $1 and user_id = $2";
+    const values = [parseInt(req.params.section_id), req.params.user_id];
 
     const result = await pool.query(query, values);
 
     res.status(200).send(result.rows);
 };
 
-// @desc    Get data with google id
-// @route   GET /form/api/google_id/:google_id
 export const getDataWithGoogleId = async (req, res) => {
-    const query =
-        "SELECT * FROM google WHERE v_google_id = $1 and user_id = $2";
+    const query = "SELECT * FROM google WHERE file_id = $1 and user_id = $2";
     const values = [req.params.file_id, req.params.user_id];
 
     const result = await pool.query(query, values);
@@ -236,15 +223,13 @@ export const getDataWithGoogleId = async (req, res) => {
     res.status(200).send(result.rows);
 };
 
-// @desc    Create a new database entry
-// @route   POST /form/api/:id/
 export const createWithData = async (req, res) => {
     const query =
-        "INSERT INTO google (n_sec_id, v_google_id, v_type, user_id) VALUES ($1, $2, $3, $4)";
+        "INSERT INTO google (section_id, file_id, file_type, user_id) VALUES ($1, $2, $3, $4)";
     const values = [
-        parseInt(req.params.id),
+        parseInt(req.params.section_id),
         req.params.file_id,
-        req.params.google_type,
+        req.params.file_type,
         req.params.user_id,
     ];
 
@@ -253,25 +238,21 @@ export const createWithData = async (req, res) => {
     res.status(200).send(result.rows);
 };
 
-// @desc    Create a new database entry with prefilled data
-// @route   POST /form/api/:id/google_id/:google_id/type/:google_type
 export const createNewData = async (req, res) => {
-    const query = "INSERT INTO google (n_sec_id, user_id) VALUES ($1, $2)";
-    const values = [parseInt(req.params.id), req.params.user_id];
+    const query = "INSERT INTO google (section_id, user_id) VALUES ($1, $2)";
+    const values = [parseInt(req.params.section_id), req.params.user_id];
 
     const result = await pool.query(query, values);
 
     res.status(200).send(result.rows);
 };
 
-// @desc    Change how data is displayed
-// @route   UPDATE /form/api/:id/google_id/:google_id/display/:display_type
 export const updateDataDisplay = async (req, res) => {
     const query =
-        "UPDATE google SET v_display_type = $1 WHERE n_sec_id = $2 and user_id = $3";
+        "UPDATE google SET display_type = $1 WHERE section_id = $2 and user_id = $3";
     const values = [
         req.params.display_type,
-        parseInt(req.params.id),
+        parseInt(req.params.section_id),
         req.params.user_id,
     ];
 
@@ -280,15 +261,13 @@ export const updateDataDisplay = async (req, res) => {
     res.status(200).send(result.rows);
 };
 
-// @desc    Change what question is being tracked
-// @route   UPDATE /form/api/:id/google_id/:google_id/question/:question_id
 export const updateDataQuestion = async (req, res) => {
     const query =
-        "UPDATE google SET v_question_id = $1, v_title = $2 WHERE n_sec_id = $3 and user_id = $4";
+        "UPDATE google SET question_id = $1, title = $2 WHERE section_id = $3 and user_id = $4";
     const values = [
         req.params.question_id,
         req.params.title,
-        parseInt(req.params.id),
+        parseInt(req.params.section_id),
         req.params.user_id,
     ];
 
@@ -297,15 +276,13 @@ export const updateDataQuestion = async (req, res) => {
     res.status(200).send(result.rows);
 };
 
-// @desc    Change google link
-// @route   UPDATE /form/api/:id/google_id/:google_id/type/:google_type
 export const updateGoogleFile = async (req, res) => {
     const query =
-        "UPDATE google SET v_google_id = $1, v_type = $2 WHERE n_sec_id = $3 and user_id = $4";
+        "UPDATE google SET file_id = $1, file_type = $2 WHERE section_id = $3 and user_id = $4";
     const values = [
         req.params.file_id,
-        req.params.google_type,
-        parseInt(req.params.id),
+        req.params.file_type,
+        parseInt(req.params.section_id),
         req.params.user_id,
     ];
 
@@ -314,11 +291,9 @@ export const updateGoogleFile = async (req, res) => {
     res.status(200).send(result.rows);
 };
 
-// @desc    Delete section data
-// @route   DELETE /form/api/:id
 export const deleteData = async (req, res) => {
-    const query = "DELETE FROM google WHERE n_sec_id = $1 and user_id = $2";
-    const values = [parseInt(req.params.id), req.params.user_id];
+    const query = "DELETE FROM google WHERE section_id = $1 and user_id = $2";
+    const values = [parseInt(req.params.section_id), req.params.user_id];
 
     const result = await pool.query(query, values);
 

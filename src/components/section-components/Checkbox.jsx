@@ -50,7 +50,7 @@ export default function Checkbox(props) {
                 if (response.data.length > 0) {
                     setCheckboxData({
                         ...checkboxData,
-                        text: response.data[0].v_text,
+                        text: response.data[0].text,
                         checked: response.data[0].is_checked,
                     });
                 }

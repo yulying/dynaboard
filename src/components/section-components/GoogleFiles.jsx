@@ -184,12 +184,12 @@ export default function GoogleFiles(props) {
                 if (response.data.length > 0) {
                     setFile((prevFile) => ({
                         ...prevFile,
-                        fileURL: response.data[0].v_google_id,
-                        fileType: response.data[0].v_type,
-                        fileId: response.data[0].v_google_id,
-                        displayType: response.data[0].v_display_type,
-                        dataQuestionId: response.data[0].v_question_id,
-                        dataTitle: response.data[0].v_title,
+                        fileURL: response.data[0].file_id,
+                        fileType: response.data[0].file_type,
+                        fileId: response.data[0].file_id,
+                        displayType: response.data[0].display_type,
+                        dataQuestionId: response.data[0].question_id,
+                        dataTitle: response.data[0].title,
                         afterInitialRender: true,
                     }));
                 }
@@ -204,8 +204,8 @@ export default function GoogleFiles(props) {
 
         api.get(`/${userId}/sections/id/${props.sectionID}`)
             .then((response) => {
-                if (response.data[0].v_sec_label) {
-                    setLabel(response.data[0].v_sec_label);
+                if (response.data[0].section_label) {
+                    setLabel(response.data[0].section_label);
                 }
             })
             .catch((error) => {
