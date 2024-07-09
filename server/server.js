@@ -21,8 +21,8 @@ const PORT = process.env.PORT;
 // };
 
 const options = {
-    key: fs.readFileSync(".cert/server.key"),
-    cert: fs.readFileSync(".cert/server.cert"),
+    key: fs.readFileSync("security/certs/server.key"),
+    cert: fs.readFileSync("security/certs/server.cert"),
 };
 
 const app = express();
@@ -47,18 +47,18 @@ app.use(express.urlencoded({ extended: false }));
 // Logger middleware
 // app.use(logger);
 
-io.sockets.on("connection", function (socket) {
-    console.log("Client connected.");
-    socket.on("echo", function (data) {
-        io.sockets.emit("message", data);
-    });
-});
+// io.sockets.on("connection", function (socket) {
+//     console.log("Client connected.");
+//     socket.on("echo", function (data) {
+//         io.sockets.emit("message", data);
+//     });
+// });
 
 // Make io accessible to our router
-app.use(function (req, res, next) {
-    req.io = io;
-    next();
-});
+// app.use(function (req, res, next) {
+//     req.io = io;
+//     next();
+// });
 
 app.use("/api/auth", auth);
 

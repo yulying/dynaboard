@@ -2,7 +2,7 @@ import axios from "axios";
 import TokenService from "./tokenService";
 
 const instance = axios.create({
-    baseURL: `${import.meta.env.VITE_SITE_BASE_URL}/api/`,
+    baseURL: `${import.meta.env.VITE_BACKEND_BASE_URL}/api/`,
     headers: {
         "Content-type": "application/json; charset=UTF-8",
     },
@@ -38,8 +38,6 @@ instance.interceptors.response.use(
                     const rs = await instance.post("/auth/refresh", {
                         refreshToken: TokenService.getLocalRefreshToken(),
                     });
-
-                    console.log(rs);
 
                     const { accessToken } = rs.data;
                     TokenService.updateLocalAccessToken(accessToken);

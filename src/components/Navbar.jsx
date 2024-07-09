@@ -15,7 +15,7 @@ export default function Navbar(props) {
                             className="dashboard-title"
                             onClick={() => navigate("/")}
                         >
-                            DynaBoard
+                            Dynamic Dashboard
                         </h3>
                     )}
 

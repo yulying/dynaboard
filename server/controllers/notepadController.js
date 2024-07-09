@@ -39,7 +39,7 @@ export const createNotepad = async (req, res, next) => {
 
 export const updateText = async (req, res, next) => {
     const query =
-        "UPDATE notepad SET v_text = $1 WHERE section_id = $2 and user_id = $3";
+        "UPDATE notepad SET text = $1 WHERE section_id = $2 and user_id = $3";
     const values = [
         req.body.text,
         parseInt(req.params.section_id),

@@ -7,7 +7,7 @@ import Chart from "chart.js/auto";
 import { Bar, Bubble, Doughnut, Line, Pie, Radar } from "react-chartjs-2";
 import autocolors from "chartjs-plugin-autocolors";
 
-import { socket } from "../../App";
+// import { socket } from "../../App";
 
 export default function GoogleFiles(props) {
     const [label, setLabel] = React.useState("Google File Data Tracker");
@@ -24,10 +24,10 @@ export default function GoogleFiles(props) {
 
     const [useAsLink, setUseAsLink] = React.useState(false);
 
-    const [questionsData, setQuestionsData] = React.useState("");
-    const [responsesData, setResponsesData] = React.useState("");
+    const [questionsData, setQuestionsData] = React.useState([]);
+    const [responsesData, setResponsesData] = React.useState([]);
 
-    const [chartedData, setChartedData] = React.useState("");
+    const [chartedData, setChartedData] = React.useState([]);
 
     const [displayedData, setDisplayedData] = React.useState([]);
 
@@ -182,16 +182,29 @@ export default function GoogleFiles(props) {
         api.get(`/${userId}/google/section/${props.sectionID}`)
             .then((response) => {
                 if (response.data.length > 0) {
-                    setFile((prevFile) => ({
-                        ...prevFile,
-                        fileURL: response.data[0].file_id,
-                        fileType: response.data[0].file_type,
-                        fileId: response.data[0].file_id,
-                        displayType: response.data[0].display_type,
-                        dataQuestionId: response.data[0].question_id,
-                        dataTitle: response.data[0].title,
-                        afterInitialRender: true,
-                    }));
+                    if (response.data[0].file_id) {
+                        setFile((prevFile) => ({
+                            ...prevFile,
+                            fileURL: response.data[0].file_id,
+                            fileType: response.data[0].file_type,
+                            fileId: response.data[0].file_id,
+                            displayType: response.data[0].display_type,
+                            dataQuestionId: response.data[0].question_id,
+                            dataTitle: response.data[0].title,
+                            afterInitialRender: true,
+                        }));
+                    } else {
+                        setFile((prevFile) => ({
+                            ...prevFile,
+                            fileURL: "",
+                            fileType: response.data[0].file_type,
+                            fileId: "",
+                            displayType: response.data[0].display_type,
+                            dataQuestionId: response.data[0].question_id,
+                            dataTitle: response.data[0].title,
+                            afterInitialRender: true,
+                        }));
+                    }
                 }
             })
             .catch((error) => {
@@ -242,7 +255,7 @@ export default function GoogleFiles(props) {
 
     // Fetches display options and populates label options
     React.useEffect(() => {
-        if (file.afterInitialRender) {
+        if (file.afterInitialRender && file.fileId) {
             setSelectedValue({
                 displayOption: file.displayType,
                 trackedDataQuestionId: file.dataQuestionId,
@@ -267,7 +280,7 @@ export default function GoogleFiles(props) {
     }, [useAsLink]);
 
     React.useEffect(() => {
-        if (responsesData !== "" && file.afterInitialRender) {
+        if (responsesData.length !== 0 && file.afterInitialRender) {
             formatGoogleData();
         }
     }, [responsesData]);
@@ -511,7 +524,7 @@ export default function GoogleFiles(props) {
             default:
                 setDisplayedData(
                     <div className="data-display-prompt">
-                        Data type implemented soon!
+                        Go to the editor to set your data!
                     </div>,
                 );
         }

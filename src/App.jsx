@@ -11,7 +11,7 @@ import NotFound from "./components/NotFound";
 import { Routes, Route } from "react-router-dom";
 import { io } from "socket.io-client";
 
-export const socket = io(`${import.meta.env.VITE_SITE_BASE_URL}`);
+// export const socket = io(`${import.meta.env.VITE_SITE_BASE_URL}`);
 
 class App extends Component {
     componentDidMount() {
