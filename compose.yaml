@@ -1,0 +1,46 @@
+services:
+    backend:
+        build:
+            context: backend
+            target: development
+        command: npm start
+        environment:
+            - POSTGRES_DB_USER=/run/secrets/db-user
+            - POSTGRES_DB_PASS=/run/secrets/db-password
+            - POSTGRES_DB_HOST=/run/secrets/db-host
+            - POSTGRES_DB='postgres'
+            - POSTGRES_DB_PORT=6543
+            - JWT_SECRET=/run/secrets/jwt-secret
+            - JWT_EXPIRATION = '1h'
+            - JWT_REFRESH_EXPIRATION_TS = 302400
+        ports:
+            - 8000:8000
+        secrets:
+            - db-user
+            - db-password
+            - db-host
+            - jwt-secret
+    frontend:
+        build:
+            context: frontend
+            target: development
+        ports:
+            - 5173:5173
+        environment:
+            - VITE_BACKEND_BASE_URL=http://localhost:8000
+        depends_on:
+            - backend
+    nginx:
+        image: nginx
+        volumes:
+            - ./security/certs:/etc/nginx/certs
+
+secrets:
+    db-user:
+        file: security/db-user.txt
+    db-password:
+        file: security/db-password.txt
+    db-host:
+        file: security/db-host.txt
+    jwt-secret:
+        file: security/jwt-secret.txt
