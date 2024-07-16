@@ -4,7 +4,8 @@
     "version": "1.0.0",
     "type": "module",
     "scripts": {
-        "start": "nodemon server/server.js"
+        "start": "nodemon server/server.js",
+        "dev": "nodemon --env-file=../.env server/server.js"
     },
     "dependencies": {
         "@google-cloud/local-auth": "^3.0.1",

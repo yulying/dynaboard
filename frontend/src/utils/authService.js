@@ -16,7 +16,6 @@ class AuthService {
     }
 
     async login(username, password) {
-        console.log(API_URL);
         const data = await fetch(API_URL + "login", {
             method: "POST",
             headers: new Headers({

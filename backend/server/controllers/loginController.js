@@ -83,6 +83,9 @@ export const saveUserCredentials = async (req, res) => {
 export const loginUserCredentials = async (req, res) => {
     const { username, password } = req.body;
 
+    console.log(username);
+    console.log(password);
+
     const query = "SELECT * FROM users WHERE username = $1";
     const values = [username];
 

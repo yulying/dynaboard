@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Logger middleware
-app.use(logger);
+// app.use(logger);
 
 app.use("/api/auth", auth);
 

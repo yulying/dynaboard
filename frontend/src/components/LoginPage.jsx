@@ -30,6 +30,7 @@ export default function LoginPage() {
                 })
                 .catch((error) => {
                     console.log("Access token expired.");
+                    authService.logout(userId);
                 });
         } catch (error) {
             console.log("No current user found.");
