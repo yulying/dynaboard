@@ -32,8 +32,6 @@ export const saveUserCredentials = async (req, res) => {
     const { username, email, password } = req.body;
     const hash = await bcrypt.hash(password, 10);
 
-    console.log(username);
-
     const findUserQuery =
         "SELECT (EXISTS (SELECT username FROM users WHERE username = $1))::int";
     const findUserValues = [username];
@@ -82,9 +80,6 @@ export const saveUserCredentials = async (req, res) => {
 
 export const loginUserCredentials = async (req, res) => {
     const { username, password } = req.body;
-
-    console.log(username);
-    console.log(password);
 
     const query = "SELECT * FROM users WHERE username = $1";
     const values = [username];
@@ -162,7 +157,6 @@ export const refreshToken = async (req, res) => {
         );
 
         if (!tokenUser.rows[0]) {
-            console.log("Invalid token");
             res.status(403).json({ message: "Invalid refresh token" });
             return;
         }
