@@ -1,0 +1,428 @@
+@font-face {
+    font-family: Chakra Petch; /* Name your font family */
+    src: url("Chakra_Petch/ChakraPetch-Light.ttf"),
+        url("Chakra_Petch/ChakraPetch-Bold.ttf"); /* Locate the .ttf file within your directory*/
+}
+
+* {
+    outline: 1px solid transparent !important;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family:
+        Chakra Petch,
+        sans-serif;
+    height: 100vh;
+    background-color: rgb(20, 20, 20);
+}
+
+button {
+    font-family:
+        Chakra Petch,
+        sans-serif;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    border-radius: 34px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #ffffff;
+    border-radius: 8px;
+    transition: all 0.4s;
+    -moz-transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #a7a7a7;
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+#main-header,
+#sub-header,
+#main-page-footer {
+    color: white;
+    line-height: 30px;
+}
+
+.main-statement {
+    line-height: 45px;
+    margin: 0;
+}
+
+#main-header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    padding: 20vh 20vw;
+}
+
+#main-statement {
+    margin: 10px 0px;
+}
+
+#sub-statement {
+    font-weight: 500;
+    margin-top: 30px;
+}
+
+#front-login-button {
+    font-family:
+        Chakra Petch,
+        sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    height: 60px;
+    margin-top: 50px;
+    border: none;
+    border-radius: 4px;
+    width: 360px;
+}
+
+#login-button:hover {
+    cursor: pointer;
+}
+
+#sub-header-container {
+    display: flex;
+    padding: 10vh 20vh;
+    justify-content: center;
+    align-items: center;
+}
+
+#sub-header {
+    display: flex;
+    flex-direction: column;
+    width: 70vw;
+    padding: 100px;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(40, 40, 40);
+}
+
+.informational-text {
+    font-weight: 500;
+}
+
+#main-page-footer {
+    background-color: black;
+    padding: 80px;
+    display: flex;
+    justify-content: center;
+}
+
+#suggestions-feedback-form,
+#github-link {
+    color: white;
+    text-decoration: none;
+}
+
+#suggestions-feedback-form {
+    margin-right: 30px;
+}
+
+#github-link {
+    margin-left: 30px;
+}
+
+#suggestions-feedback-form:hover,
+#github-link:hover {
+    color: rgb(180, 180, 180);
+}
+
+#credentials-container {
+    display: flex;
+    overflow-x: hidden;
+}
+
+#login-container,
+#new-account-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+#login-title,
+#create-account-title {
+    position: relative;
+    bottom: 10px;
+    color: white;
+    margin: 0;
+    font-size: 20px;
+}
+
+#login-form,
+#create-account-form {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: rgb(30, 30, 30);
+    border: 2px solid white;
+    border-radius: 14px;
+    top: 6%;
+    padding: 50px;
+}
+
+.account-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 10px;
+}
+
+.prompt-label {
+    font-weight: 500;
+    left: 0;
+}
+
+#username,
+#password,
+#new-email,
+#new-username,
+#new-password,
+#repeat-password {
+    font-family:
+        Chakra Petch,
+        sans-serif;
+    color: white;
+    background-color: rgb(69, 69, 69);
+    border: 1px solid rgb(125, 125, 125);
+    height: 30px;
+    width: 250px;
+    font-size: 16px;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    text-decoration: none;
+    text-align: center;
+}
+
+#invalid-repeat-pass {
+    position: relative;
+    color: red;
+    margin: 0px 0px -5px;
+}
+
+#login-button,
+#sign-up-button {
+    font-size: 18px;
+    font-weight: 500;
+    width: 90px;
+    height: 35px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+#login-button:hover,
+#sign-up-button:hover {
+    cursor: pointer;
+    background-color: rgb(175, 175, 175);
+}
+
+.vl {
+    border-left: 1px solid rgb(255, 255, 255);
+    height: 70vh;
+    position: absolute;
+    top: 56%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#or {
+    padding: 20px;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 4px;
+    font-weight: 900;
+}
+
+#navbar,
+#footer {
+    position: fixed;
+    width: 100%;
+    overflow: initial;
+    z-index: 2;
+}
+
+#navbar {
+    top: 0;
+}
+
+#footer {
+    bottom: 0;
+}
+
+#main-navbar-components,
+#main-footer-components {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 80px;
+    background: rgb(50, 50, 50);
+}
+
+#main-navbar-components {
+    color: white;
+    box-shadow: 0px 10px 20px rgb(0, 0, 0);
+}
+
+#main-footer-components {
+    color: white;
+    box-shadow: 0px -3px 10px rgb(0, 0, 0);
+}
+
+#navbar-empty-space {
+    height: 90px;
+}
+
+#footer-empty-space {
+    height: 30px;
+}
+
+.dashboard-title {
+    font-weight: bold;
+    font-size: x-large;
+    margin: 20px 0px;
+}
+
+.dashboard-title:hover {
+    cursor: pointer;
+}
+
+.dashboard-editor {
+    display: flex;
+    width: 160px;
+    justify-content: space-around;
+    align-self: center;
+}
+
+#navbar-login-button,
+#edit-button,
+#dashboard-settings-button,
+#back-to-dashboard-button,
+#logout-button {
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 0px;
+}
+
+#navbar-login-button:hover,
+#edit-button:hover,
+#dashboard-settings-button:hover,
+#back-to-dashboard-button:hover,
+#logout-button:hover {
+    font-weight: 900;
+    cursor: pointer;
+}
+
+#settings-div {
+    color: white;
+    padding: 50px 100px;
+}
+
+#logout-button {
+    border: 1px solid white;
+    border-radius: 4px;
+    padding: 8px 20px;
+    margin: 20px;
+    background-color: rgba(0, 0, 0, 0.427);
+}
+
+.memo-emote {
+    margin: 10px;
+    font-size: 60px;
+}
+
+#dashboard-return:hover {
+    cursor: pointer;
+}
+
+#not-found {
+    display: flex;
+    justify-content: center;
+    color: white;
+    padding: 100px;
+}
+
+@media only screen and (max-width: 500px) {
+    .dashboard-editor {
+        height: 40px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #main-navbar-components,
+    #main-footer-components {
+        padding: 0px 40px;
+    }
+
+    #credentials-container {
+        position: relative;
+        top: -10px;
+    }
+
+    #navbar-empty-space {
+        height: 60px;
+    }
+
+    #footer-empty-space {
+        height: 0px;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    #credentials-container {
+        flex-direction: column;
+    }
+
+    #login-container {
+        height: 500px;
+    }
+
+    #new-account-container {
+        height: 640px;
+    }
+
+    #login-form,
+    #create-account-form {
+        top: 0%;
+    }
+
+    .vl {
+        position: relative;
+        border-left: none;
+        border-bottom: 1px solid rgb(255, 255, 255);
+        height: 0px;
+        width: 70vw;
+        transform: translate(-50%, 0%);
+    }
+
+    #or {
+        top: 590px;
+    }
+}
