@@ -24,7 +24,7 @@ export default function Sections(props) {
     const [counter, setCounter] = React.useState(1);
 
     // May change to state and create an admin type user later
-    const options = ["Notepad", "Checklist", "Calendar", "Google Files"];
+    const options = ["Notepad", "Checklist", "Calendar"]; // Add Google Files after debugging
 
     const { userId } = useParams();
     const navigate = useNavigate();
@@ -70,7 +70,7 @@ export default function Sections(props) {
         api.get(`/${userId}/sections/largest_id`)
             .then((response) => {
                 if (response.data[0].max) {
-                    setCounter(response.data[0].max + 1);
+                    setCounter(parseInt(response.data[0].max) + 1);
                 }
             })
             .catch((error) => {
@@ -178,7 +178,7 @@ export default function Sections(props) {
         });
     }
 
-    // Creates ⟲ and DELETE options when editing existing components and provides functionality for updating/deleting sections
+    // Creates CHANGE and DELETE options when editing existing components and provides functionality for updating/deleting sections
     function showEditOptions(section_id) {
         return (
             <div className="edit-component">
@@ -187,7 +187,7 @@ export default function Sections(props) {
                     id={section_id}
                     onClick={(event) => toggleShowOptions(event, true)}
                 >
-                    ⟲
+                    CHANGE
                 </span>
                 <span
                     className="delete-section"
@@ -208,7 +208,7 @@ export default function Sections(props) {
                     id={section_id}
                     onClick={(event) => toggleShowOptions(event, true)}
                 >
-                    ⟲
+                    CHANGE
                 </span>
                 <span
                     className="delete-section"

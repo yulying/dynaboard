@@ -22,6 +22,8 @@ export default function GoogleFiles(props) {
         afterInitialRender: false,
     });
 
+    const [notification, setNotification] = React.useState(false);
+
     const [useAsLink, setUseAsLink] = React.useState(false);
 
     const [questionsData, setQuestionsData] = React.useState([]);
@@ -179,7 +181,9 @@ export default function GoogleFiles(props) {
     React.useEffect(() => {
         props.setStatusBar("Retrieving data...");
 
-        api.get(`/${userId}/google/section/${props.sectionID}`)
+        api.get(`/${userId}/google/section/${props.sectionID}`, {
+            token_id: "token",
+        })
             .then((response) => {
                 if (response.data.length > 0) {
                     if (response.data[0].file_id) {
@@ -215,9 +219,14 @@ export default function GoogleFiles(props) {
                 }
             });
 
-        api.get(`/${userId}/sections/id/${props.sectionID}`)
+        api.get(`/${userId}/sections/id/${props.sectionID}`, {
+            token_id: "token",
+        })
             .then((response) => {
-                if (response.data[0].section_label) {
+                if (
+                    response.data[0].section_label &&
+                    response.data[0].section_label.toLowerCase() !== "null"
+                ) {
                     setLabel(response.data[0].section_label);
                 }
             })
@@ -232,26 +241,6 @@ export default function GoogleFiles(props) {
         setUserInputed(true);
         props.setStatusBar("Data restored.");
     }, []);
-
-    // React.useEffect(() => {
-    //     socket.connect();
-
-    //     return () => {
-    //         socket.disconnect();
-    //     };
-    // }, []);
-
-    // React.useEffect(() => {
-    //     function printQuestions(data) {
-    //         console.log(data);
-    //     }
-
-    //     socket.on("questions", printQuestions);
-
-    //     return () => {
-    //         socket.off("questions", printQuestions);
-    //     };
-    // }, []);
 
     // Fetches display options and populates label options
     React.useEffect(() => {
@@ -290,7 +279,7 @@ export default function GoogleFiles(props) {
         setLoading(true);
 
         return api
-            .get(`/${userId}/google${queryUrl}`)
+            .get(`/${userId}/google${queryUrl}`, { token_id: "token" })
             .then((response) => {
                 if (dataType === 0) {
                     setQuestionsData(response.data);
@@ -583,6 +572,8 @@ export default function GoogleFiles(props) {
                     onChange={(event) => setLabel(event.target.value)}
                 />
             )}
+            <span className="refresh-button">⟲</span>
+            {notification && <span className="refresh-notification">!</span>}
             <div id="google-data-div" className="google-data-div">
                 {props.editable && (
                     <div id="google-file-section-editor">

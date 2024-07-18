@@ -2,10 +2,13 @@ import React, { useEffect } from "react";
 import authService from "../utils/authService";
 import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
+import GridLayout from "react-grid-layout";
 
 export default function Settings() {
     const { userId } = useParams();
     const navigate = useNavigate();
+
+    const authAccounts = React.useState([]);
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -28,6 +31,7 @@ export default function Settings() {
                     <li>Change color scheme</li>
                     <li>Delete Account</li>
                 </ul>
+                <div></div>
                 <button id="logout-button" onClick={handleLogout}>
                     Logout
                 </button>

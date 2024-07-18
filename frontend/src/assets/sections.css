@@ -47,30 +47,20 @@
     position: relative;
     cursor: pointer;
     align-items: center;
-    width: 130px;
-    left: 250px;
+    width: 160px;
+    left: 230px;
     justify-content: space-evenly;
     margin-bottom: 5px;
     color: white;
 }
 
 .no-label-edit-component {
-    top: 5px;
-    left: 284px;
+    top: 1px;
+    left: 255px;
 }
 
 .add-section-padding {
     margin: 35px 5px 5px;
-}
-
-.change-section {
-    font-weight: bold;
-    font-size: larger;
-}
-
-.delete-section {
-    position: relative;
-    top: 1px;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -138,6 +128,7 @@ label {
 }
 
 .label-div {
+    position: relative;
     padding-top: 6px;
     background: linear-gradient(#e2e2e2 50%, #ffffff00 50%);
     max-width: 400px;
@@ -391,6 +382,27 @@ input.temporary-checkbox[type="checkbox"] {
 .data-display-options,
 .data-label-options {
     padding-top: 6px;
+}
+
+.refresh-button {
+    position: absolute;
+    font-size: 22px;
+    top: 4px;
+    right: 20px;
+}
+
+.refresh-notification {
+    position: absolute;
+    font-size: 16px;
+    font-weight: bolder;
+    color: red;
+    top: 4px;
+    right: 15px;
+}
+
+.refresh-button:hover,
+.refresh-notification:hover {
+    cursor: pointer;
 }
 
 #google-data-div {

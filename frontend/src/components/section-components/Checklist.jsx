@@ -56,7 +56,10 @@ export default function Checklist(props) {
 
         api.get(`/${userId}/sections/id/${props.sectionID}`)
             .then((response) => {
-                if (response.data[0].section_label) {
+                if (
+                    response.data[0].section_label &&
+                    response.data[0].section_label.toLowerCase() !== "null"
+                ) {
                     setLabel(response.data[0].section_label);
                 }
             })

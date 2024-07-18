@@ -1,5 +1,6 @@
 import { google } from "googleapis";
 import { authenticate } from "@google-cloud/local-auth";
+import oAuth2Client from "google-auth-library";
 import path from "path";
 import { promises as fs } from "fs";
 import { fileURLToPath } from "url";
@@ -24,12 +25,11 @@ const SCOPES = [
     "https://www.googleapis.com/auth/forms.body.readonly",
     "https://www.googleapis.com/auth/forms.responses.readonly",
 ];
-const TOKEN_PATH = path.join(__dirname, "../utils/token.json");
 const CREDENTIALS_PATH = path.join(__dirname, "../utils/credentials.json");
 
-const loadSaveCredentialsIfExist = async () => {
+const loadSaveCredentialsIfExist = async (token_id) => {
     try {
-        const content = await fs.readFile(TOKEN_PATH);
+        const content = localStorage.getItem(token_id);
         const credentials = JSON.parse(content);
         return google.auth.fromJSON(credentials);
     } catch (error) {
@@ -37,8 +37,21 @@ const loadSaveCredentialsIfExist = async () => {
     }
 };
 
-const saveCredentials = async (client) => {
-    const content = await fs.readFile(CREDENTIALS_PATH);
+const saveCredentials = async (client, token_id) => {
+    const content = {
+        web: {
+            client_id: import.meta.env.G_CLIENT_ID,
+            project_id: import.meta.env.G_PROJECT_ID,
+            auth_uri: import.meta.env.G_AUTH_URI,
+            token_uri: import.meta.env.G_TOKEN_URI,
+            auth_provider_x509_cert_url: import.meta.env
+                .G_AUTH_PROVIDER_X509_CERT_URL,
+            client_secret: import.meta.env.G_CLIENT_SECRET,
+            redirect_uris: [import.meta.env.G_REDIRECT_URIS],
+            javascript_origins: [import.meta.env.G_JAVASCRIPT_ORIGINS],
+        },
+    };
+
     const keys = JSON.parse(content);
     const key = keys.installed || keys.web;
     const payload = JSON.stringify({
@@ -47,11 +60,12 @@ const saveCredentials = async (client) => {
         client_secret: key.client_secret,
         refresh_token: client.credentials.refresh_token,
     });
-    await fs.writeFile(TOKEN_PATH, payload);
+
+    localStorage.setItem(token_id, payload);
 };
 
-export const authorize = async () => {
-    let client = await loadSaveCredentialsIfExist();
+export const authorize = async (token_id) => {
+    let client = await loadSaveCredentialsIfExist(token_id);
 
     if (client) {
         return client;
@@ -63,10 +77,23 @@ export const authorize = async () => {
     });
 
     if (client.credentials) {
-        await saveCredentials(client);
+        await saveCredentials(client, token_id);
     }
 
     return client;
+};
+
+export const getAuthenticatedClient = async (token_id) => {
+    const oAuth2Client = new OAuth2Client(
+        import.meta.env.G_CLIENT_ID,
+        import.meta.env.G_CLIENT_SECRET,
+        [import.meta.env.G_REDIRECT_URIS],
+    );
+
+    const authorizeUrl = oAuth2Client.generateAuthUrl({
+        access_type: "offline",
+        scope: SCOPES,
+    });
 };
 
 const formContents = async (auth, id) => {
@@ -109,7 +136,7 @@ const formQuestions = async (auth, id) => {
 };
 
 export const getAllFormContents = (req, res) => {
-    authorize()
+    authorize(req.body.token_id)
         .then((auth) => formContents(auth, req.params.file_id))
         .then((result) => {
             res.status(200).send(result.data);
@@ -118,7 +145,7 @@ export const getAllFormContents = (req, res) => {
 };
 
 export const getAllFormResponses = (req, res) => {
-    authorize()
+    authorize(req.body.token_id)
         .then((auth) => formResponses(auth, req.params.file_id))
         .then((result) => {
             res.status(200).send(result.data);
@@ -127,7 +154,7 @@ export const getAllFormResponses = (req, res) => {
 };
 
 export const getAllFormQuestions = (req, res) => {
-    authorize()
+    authorize(req.body.token_id)
         .then((auth) => formQuestions(auth, req.params.file_id))
         .then((result) => {
             const filtered = result.data.items
@@ -147,7 +174,7 @@ export const getAllFormQuestions = (req, res) => {
 };
 
 export const getFormQuestionResponses = (req, res) => {
-    authorize()
+    authorize(req.body.token_id)
         .then((auth) => {
             return Promise.all([
                 formContents(auth, req.params.file_id),
