@@ -1,4 +1,4 @@
-const API_URL = `/${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/`;
+const API_URL = `https://${import.meta.env.VITE_BACKEND_BASE_URL}/api/auth/`;
 
 class AuthService {
     async register(username, email, password) {
