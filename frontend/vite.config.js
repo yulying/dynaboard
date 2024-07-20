@@ -13,17 +13,7 @@ export default ({ command, mode }) => {
     return defineConfig({
         define: {
             plugins: [react()],
-        },
-        server: {
-            // host: "dynaboard.net",
-            // https: {
-            //     key: fs.readFileSync(
-            //         __dirname + "/../security/certs/dynaboard.net-key.pem",
-            //     ),
-            //     cert: fs.readFileSync(
-            //         __dirname + "/../security/certs/dynaboard.net-crt.pem",
-            //     ),
-            // },
+            __APP_ENV__: process.env.VITE_VERCEL_ENV,
         },
     });
 };
