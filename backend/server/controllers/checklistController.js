@@ -78,11 +78,12 @@ export const createChecklist = async (req, res, next) => {
 
 export const createCheckbox = async (req, res, next) => {
     const query =
-        "INSERT INTO checklist (section_id, checkbox_id, user_id) VALUES ($1, $2, $3)";
+        "INSERT INTO checklist (section_id, checkbox_id, user_id, is_checked) VALUES ($1, $2, $3, $4)";
     const values = [
         parseInt(req.params.section_id),
         parseInt(req.params.checkbox_id),
         req.params.user_id,
+        false,
     ];
 
     const result = await pool.query(query, values);
