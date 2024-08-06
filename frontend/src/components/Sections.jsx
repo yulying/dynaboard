@@ -223,10 +223,12 @@ export default function Sections(props) {
 
     // Creates query URL for createSection
     async function createSectionURL(id, sectionType, generalDB = false) {
-        if (generalDB) {
-            return createSection(`/sections/${id}/type/${sectionType}`);
-        } else if (sectionType !== "checklist") {
-            return createSection(`/${sectionType}/${id}`);
+        if (sectionType !== "calendar") {
+            if (generalDB) {
+                return createSection(`/sections/${id}/type/${sectionType}`);
+            } else if (sectionType !== "checklist") {
+                return createSection(`/${sectionType}/${id}`);
+            }
         }
     }
 

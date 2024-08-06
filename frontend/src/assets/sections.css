@@ -206,7 +206,6 @@ input.temporary-checkbox[type="checkbox"] {
     border: double 6px #e2e2e2;
     line-height: 2em;
     overflow-y: scroll;
-    margin: 0px 30px 30px;
 }
 
 .react-calendar::-webkit-scrollbar {

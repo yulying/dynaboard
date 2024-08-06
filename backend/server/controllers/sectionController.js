@@ -88,16 +88,19 @@ export const updateSection = async (req, res, next) => {
             prevSectionValues,
         );
 
-        // table name gotten from previous query. safe from user input??
-        const deleteFromCompQuery = `DELETE FROM ${prevSection.rows[0].section_type.toLowerCase()} WHERE user_id = $1 and section_id = $2`;
-        const deleteFromCompValues = [
-            req.params.user_id,
-            parseInt(req.params.section_id),
-        ];
-        await client.query(deleteFromCompQuery, deleteFromCompValues);
+        if (prevSection.rows[0].section_type.toLowerCase() !== "calendar") {
+            // table name gotten from previous query. safe from user input??
+            const deleteFromCompQuery = `DELETE FROM ${prevSection.rows[0].section_type.toLowerCase()} WHERE user_id = $1 and section_id = $2`;
+            const deleteFromCompValues = [
+                req.params.user_id,
+                parseInt(req.params.section_id),
+            ];
+
+            await client.query(deleteFromCompQuery, deleteFromCompValues);
+        }
 
         const updateSectionQuery =
-            "UPDATE sections SET section_type = $1 WHERE user_id = $2 andd section_id = $3";
+            "UPDATE sections SET section_type = $1 WHERE user_id = $2 and section_id = $3";
         const updateSectionValues = [
             req.params.section_type,
             req.params.user_id,
