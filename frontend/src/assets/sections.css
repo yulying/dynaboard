@@ -19,7 +19,7 @@
 }
 
 .add-new-section {
-    border: medium dashed rgb(109, 109, 109);
+    border: medium dashed #123c69;
     border-radius: 5px;
     height: 300px;
     max-height: 300px;
@@ -29,14 +29,14 @@
     justify-content: center;
     align-items: center;
     font-size: 80px;
-    color: lightgray;
+    color: #bab2b5;
     font-weight: bold;
     margin-bottom: 40px;
 }
 
 .add-new-section:hover,
 .calendar-hover {
-    background-color: rgb(45, 45, 45);
+    background-color: #948d90;
     width: 400px;
     cursor: pointer;
 }
@@ -51,7 +51,7 @@
     left: 230px;
     justify-content: space-evenly;
     margin-bottom: 5px;
-    color: white;
+    color: #123c69;
 }
 
 .no-label-edit-component {
@@ -95,8 +95,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: white;
-    background-color: rgb(33, 33, 33);
+    color: #123c69;
+    background-color: #bab2b5;
     height: 100%;
     width: 140px;
     top: 40px;
@@ -107,7 +107,7 @@
 }
 
 .option:hover {
-    background-color: #313131;
+    background-color: #948d90;
     cursor: pointer;
     width: 120px;
     text-align: center;
@@ -130,7 +130,8 @@ label {
 .label-div {
     position: relative;
     padding-top: 6px;
-    background: linear-gradient(#e2e2e2 50%, #ffffff00 50%);
+    color: #123c69;
+    background: linear-gradient(#edc7b7 50%, #ffffff00 50%);
     max-width: 400px;
 }
 
@@ -170,9 +171,9 @@ textarea:focus {
     top: 3px;
     height: 265px;
     width: 400px;
-    color: white;
-    border: double 6px #e2e2e2;
-    background-color: rgb(95, 95, 95);
+    color: #123c69;
+    border: double 6px #123c69;
+    background-color: #fff7f4;
     padding: 15px;
     overflow-y: scroll;
 }
@@ -182,12 +183,13 @@ textarea:focus {
     display: flex;
     align-items: flex-start;
     gap: 10px;
+    color: black;
 }
 
 input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    accent-color: rgb(78, 78, 78);
+    accent-color: #948d90;
     margin: 4px 8px;
     vertical-align: top;
 }
@@ -202,8 +204,8 @@ input.temporary-checkbox[type="checkbox"] {
     height: 300px;
     width: 400px;
     max-width: 100%;
-    background: rgb(95, 95, 95);
-    border: double 6px #e2e2e2;
+    background: #fff7f4;
+    border: double 6px #123c69;
     line-height: 2em;
     overflow-y: scroll;
 }
@@ -237,7 +239,7 @@ input.temporary-checkbox[type="checkbox"] {
 
 .react-calendar button {
     margin: 0;
-    border: 1px solid rgb(150, 150, 150);
+    border: 1px solid #eee2dc;
     outline: none;
 }
 
@@ -278,7 +280,7 @@ input.temporary-checkbox[type="checkbox"] {
 
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
-    background-color: #e6e6e6;
+    background-color: #eee2dc;
 }
 
 .react-calendar__month-view__weekdays {
@@ -287,7 +289,7 @@ input.temporary-checkbox[type="checkbox"] {
     font: inherit;
     font-size: 0.9em;
     font-weight: bold;
-    color: rgb(222, 222, 222);
+    color: #123c69;
 }
 
 .react-calendar__month-view__weekNumbers,
@@ -298,7 +300,7 @@ input.temporary-checkbox[type="checkbox"] {
     font: inherit;
     font-size: 0.8em;
     font-weight: bold;
-    color: white;
+    color: #123c69;
 }
 
 .react-calendar__month-view__days__day--weekend {
@@ -340,7 +342,7 @@ input.temporary-checkbox[type="checkbox"] {
 
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
-    background-color: #999999;
+    background-color: #eee2dc;
     font-weight: bold;
 }
 

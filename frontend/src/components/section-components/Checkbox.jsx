@@ -30,7 +30,7 @@ export default function Checkbox(props) {
         resize: "none",
         border: "none",
         lineHeight: "1.2",
-        color: "white",
+        color: "#123c69",
         backgroundColor: "transparent",
     };
 
