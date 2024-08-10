@@ -70,8 +70,7 @@ export default function FrontPage() {
                         of information that is important to you. Just like how
                         someone may study better with flashcards and another may
                         need to watch videos, there is no one right dashboard
-                        layout! Dynamic Dashboard embraces this idea and makes
-                        it possible.
+                        layout!
                     </h3>
                     <h3 className="first-sample-text">
                         Dynamic Dashboard adheres to this idea and makes it
