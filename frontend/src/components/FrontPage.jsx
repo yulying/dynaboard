@@ -106,7 +106,7 @@ export default function FrontPage() {
                 >
                     Send suggestions here!
                 </a>
-                <a id="github-link" href="https://forms.gle/vwV8LPHZY1AwwxnE7">
+                <a id="github-link" href="https://github.com/yulying/dynaboard">
                     GitHub
                 </a>
             </div>
