@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import frontImage from "./../assets/images/pexels-jessbaileydesign-notepad.jpg";
 import washiTape from "./../assets/images/washi.png";
+import dotsDeco from "./../assets/images/dots.png";
 
 export default function FrontPage() {
     const navigate = useNavigate();
@@ -10,7 +11,8 @@ export default function FrontPage() {
     return (
         <div>
             <Navbar frontPage />
-            <img src={frontImage} className="front-image" />
+            <img src={dotsDeco} id="dots-deco" />
+            <img src={frontImage} id="front-image" />
             <div id="main-header">
                 <h1 className="main-statement">Create your own dashboard,</h1>
                 <h1 className="main-statement">your way.</h1>
@@ -25,7 +27,7 @@ export default function FrontPage() {
                 </button>
             </div>
             <div id="sub-header-container">
-                <img src={washiTape} className="washi-tape" />
+                <img src={washiTape} id="washi-tape" />
                 <div id="sub-header">
                     <h2 id="sub-header-title">
                         Being organized shouldn't need to be a confusing chore.

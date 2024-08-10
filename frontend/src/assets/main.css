@@ -58,7 +58,14 @@ button {
     z-index: 1;
 }
 
-.front-image {
+#dots-deco {
+    position: absolute;
+    width: 400px;
+    top: 110px;
+    left: 20px;
+}
+
+#front-image {
     display: block;
     position: absolute;
     max-height: 800px;
@@ -71,7 +78,7 @@ button {
     mask-image: linear-gradient(to right, transparent, #eee2dc 30%);
 }
 
-.washi-tape {
+#washi-tape {
     position: absolute;
     transform: translateY(-50%);
     top: 18vh;
@@ -408,7 +415,7 @@ button {
     padding: 100px;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 560px) {
     .dashboard-editor {
         height: 40px;
         flex-direction: column;
@@ -426,11 +433,15 @@ button {
     }
 
     #navbar-empty-space {
-        height: 60px;
+        height: 70px;
     }
 
     #footer-empty-space {
         height: 0px;
+    }
+
+    #dots-deco {
+        top: 90px;
     }
 }
 
