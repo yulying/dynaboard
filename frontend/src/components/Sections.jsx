@@ -9,6 +9,8 @@ import Calendar from "react-calendar";
 import Checklist from "./section-components/Checklist";
 import GoogleFiles from "./section-components/GoogleFiles";
 
+import tapeArr from "../utils/tape";
+
 export default function Sections(props) {
     const [sections, setSections] = React.useState([]);
 
@@ -289,6 +291,16 @@ export default function Sections(props) {
                             }
                             id={section.id}
                         >
+                            <img
+                                src={
+                                    tapeArr[
+                                        Math.floor(
+                                            Math.random() * tapeArr.length,
+                                        )
+                                    ]
+                                }
+                                className="section-tape"
+                            />
                             <Notepad
                                 editable={props.clickableBox}
                                 sectionID={section.sectionID}
@@ -312,6 +324,16 @@ export default function Sections(props) {
                             }
                             id={section.id}
                         >
+                            <img
+                                src={
+                                    tapeArr[
+                                        Math.floor(
+                                            Math.random() * tapeArr.length,
+                                        )
+                                    ]
+                                }
+                                className="section-tape"
+                            />
                             <Checklist
                                 editable={props.clickableBox}
                                 sectionID={section.sectionID}
@@ -338,6 +360,16 @@ export default function Sections(props) {
                             }
                             id={section.id}
                         >
+                            <img
+                                src={
+                                    tapeArr[
+                                        Math.floor(
+                                            Math.random() * tapeArr.length,
+                                        )
+                                    ]
+                                }
+                                className="section-tape"
+                            />
                             <Calendar
                                 className={
                                     "calendar" +
@@ -360,6 +392,16 @@ export default function Sections(props) {
                             }
                             id={section.id}
                         >
+                            <img
+                                src={
+                                    tapeArr[
+                                        Math.floor(
+                                            Math.random() * tapeArr.length,
+                                        )
+                                    ]
+                                }
+                                className="section-tape"
+                            />
                             <GoogleFiles
                                 editable={props.clickableBox}
                                 sectionID={section.sectionID}

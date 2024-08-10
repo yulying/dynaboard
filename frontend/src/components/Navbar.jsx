@@ -34,7 +34,7 @@ export default function Navbar(props) {
                                 id="navbar-login-button"
                                 onClick={() => navigate("/login")}
                             >
-                                LOGIN
+                                LOGIN OR CREATE NEW ACCOUNT
                             </button>
                         </div>
                     )}

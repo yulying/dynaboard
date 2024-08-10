@@ -47,6 +47,118 @@ button {
     cursor: pointer;
 }
 
+/* ========== NAVBAR & FOOTER ========== */
+
+#navbar,
+#footer {
+    position: fixed;
+    width: 100%;
+    overflow: initial;
+    z-index: 5;
+}
+
+#navbar {
+    top: 0;
+}
+
+#footer {
+    bottom: 0;
+}
+
+#main-navbar-components,
+#main-footer-components {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 80px;
+    background: #e7717d;
+}
+
+#main-navbar-components {
+    color: #eee2dc;
+    box-shadow: 0px 10px 20px rgb(0, 0, 0);
+}
+
+#main-footer-components {
+    color: #eee2dc;
+    box-shadow: 0px -3px 10px rgb(0, 0, 0);
+}
+
+#navbar-empty-space {
+    height: 90px;
+}
+
+#footer-empty-space {
+    height: 30px;
+}
+
+.dashboard-title {
+    font-weight: 600;
+    font-size: x-large;
+    margin: 20px 0px;
+}
+
+.dashboard-title:hover {
+    cursor: pointer;
+    color: #fff7f4;
+}
+
+.dashboard-editor {
+    display: flex;
+    width: 160px;
+    justify-content: space-around;
+    align-self: center;
+}
+
+#navbar-login-button,
+#edit-button,
+#dashboard-settings-button,
+#back-to-dashboard-button,
+#logout-button {
+    border: none;
+    background-color: transparent;
+    color: #123c69;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 0px;
+}
+
+#navbar-login-button:hover,
+#edit-button:hover,
+#dashboard-settings-button:hover,
+#back-to-dashboard-button:hover,
+#logout-button:hover {
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#settings-div {
+    color: #123c69;
+    padding: 50px 100px;
+}
+
+#logout-button {
+    border: 1px solid #bab2b5;
+    border-radius: 4px;
+    padding: 8px 20px;
+    margin: 20px;
+    background-color: #edc7b7;
+}
+
+#logout-button:hover {
+    background-color: #d8b3a3;
+}
+
+.memo-emote {
+    margin: 10px;
+    font-size: 60px;
+}
+
+#dashboard-return:hover {
+    cursor: pointer;
+}
+
+/* ========== FRONT PAGE INFORMATION ========== */
+
 #main-header {
     color: #ac3b61;
     line-height: 30px;
@@ -54,7 +166,7 @@ button {
     display: flex;
     flex-direction: column;
     font-size: 18px;
-    padding: 20vh 20vw;
+    padding: 25vh 20vw;
     z-index: 1;
 }
 
@@ -72,7 +184,7 @@ button {
     max-width: 100vw;
     min-width: 300px;
     width: auto;
-    height: 600px;
+    height: 650px;
     margin-left: auto;
     right: 0;
     mask-image: linear-gradient(to right, transparent, #eee2dc 30%);
@@ -86,7 +198,7 @@ button {
     right: 0;
     margin-left: auto;
     margin-right: auto;
-    width: 200px;
+    width: 240px;
 }
 
 #sub-header,
@@ -146,8 +258,6 @@ button {
     align-items: center;
     text-align: center;
     background-color: #edc7b7;
-    border: 1px solid #123c69;
-    /* box-shadow: 5px 5px 5px #d8b3a3; */
 }
 
 #sub-header-title {
@@ -156,6 +266,76 @@ button {
 
 .informational-text {
     font-weight: 500;
+}
+
+#first-sample-div,
+#second-sample-div {
+    position: relative;
+    display: flex;
+    padding: 5vw 10vw;
+    justify-content: center;
+    align-items: center;
+}
+
+#first-sample-div {
+    padding-top: 0;
+}
+
+.sample-img-wrap {
+    width: 40vw;
+}
+
+#first-sample-img,
+#second-sample-img {
+    height: inherit;
+    width: inherit;
+}
+
+#second-sample-caption {
+    padding: 0px 30px;
+    font-size: 12px;
+    text-align: center;
+}
+
+#first-sample-text-div,
+#second-sample-text-div {
+    justify-content: space-between;
+    text-align: center;
+    line-height: 26px;
+    color: #123c69;
+    background-color: #e4cec2;
+    margin: 5vw 0px 5vw 7vw;
+}
+
+#first-sample-text-div,
+#second-sample-text-div {
+    padding: 4vw;
+}
+
+#first-sample-title,
+#second-sample-title {
+    color: #ac3b61;
+}
+
+.first-sample-text,
+#second-sample-text {
+    font-weight: 500;
+}
+
+#first-sample-tape,
+#second-sample-tape {
+    position: absolute;
+    width: 230px;
+    transform: translate(50%, -50%);
+    right: 26vw;
+}
+
+#first-sample-tape {
+    top: 5vw;
+}
+
+#second-sample-tape {
+    top: 10vw;
 }
 
 #main-page-footer {
@@ -183,6 +363,8 @@ button {
 #github-link:hover {
     color: #948d90;
 }
+
+/* ========== LOGIN & CREATE ACCOUNT ========== */
 
 #credentials-container {
     display: flex;
@@ -298,114 +480,6 @@ button {
     background-color: #bab2b5;
     border-radius: 4px;
     font-weight: 900;
-}
-
-#navbar,
-#footer {
-    position: fixed;
-    width: 100%;
-    overflow: initial;
-    z-index: 2;
-}
-
-#navbar {
-    top: 0;
-}
-
-#footer {
-    bottom: 0;
-}
-
-#main-navbar-components,
-#main-footer-components {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 80px;
-    background: #e7717d;
-}
-
-#main-navbar-components {
-    color: #eee2dc;
-    box-shadow: 0px 10px 20px rgb(0, 0, 0);
-}
-
-#main-footer-components {
-    color: #eee2dc;
-    box-shadow: 0px -3px 10px rgb(0, 0, 0);
-}
-
-#navbar-empty-space {
-    height: 90px;
-}
-
-#footer-empty-space {
-    height: 30px;
-}
-
-.dashboard-title {
-    font-weight: 600;
-    font-size: x-large;
-    margin: 20px 0px;
-}
-
-.dashboard-title:hover {
-    cursor: pointer;
-    color: #fff7f4;
-}
-
-.dashboard-editor {
-    display: flex;
-    width: 160px;
-    justify-content: space-around;
-    align-self: center;
-}
-
-#navbar-login-button,
-#edit-button,
-#dashboard-settings-button,
-#back-to-dashboard-button,
-#logout-button {
-    border: none;
-    background-color: transparent;
-    color: #123c69;
-    font-size: 18px;
-    font-weight: 500;
-    padding: 0px;
-}
-
-#navbar-login-button:hover,
-#edit-button:hover,
-#dashboard-settings-button:hover,
-#back-to-dashboard-button:hover,
-#logout-button:hover {
-    font-weight: 700;
-    cursor: pointer;
-}
-
-#settings-div {
-    color: #123c69;
-    padding: 50px 100px;
-}
-
-#logout-button {
-    border: 1px solid #bab2b5;
-    border-radius: 4px;
-    padding: 8px 20px;
-    margin: 20px;
-    background-color: #edc7b7;
-}
-
-#logout-button:hover {
-    background-color: #d8b3a3;
-}
-
-.memo-emote {
-    margin: 10px;
-    font-size: 60px;
-}
-
-#dashboard-return:hover {
-    cursor: pointer;
 }
 
 #not-found {

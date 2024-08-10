@@ -26,12 +26,6 @@ export default function Settings() {
         <div>
             <Navbar settings />
             <div id="settings-div">
-                <ul id="settings-ul">
-                    <li>Change Layout</li>
-                    <li>Change color scheme</li>
-                    <li>Delete Account</li>
-                </ul>
-                <div></div>
                 <button id="logout-button" onClick={handleLogout}>
                     Logout
                 </button>
